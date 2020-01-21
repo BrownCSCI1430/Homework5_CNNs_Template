@@ -1,83 +1,67 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
-# File: your_model.py
-# Brown CSCI 1430 assignment
-# Created by Aaron Gokaslan
+"""
+Project 4 - CNNs
+CS1430 - Computer Vision
+Brown University
+"""
 
-from tensorpack import *
-from tensorpack.tfutils.symbolic_functions import *
-from tensorpack.tfutils.summary import *
-from tensorpack.tfutils.tower import get_current_tower_context
 import tensorflow as tf
 import hyperparameters as hp
+from tensorflow.keras.layers import \
+        Conv2D, MaxPool2D, Dropout, Flatten, Dense
 
-class YourModel(ModelDesc):
+class YourModel(tf.keras.Model):
+    """ Your own neural network model. """
 
     def __init__(self):
         super(YourModel, self).__init__()
-        self.use_bias = True
 
-    def _get_inputs(self):
-        return [InputDesc(tf.float32, [None, hp.img_size, hp.img_size, 3], 'input'),
-                InputDesc(tf.int32, [None], 'label')]
+        # Optimizer
+        self.optimizer = tf.keras.optimizers.Adam(
+            learning_rate=hp.learning_rate)
 
-    def _build_graph(self, inputs):
-        image, label = inputs
-
-        #####################################################################
-        # TASK 1: Change architecture (to try to improve performance)
-        # TASK 1: Add dropout regularization                                  
-        
-        # Declare convolutional layers
+        # TODO: Build your own convolutional neural network, using Dropout at
+        #       least once. The input image will be passed through each Keras
+        #       layer in self.architecture sequentially. Refer to the imports
+        #       to see what Keras layers you can use to build your network.
+        #       Feel free to import other layers, but the layers already
+        #       imported are enough for this assignment.
         #
-        # TensorPack: Convolutional layer
-        # 10 filters (out_channel), 9x9 (kernel_shape), 
-        # no padding, stride 1 (default settings)
-        # with ReLU non-linear activation function.
-        logits = Conv2D('conv0', image, 10, (9,9), padding='valid', stride=(1,1), nl=tf.nn.relu)
+        #       Remember: your network must have under 15 million parameters!
+        #       You will see a model summary when you run the program that
+        #       displays the total number of parameters of your network.
         #
-        # TensorPack: Max pooling layer
-        # Chain layers together using reference 'logits'
-        # 7x7 max pool, stride = none (defaults to same as shape), padding = valid
-        logits = MaxPooling('pool0', logits, (7,7), stride=None, padding='valid')
+        #       Remember: because this is a 15-scene classification task,
+        #       the output dimension of the network must be 15. That is,
+        #       passing a tensor of shape [batch_size, img_size, img_size, 1]
+        #       into the network will produce an output of shape
+        #       [batch_size, 15].
         #
-        # TensorPack: Fully connected layer
-        # number of outputs = number of categories (the 15 scenes in our case)
-        #logits = FullyConnected('fc0', logits, hp.category_num, nl=tf.identity)
-        logits = FullyConnected('fc0', logits, hp.category_num, nl=tf.nn.relu)
-        #####################################################################
+        #       Note: Keras layers such as Conv2D and Dense give you the
+        #             option of defining an activation function for the layer.
+        #             For example, if you wanted ReLU activation on a Conv2D
+        #             layer, you'd simply pass the string 'relu' to the
+        #             activation parameter when instantiating the layer.
+        #             While the choice of what activation functions you use
+        #             is up to you, the final layer must use the softmax
+        #             activation function so that the output of your network
+        #             is a probability distribution.
+        #
+        #      Note: Flatten is a very useful layer. You shouldn't have to
+        #            explicitly reshape any tensors anywhere in your network.
 
-        # Add a loss function based on our network output (logits) and the ground truth labels
-        cost = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits, labels=label)
-        cost = tf.reduce_mean(cost, name='cross_entropy_loss')
+        self.architecture = []
 
-        wrong = prediction_incorrect(logits, label)
+    def call(self, img):
+        """ Passes input image through the network. """
 
-        # monitor training error
-        add_moving_summary(tf.reduce_mean(wrong, name='train_error'))
+        for layer in self.architecture:
+            img = layer(img)
 
+        return img
 
-        #####################################################################
-        # TASK 1: If you like, you can add other kinds of regularization, 
-        # e.g., weight penalization, or weight decay
+    @staticmethod
+    def loss_fn(labels, predictions):
+        """ Loss function for the model. """
 
-
-        #####################################################################
-
-
-        # Set costs and monitor them for TensorBoard
-        add_moving_summary(cost)
-        add_param_summary(('.*/kernel', ['histogram']))   # monitor W
-        self.cost = tf.add_n([cost], name='cost')
-
-
-    def _get_optimizer(self):
-        lr = get_scalar_var('learning_rate', hp.learning_rate, summary=True)
-
-        # Use gradient descent as our optimizer
-        opt = tf.train.GradientDescentOptimizer(lr)
-
-        # There are many other optimizers - https://www.tensorflow.org/api_guides/python/train#Optimizers
-        # Including the momentum-based gradient descent discussed in class.
-        
-        return opt
+        return tf.keras.losses.sparse_categorical_crossentropy(
+            labels, predictions, from_logits=False)

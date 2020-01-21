@@ -1,106 +1,71 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
-# File: vgg_model.py
-# Brown CSCI 1430 assignment
-# Created by Aaron Gokaslan
+"""
+Project 4 - CNNs
+CS1430 - Computer Vision
+Brown University
+"""
 
-from tensorpack import *
-from tensorpack.tfutils.symbolic_functions import *
-from tensorpack.tfutils.summary import *
-from tensorpack.tfutils.tower import get_current_tower_context
 import tensorflow as tf
 import hyperparameters as hp
+from tensorflow.keras.layers import Conv2D, MaxPool2D, Flatten, Dense
 
-class VGGModel(ModelDesc):
-
+class VGGModel(tf.keras.Model):
     def __init__(self):
         super(VGGModel, self).__init__()
-        self.activation_fn = tf.nn.relu
-        self.conv_padding = 'SAME'
-        self.pool_padding = 'SAME'
-        self.use_bias = True
 
-    def _get_inputs(self):
-        return [InputDesc(tf.float32, [None, 224, 224, 3], 'input'),
-                InputDesc(tf.int32, [None], 'label')]
+        # Optimizer
+        self.optimizer = tf.keras.optimizers.RMSprop(
+            learning_rate=hp.learning_rate,
+            momentum=hp.momentum)
 
-    def _build_graph(self, inputs):
-        image, label = inputs
+        self.vgg16 = [
+            # Block 1
+            Conv2D(64, 3, 1, padding="same", activation="relu", name="block1_conv1"),
+            Conv2D(64, 3, 1, padding="same", activation="relu", name="block1_conv2"),
+            MaxPool2D(2, name="block1_pool"),
+            # Block 2
+            Conv2D(128, 3, 1, padding="same", activation="relu", name="block2_conv1"),
+            Conv2D(128, 3, 1, padding="same", activation="relu", name="block2_conv2"),
+            MaxPool2D(2, name="block2_pool"),
+            # Block 3
+            Conv2D(256, 3, 1, padding="same", activation="relu", name="block3_conv1"),
+            Conv2D(256, 3, 1, padding="same", activation="relu", name="block3_conv2"),
+            Conv2D(256, 3, 1, padding="same", activation="relu", name="block3_conv3"),
+            MaxPool2D(2, name="block3_pool"),
+            # Block 4
+            Conv2D(512, 3, 1, padding="same", activation="relu", name="block4_conv1"),
+            Conv2D(512, 3, 1, padding="same", activation="relu", name="block4_conv2"),
+            Conv2D(512, 3, 1, padding="same", activation="relu", name="block4_conv3"),
+            MaxPool2D(2, name="block4_pool"),
+            # Block 5
+            Conv2D(512, 3, 1, padding="same", activation="relu", name="block5_conv1"),
+            Conv2D(512, 3, 1, padding="same", activation="relu", name="block5_conv2"),
+            Conv2D(512, 3, 1, padding="same", activation="relu", name="block5_conv3"),
+            MaxPool2D(2, name="block5_pool")
+        ]
 
-        ################################################################################
-        # TASK 2: Fine tuning
-        #
-        # We wish to replace VGG's last fully connected layer. 
-        # We need to change the number of classes for our output, too.
-        #
-        # Each layer has a name. TensorPack will load the weights from vgg16.npy and 
-        # match the names of the specified layers to the layers which exist in vgg16.npy.
-        # In this case, we need to _use a different name than fc8_, otherwise TensorPack
-        # will copy over the existing weights.
-        #
-        # Training will take _a long time_ when not on a GPU - two hours per epoch on 
-        # James' laptop CPU. Run it using Google Cloud Platform!
-        # There is also a feature to continue from where you left off (per epoch).
-        # You'll notice it once you've executed run.py multiple times.
-        #
-        # Weight freezing: It is also possible to stop gradient propagation beyond the 
-        # newly added fc layer. This will limit the ability of the pre-trained network to 
-        # adjust to the new data, but if the representation is already sufficient then it
-        # will converge much faster. Please investigate this via tf.stop_gradient()
-        #
-        ################################################################################
-
-        # TensorPack: This is a slightly different notation for the network architecture
-        # It pre-declares variables for all Conv2D layers (argscope).
-        # 
-        with argscope(Conv2D, kernel_shape=3, nl=tf.nn.relu):
-            logits = (LinearWrap(image)
-                      .Conv2D('conv1_1', 64)
-                      .Conv2D('conv1_2', 64)
-                      .MaxPooling('pool1', 2)
-                      # 112
-                      .Conv2D('conv2_1', 128)
-                      .Conv2D('conv2_2', 128)
-                      .MaxPooling('pool2', 2)
-                      # 56
-                      .Conv2D('conv3_1', 256)
-                      .Conv2D('conv3_2', 256)
-                      .Conv2D('conv3_3', 256)
-                      .MaxPooling('pool3', 2)
-                      # 28
-                      .Conv2D('conv4_1', 512)
-                      .Conv2D('conv4_2', 512)
-                      .Conv2D('conv4_3', 512)
-                      .MaxPooling('pool4', 2)
-                      # 14
-                      .Conv2D('conv5_1', 512)
-                      .Conv2D('conv5_2', 512)
-                      .Conv2D('conv5_3', 512)
-                      .MaxPooling('pool5', 2)
-                      # 7
-                      .FullyConnected('fc6', 4096, nl=tf.nn.relu)
-                      .FullyConnected('fc7', 4096, nl=tf.nn.relu)
-                      .FullyConnected('fc8', out_dim=1000, nl=tf.identity)()
-                      )
+        # TODO: Make all layers in self.vgg16 non-trainable. This will freeze the
+        #       pretrained VGG16 weights into place so that only the classificaiton
+        #       head is trained.
 
 
-        prob = tf.nn.softmax(logits, name='output')
+        # TODO: Write a classification head for our 15-scene classification task.
 
-        cost = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits, labels=label)
-        cost = tf.reduce_mean(cost, name='cross_entropy_loss')
+        self.head = []
 
-        wrong = prediction_incorrect(logits, label)
+    def call(self, img):
+        """ Defines the feed-forward operation of the network. """
 
-        # monitor training error
-        add_moving_summary(tf.reduce_mean(wrong, name='train_error'))
+        for layer in self.vgg16:
+            img = layer(img)
 
-        add_moving_summary(cost)
+        for layer in self.head:
+            img = layer(img)
 
-        add_param_summary(('.*/W', ['histogram']))   # monitor W
-        self.cost = tf.add_n([cost], name='cost')
+        return img
 
-    def _get_optimizer(self):
-        lr = get_scalar_var('learning_rate', hp.learning_rate, summary=True)
-        opt = tf.train.RMSPropOptimizer(lr)
-        return opt
+    @staticmethod
+    def loss_fn(labels, predictions):
+        """ Loss function for model. """
 
+        return tf.keras.losses.sparse_categorical_crossentropy(
+            labels, predictions, from_logits=False)

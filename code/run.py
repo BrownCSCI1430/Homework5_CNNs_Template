@@ -1,231 +1,119 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
-# File: run.py
-# Brown CSCI 1430 assignment
-# Created by Aaron Gokaslan
+"""
+Project 4 - CNNs
+CS1430 - Computer Vision
+Brown University
+"""
 
-import numpy as np
-import argparse
 import os
-import cv2
-import sys
-from glob import glob
-
-from tensorpack import *
-from tensorpack.tfutils.sessinit import get_model_loader
-from tensorpack.tfutils.symbolic_functions import *
-from tensorpack.tfutils.summary import *
-from tensorpack.utils.gpu import get_nr_gpu
-from tensorpack.dataflow.base import RNGDataFlow
-
+import argparse
+import tensorflow as tf
 from vgg_model import VGGModel
 from your_model import YourModel
 import hyperparameters as hp
+from preprocess import get_data
+from tensorboard_utils import ImageLabelingLogger, ConfusionMatrixLogger
 
-"""
-TASK 1: To train from scratch (on CPU) and validate:
-    python run.py --task 1 --gpu -1
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-TASK 2: To fine tune the VGG-16 model on CPU (will error until you make changes):
-    python run.py --task 2 --gpu -1
+def parse_args():
+    """ Perform command-line argument parsing. """
 
-On Google Cloud Platform, you will set up the facility
-to use a powerful GPU. There, you can change the value passed to the flag:
-
-    --gpu -1  runs in CPU mode.
-    --gpu 0   runs on the first machine GPU,  
-    --gpu 1   runs on the second machine GPU (should you be so lucky; GCP will only give you 1 GPU)
-
-More advanced functions (see __main__):
-    python run.py --gpu -1,0,1 --data datadir --load vgg16.npy --task 1,2
-"""
-
-
-"""
-15 Scene Categorization dataset declaration and loading.
-TASK: Add standardization (feature normalization)
-"""
-class Scene15(RNGDataFlow):
-
-    def __init__(self, dir, name, img_size, meta_dir=None,
-                 shuffle=None, dir_structure=None):
-
-        assert name in ['train', 'test'], name
-        assert os.path.isdir(dir), dir
-        self.full_dir = os.path.join(dir, name)
-        self.name = name
-        assert os.path.isdir(self.full_dir), self.full_dir
-        if shuffle is None:
-            shuffle = name == 'train'
-        self.shuffle = shuffle
-
-        # For each category, add up to the self-enforced limit on the number of training/test examples
-        #
-        self.imglist = []
-        for catname in glob('%s/%s/*' % (dir, name)):
-            catlist = glob('%s/*' % catname)
-            c = 0
-            for fname in catlist:
-                self.imglist.append( (fname, os.path.basename(os.path.dirname(fname))) )
-                c = c+1
-                if name == 'train' and c >= hp.num_train_per_category:
-                    break
-                if name == 'test' and c >= hp.num_test_per_category:
-                    break
-
-        # Compact variant with no limits; just read all the data
-        # We don't do this for speed reasons
-        # self.imglist2 = [(fname, os.path.basename(os.path.dirname(fname))) for fname in glob('%s/%s/*/*' % (dir, name))]
-
-        self.label_lookup = dict()
-        for label in sorted(set(i[1] for i in self.imglist)):
-            self.label_lookup[label] = len(self.label_lookup)
-
-        self.imglist = [(fname, self.label_lookup[dirname]) for fname, dirname in self.imglist]
-
-        
-        idxs = np.arange(len(self.imglist))
-
-        # Load images into numpy array
-        self.imgs = np.zeros( (img_size, img_size, 3, len(self.imglist) ), dtype=np.float )
-        for k in idxs:
-            fname, label = self.imglist[k]
-            img = cv2.resize( cv2.imread(fname), (img_size, img_size) )
-            img = img / 255.0 # You might want to remove this line for your standardization.
-            self.imgs[:,:,:,k] = img
-
-        ########################################################
-        # TASK 1: Add standardization (also called feature scaling or data normalization).
-        # Reference here: https://en.wikipedia.org/wiki/Feature_scaling
-        # To think about: In what different ways could we 'standardize' our data? What would each do?
-        
-        
-
-        ########################################################
-
-
-    def size(self):
-        return len(self.imglist)
-
-    def get_data(self):
-        idxs = np.arange(len(self.imglist))
-        if self.shuffle:
-            self.rng.shuffle(idxs)
-        for k in idxs:
-            fname, label = self.imglist[k]
-            fname = os.path.join(self.full_dir, fname)
-            yield [self.imgs[:,:,:,k], label]
-
-
-"""
-Convenience function to load the 15 Scene database.
-This is where you would place any potential data augmentations.
-"""
-def get_data(datadir, task, train_or_test):
-    isTrain = train_or_test == 'train'
-    img_size = hp.img_size
-    if task == '2':
-        img_size = 224 # Hard coded, as VGG-16 network must have this input size
-
-    ds = Scene15(datadir, train_or_test, img_size)
-    if isTrain:
-        augmentors = [
-            #################################################
-            # TASK 1: Add data augmentations
-            #
-            # An example (that is duplicated work).
-            # In the Scene15 class, we resize each image to 
-            # 64x64 pixels as a preprocess. You then perform
-            # standardization over the images in Task 1.
-            #
-            # However, if we wanted to skip standardization, 
-            # we could use an augmentation to resize the image
-            # whenever it is needed:
-            # imgaug.Resize( (img_size, img_size) )
-            #
-            # Please use the same syntax to write more useful 
-            # augmentations. Read the documentation on the 
-            # TensorPack image augmentation library and experiment!
-            #################################################
-
-        ]
-    else:
-        # Validation/test time augmentations
-        augmentors = [
-            # imgaug.Resize( (img_size, img_size) ) 
-        ]
-    # TensorPack: Add data augmentations
-    ds = AugmentImageComponent(ds, augmentors)
-    # TensorPack: How to batch the data
-    ds = BatchData(ds, hp.batch_size, remainder=not isTrain)
-    if isTrain:
-        # TensorPack: Perform clever image fetching, e.g., multithreaded
-        # These numbers will depend on your particular machine.
-        # Note: PrefetchData seems to be broken on Windows : /
-        if not sys.platform.lower().startswith('win'):
-            ds = PrefetchData(ds, 4, 2)
-    return ds
-
-
-"""
-Program argument parsing, data setup, and training
-"""
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="Let's train some neural nets!")
     parser.add_argument(
         '--task',
         required=True,
         choices=['1', '2'],
-        help='Which task of the assignment to run - training from scratch (1), or fine tuning VGG-16 (2).')
-    # Set GPU to -1 to not use a GPU.
-    parser.add_argument('--gpu', help='Comma-separated list of GPU(s) to use.')
+        help='''Which task of the assignment to run -
+        training from scratch (1), or fine tuning VGG-16 (2).''')
     parser.add_argument(
         '--load',
-        # Location of pre-trained model
-        # - As a relative path to the student distribution
-        default='vgg16.npy',
-        # - As an absolute path to the location on the Brown CS filesystem
-        #default='/course/cs1430/pretrained_weights/vgg16.npy',
-        help='Load VGG-16 model.')
+        default=os.getcwd() + '/vgg16_imagenet.h5',
+        help='''Path to pre-trained VGG-16 file (only applicable to
+        task 2.''')
     parser.add_argument(
         '--data',
-        # Location of 15 Scenes dataset
-        # - As a relative path to the student distribution
         default=os.getcwd() + '/../data/',
-        # - As an absolute path to the location on the Brown CS filesystem
-        #default='/course/cs1430/datasets/15SceneData/',
         help='Location where the dataset is stored.')
+    parser.add_argument(
+        '--confusion',
+        action='store_true',
+        help='''Log a confusion matrix at the end of each
+        epoch (viewable in Tensorboard). This is turned off
+        by default as it takes a little bit of time to complete.''')
+    parser.add_argument(
+        '--checkpoint',
+        default=None,
+        help='''Path to model checkpoint directory (remember to
+        include the slash at the end of the name).
+        Checkpoints are automatically saved when you train your
+        model. If you want to continue training from where you
+        left off, this is how you would load your weights. In
+        the case of task 2, passing a checkpoint path will disable
+        the loading of VGG weights.''')
 
-    args = parser.parse_args()
+    return parser.parse_args()
 
-    if args.gpu:
-        os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
+def train(model, train_data, test_data, checkpoint_path):
+    """ Training routine. """
 
-    logger.auto_set_dir()
+    callback_list = []
 
-    dataset_train = get_data(args.data, args.task, 'train')
-    dataset_test = get_data(args.data, args.task, 'test')
+    # Callback for checkpoint saving
+    callback_list.append(tf.keras.callbacks.ModelCheckpoint(
+        filepath=checkpoint_path))
 
-    # TensorPack: Training configuration
-    config = TrainConfig(
-        model=YourModel() if args.task == '1' else VGGModel(),
-        dataflow=dataset_train,
-        callbacks=[
-            # Callbacks are performed at the end of every epoch.
-            #
-            # For instance, we can save the current model
-            ModelSaver(),
-            # Evaluate the current model and print out the loss
-            InferenceRunner(dataset_test,
-                            [ScalarStats('cost'), ClassificationError()])
-            #
-            # You can put other callbacks here to change hyperparameters,
-            # etc...
-            #
-        ],
-        max_epoch=hp.num_epochs,
-        nr_tower=max(get_nr_gpu(), 1),
-        session_init=None if args.task == '1' else get_model_loader(args.load)
+    # Callbacks for Tensorboard visualizations
+    callback_list.append(tf.keras.callbacks.TensorBoard(
+        update_freq='batch',
+        profile_batch=0))
+    callback_list.append(ImageLabelingLogger(ARGS.data, ARGS.task))
+
+    if ARGS.confusion:
+        callback_list.append(ConfusionMatrixLogger(ARGS.data, ARGS.task))
+
+    model.compile(
+        optimizer=model.optimizer,
+        loss=model.loss_fn,
+        metrics=["sparse_categorical_accuracy"])
+
+    model.fit(
+        x=train_data,
+        validation_data=test_data,
+        epochs=hp.num_epochs,
+        batch_size=None,
+        callbacks=callback_list
     )
-    # TensorPack: Training with simple one at a time feed into batches
-    launch_train_with_config(config, SimpleTrainer())
+
+def main():
+    """ Main function. """
+
+    train_data = get_data(
+        os.path.join(ARGS.data, "train"),
+        ARGS.task == '2', True, True)
+    test_data = get_data(
+        os.path.join(ARGS.data, "test"),
+        ARGS.task == '2', False, False)
+
+    if ARGS.task == '1':
+        model = YourModel()
+        model(tf.keras.Input(shape=(hp.img_size, hp.img_size, 3)))
+        model.summary()
+        checkpoint_path = "./your_model_checkpoint/"
+    else:
+        model = VGGModel()
+        checkpoint_path = "./vgg_model_checkpoint/"
+        model(tf.keras.Input(shape=(224, 224, 3)))
+        model.summary()
+        if ARGS.checkpoint is None:
+            model.load_weights(ARGS.load, by_name=True)
+
+    if ARGS.checkpoint is not None:
+        model.load_weights(ARGS.checkpoint)
+
+    train(model, train_data, test_data, checkpoint_path)
+
+# Make arguments global
+ARGS = parse_args()
+
+main()
