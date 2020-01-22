@@ -52,6 +52,7 @@ class VGGModel(tf.keras.Model):
 
         self.head = []
 
+
     def call(self, img):
         """ Defines the feed-forward operation of the network. """
 

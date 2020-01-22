@@ -41,7 +41,7 @@ def get_data(data_path, is_vgg, shuffle, augment):
         ds = tf.keras.preprocessing.image.ImageDataGenerator(
             preprocessing_function=preprocess_fn)
     else:
-        # Don't perform data augmentation here!
+        # Don't do any augmentation here!
         ds = tf.keras.preprocessing.image.ImageDataGenerator(
             preprocessing_function=preprocess_fn)
 

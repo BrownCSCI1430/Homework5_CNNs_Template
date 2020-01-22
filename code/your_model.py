@@ -16,8 +16,9 @@ class YourModel(tf.keras.Model):
         super(YourModel, self).__init__()
 
         # Optimizer
-        self.optimizer = tf.keras.optimizers.Adam(
-            learning_rate=hp.learning_rate)
+        self.optimizer = tf.keras.optimizers.RMSprop(
+            learning_rate=hp.learning_rate,
+            momentum=hp.momentum)
 
         # TODO: Build your own convolutional neural network, using Dropout at
         #       least once. The input image will be passed through each Keras

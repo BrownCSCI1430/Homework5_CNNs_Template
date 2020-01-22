@@ -27,22 +27,16 @@ def parse_args():
         help='''Which task of the assignment to run -
         training from scratch (1), or fine tuning VGG-16 (2).''')
     parser.add_argument(
-        '--load',
-        default=os.getcwd() + '/vgg16_imagenet.h5',
-        help='''Path to pre-trained VGG-16 file (only applicable to
-        task 2.''')
-    parser.add_argument(
         '--data',
         default=os.getcwd() + '/../data/',
         help='Location where the dataset is stored.')
     parser.add_argument(
-        '--confusion',
-        action='store_true',
-        help='''Log a confusion matrix at the end of each
-        epoch (viewable in Tensorboard). This is turned off
-        by default as it takes a little bit of time to complete.''')
+        '--load-vgg',
+        default=os.getcwd() + '/vgg16_imagenet.h5',
+        help='''Path to pre-trained VGG-16 file (only applicable to
+        task 2.''')
     parser.add_argument(
-        '--checkpoint',
+        '--load-checkpoint',
         default=None,
         help='''Path to model checkpoint directory (remember to
         include the slash at the end of the name).
@@ -51,46 +45,64 @@ def parse_args():
         left off, this is how you would load your weights. In
         the case of task 2, passing a checkpoint path will disable
         the loading of VGG weights.''')
+    parser.add_argument(
+        '--confusion',
+        action='store_true',
+        help='''Log a confusion matrix at the end of each
+        epoch (viewable in Tensorboard). This is turned off
+        by default as it takes a little bit of time to complete.''')
+    parser.add_argument(
+        '--evaluate',
+        action='store_true',
+        help='''Skips training and evaluates on the test set once.
+        You can use this to test an already trained model by loading
+        its checkpoint.''')
 
     return parser.parse_args()
 
 def train(model, train_data, test_data, checkpoint_path):
     """ Training routine. """
 
-    callback_list = []
-
-    # Callback for checkpoint saving
-    callback_list.append(tf.keras.callbacks.ModelCheckpoint(
-        filepath=checkpoint_path))
-
-    # Callbacks for Tensorboard visualizations
-    callback_list.append(tf.keras.callbacks.TensorBoard(
-        update_freq='batch',
-        profile_batch=0))
-    callback_list.append(ImageLabelingLogger(ARGS.data, ARGS.task))
+    callback_list = [
+        tf.keras.callbacks.ModelCheckpoint(
+            filepath=checkpoint_path + \
+                    "weights.e{epoch:02d}-" + \
+                    "acc{val_sparse_categorical_accuracy:.4f}.h5",
+            monitor='val_sparse_categorical_accuracy',
+            save_best_only=True,
+            save_weights_only=True),
+        tf.keras.callbacks.TensorBoard(
+            update_freq='batch',
+            profile_batch=0),
+        ImageLabelingLogger(ARGS.data, ARGS.task)
+    ]
 
     if ARGS.confusion:
         callback_list.append(ConfusionMatrixLogger(ARGS.data, ARGS.task))
-
-    model.compile(
-        optimizer=model.optimizer,
-        loss=model.loss_fn,
-        metrics=["sparse_categorical_accuracy"])
 
     model.fit(
         x=train_data,
         validation_data=test_data,
         epochs=hp.num_epochs,
         batch_size=None,
-        callbacks=callback_list
+        callbacks=callback_list,
     )
+
+def test(model, test_data):
+    model.evaluate(
+        x=test_data,
+        verbose=1,
+    )
+
 
 def main():
     """ Main function. """
 
-    train_data = get_data(
-        os.path.join(ARGS.data, "train"),
-        ARGS.task == '2', True, True)
+    if not ARGS.evaluate:
+        train_data = get_data(
+            os.path.join(ARGS.data, "train"),
+            ARGS.task == '2', True, True)
+
     test_data = get_data(
         os.path.join(ARGS.data, "test"),
         ARGS.task == '2', False, False)
@@ -99,19 +111,30 @@ def main():
         model = YourModel()
         model(tf.keras.Input(shape=(hp.img_size, hp.img_size, 3)))
         model.summary()
-        checkpoint_path = "./your_model_checkpoint/"
+        checkpoint_path = "./your_model_checkpoints/"
     else:
         model = VGGModel()
-        checkpoint_path = "./vgg_model_checkpoint/"
+        checkpoint_path = "./vgg_model_checkpoints/"
         model(tf.keras.Input(shape=(224, 224, 3)))
         model.summary()
-        if ARGS.checkpoint is None:
-            model.load_weights(ARGS.load, by_name=True)
+        if ARGS.load_checkpoint is None:
+            model.load_weights(ARGS.load_vgg, by_name=True)
 
-    if ARGS.checkpoint is not None:
-        model.load_weights(ARGS.checkpoint)
+    if ARGS.load_checkpoint is not None:
+        model.load_weights(ARGS.load_checkpoint)
 
-    train(model, train_data, test_data, checkpoint_path)
+    if not os.path.exists(checkpoint_path):
+        os.makedirs(checkpoint_path)
+
+    model.compile(
+        optimizer=model.optimizer,
+        loss=model.loss_fn,
+        metrics=["sparse_categorical_accuracy"])
+
+    if ARGS.evaluate:
+        test(model, test_data)
+    else:
+        train(model, train_data, test_data, checkpoint_path)
 
 # Make arguments global
 ARGS = parse_args()
