@@ -6,11 +6,8 @@ Brown University
 
 import os
 import random
-import numpy as np
 import tensorflow as tf
 import hyperparameters as hp
-from matplotlib import pyplot as plt
-AUTOTUNE = tf.data.experimental.AUTOTUNE
 CLASSES = [""] * hp.category_num
 IDX_TO_CLASS = {}
 
