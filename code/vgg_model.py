@@ -47,14 +47,13 @@ class VGGModel(tf.keras.Model):
         #       pretrained VGG16 weights into place so that only the classificaiton
         #       head is trained.
 
-
         # TODO: Write a classification head for our 15-scene classification task.
 
         self.head = []
 
 
     def call(self, img):
-        """ Defines the feed-forward operation of the network. """
+        """ Passes the image through the network. """
 
         for layer in self.vgg16:
             img = layer(img)

@@ -34,30 +34,41 @@ def get_data(data_path, is_vgg, shuffle, augment):
 
     if augment:
         # TODO: Use the arguments of ImageDataGenerator()
-        #       to augment the data.
+        #       to augment the data. Leave the
+        #       preprocessing_function argument as is.
         ds = tf.keras.preprocessing.image.ImageDataGenerator(
             preprocessing_function=preprocess_fn)
     else:
-        # Don't do any augmentation here!
+        # Don't perform augmentation here!
         ds = tf.keras.preprocessing.image.ImageDataGenerator(
             preprocessing_function=preprocess_fn)
 
     img_size = 224 if is_vgg else hp.img_size
 
+    classes_for_flow = None
+
+    # If dictionary is not empty
+    if bool(IDX_TO_CLASS):
+        classes_for_flow = CLASSES
+
+    # Form imgae data generator from directory structure
     ds = ds.flow_from_directory(
         data_path,
         target_size=(img_size, img_size),
         class_mode='sparse',
         batch_size=hp.batch_size,
-        shuffle=shuffle)
+        shuffle=shuffle,
+        classes=classes_for_flow)
 
-    unordered_classes = []
-    for dir_name in os.listdir(data_path):
-        if os.path.isdir(os.path.join(data_path, dir_name)):
-            unordered_classes.append(dir_name)
+    # If the dictionary is empty
+    if not bool(IDX_TO_CLASS):
+        unordered_classes = []
+        for dir_name in os.listdir(data_path):
+            if os.path.isdir(os.path.join(data_path, dir_name)):
+                unordered_classes.append(dir_name)
 
-    for img_class in unordered_classes:
-        IDX_TO_CLASS[ds.class_indices[img_class]] = img_class
-        CLASSES[int(ds.class_indices[img_class])] = img_class
+        for img_class in unordered_classes:
+            IDX_TO_CLASS[ds.class_indices[img_class]] = img_class
+            CLASSES[int(ds.class_indices[img_class])] = img_class
 
     return ds

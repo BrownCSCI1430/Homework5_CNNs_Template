@@ -89,6 +89,8 @@ def train(model, train_data, test_data, checkpoint_path):
     )
 
 def test(model, test_data):
+    """ Testing routine. """
+
     model.evaluate(
         x=test_data,
         verbose=1,
