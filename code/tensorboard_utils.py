@@ -11,7 +11,6 @@ import numpy as np
 import tensorflow as tf
 from matplotlib import pyplot as plt
 import hyperparameters as hp
-from preprocess import get_data, CLASSES, IDX_TO_CLASS
 
 def plot_to_image(figure):
     """ Converts a pyplot figure to an image tensor. """
@@ -29,13 +28,11 @@ class ImageLabelingLogger(tf.keras.callbacks.Callback):
     """ Keras callback for logging a plot of test images and their
     predicted labels for viewing in Tensorboard. """
 
-    def __init__(self, data_path, task):
+    def __init__(self, datasets):
         super(ImageLabelingLogger, self).__init__()
 
-        self.test_data = get_data(
-            os.path.join(data_path, "test"), task=='2', True, True)
-
-        self.task = task
+        self.datasets = datasets
+        self.task = datasets.task
 
         print("Done setting up image labeling logger.")
 
@@ -46,17 +43,18 @@ class ImageLabelingLogger(tf.keras.callbacks.Callback):
         """ Writes a plot of test images and their predicted labels
         to disk. """
 
-        fig = plt.figure(figsize=(9,9))
+        fig = plt.figure(figsize=(9, 9))
         count = 0
-        for batch in self.test_data:
+        for batch in self.datasets.train_data:
             for i, image in enumerate(batch[0]):
-                ax = plt.subplot(5,5,count+1)
+                plt.subplot(5, 5, count+1)
 
                 correct_class_idx = batch[1][i]
                 probabilities = self.model(np.array([image])).numpy()[0]
                 predict_class_idx = np.argmax(probabilities)
 
                 if self.task == '1':
+                    image = np.clip(image, 0., 1.)
                     plt.imshow(image, cmap='gray')
                 else:
                     # Undo VGG preprocessing
@@ -74,7 +72,7 @@ class ImageLabelingLogger(tf.keras.callbacks.Callback):
 
                 title_color = 'g' if is_correct else 'r'
 
-                plt.title(IDX_TO_CLASS[predict_class_idx], color=title_color)
+                plt.title(self.datasets.idx_to_class[predict_class_idx], color=title_color)
                 plt.axis('off')
 
                 count += 1
@@ -96,25 +94,10 @@ class ConfusionMatrixLogger(tf.keras.callbacks.Callback):
     """ Keras callback for logging a confusion matrix for viewing
     in Tensorboard. """
 
-    def __init__(self, data_path, task):
+    def __init__(self, datasets):
         super(ConfusionMatrixLogger, self).__init__()
 
-        self.test_data = get_data(
-            os.path.join(data_path, "test"), task == '2', False, False)
-        self.label_list = []
-
-        batch_count = 0
-        for i in self.test_data:
-            for j in i[1]:
-                self.label_list.append(j)
-            batch_count += 1
-
-            if batch_count >= 1500 / hp.batch_size:
-                break
-
-        print("Done setting up confusion matrix logger.")
-
-        self.label_list = np.array(self.label_list)
+        self.datasets = datasets
 
     def on_epoch_end(self, epoch, logs=None):
         self.log_confusion_matrix(epoch, logs)
@@ -123,19 +106,22 @@ class ConfusionMatrixLogger(tf.keras.callbacks.Callback):
         """ Writes a confusion matrix plot to disk. """
 
         test_pred = []
+        test_true = []
         count = 0
-        for i in self.test_data:
+        for i in self.datasets.test_data:
             test_pred.append(self.model.predict(i[0]))
+            test_true.append(i[1])
             count += 1
             if count >= 1500 / hp.batch_size:
                 break
 
         test_pred = np.array(test_pred)
         test_pred = np.argmax(test_pred, axis=-1).flatten()
+        test_true = np.array(test_true).flatten()
 
         # Source: https://www.tensorflow.org/tensorboard/image_summaries
-        cm = sklearn.metrics.confusion_matrix(self.label_list, test_pred)
-        figure = self.plot_confusion_matrix(cm, class_names=CLASSES)
+        cm = sklearn.metrics.confusion_matrix(test_true, test_pred)
+        figure = self.plot_confusion_matrix(cm, class_names=self.datasets.classes)
         cm_image = plot_to_image(figure)
 
         file_writer_cm = tf.summary.create_file_writer('logs/confusion_matrix')

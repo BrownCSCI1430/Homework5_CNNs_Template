@@ -10,7 +10,7 @@ import tensorflow as tf
 from vgg_model import VGGModel
 from your_model import YourModel
 import hyperparameters as hp
-from preprocess import get_data
+from preprocess import Datasets
 from tensorboard_utils import ImageLabelingLogger, ConfusionMatrixLogger
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -60,9 +60,10 @@ def parse_args():
 
     return parser.parse_args()
 
-def train(model, train_data, test_data, checkpoint_path):
+def train(model, datasets, checkpoint_path):
     """ Training routine. """
 
+    # Keras callbacks for training
     callback_list = [
         tf.keras.callbacks.ModelCheckpoint(
             filepath=checkpoint_path + \
@@ -74,15 +75,17 @@ def train(model, train_data, test_data, checkpoint_path):
         tf.keras.callbacks.TensorBoard(
             update_freq='batch',
             profile_batch=0),
-        ImageLabelingLogger(ARGS.data, ARGS.task)
+        ImageLabelingLogger(datasets)
     ]
 
+    # Include confusion logger in callbacks if flag set
     if ARGS.confusion:
-        callback_list.append(ConfusionMatrixLogger(ARGS.data, ARGS.task))
+        callback_list.append(ConfusionMatrixLogger(datasets))
 
+    # Begin training
     model.fit(
-        x=train_data,
-        validation_data=test_data,
+        x=datasets.train_data,
+        validation_data=datasets.test_data,
         epochs=hp.num_epochs,
         batch_size=None,
         callbacks=callback_list,
@@ -91,6 +94,7 @@ def train(model, train_data, test_data, checkpoint_path):
 def test(model, test_data):
     """ Testing routine. """
 
+    # Run model on test set
     model.evaluate(
         x=test_data,
         verbose=1,
@@ -100,25 +104,20 @@ def test(model, test_data):
 def main():
     """ Main function. """
 
-    if not ARGS.evaluate:
-        train_data = get_data(
-            os.path.join(ARGS.data, "train"),
-            ARGS.task == '2', True, True)
-
-    test_data = get_data(
-        os.path.join(ARGS.data, "test"),
-        ARGS.task == '2', False, False)
+    datasets = Datasets(ARGS.data, ARGS.task)
 
     if ARGS.task == '1':
         model = YourModel()
         model(tf.keras.Input(shape=(hp.img_size, hp.img_size, 3)))
-        model.summary()
         checkpoint_path = "./your_model_checkpoints/"
+        model.summary()
     else:
         model = VGGModel()
         checkpoint_path = "./vgg_model_checkpoints/"
         model(tf.keras.Input(shape=(224, 224, 3)))
         model.summary()
+
+        # Don't load pretrained vgg if loading checkpoint
         if ARGS.load_checkpoint is None:
             model.load_weights(ARGS.load_vgg, by_name=True)
 
@@ -128,15 +127,16 @@ def main():
     if not os.path.exists(checkpoint_path):
         os.makedirs(checkpoint_path)
 
+    # Compile model graph
     model.compile(
         optimizer=model.optimizer,
         loss=model.loss_fn,
         metrics=["sparse_categorical_accuracy"])
 
     if ARGS.evaluate:
-        test(model, test_data)
+        test(model, datasets.test_data)
     else:
-        train(model, train_data, test_data, checkpoint_path)
+        train(model, datasets, checkpoint_path)
 
 # Make arguments global
 ARGS = parse_args()

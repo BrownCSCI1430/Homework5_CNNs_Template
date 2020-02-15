@@ -11,6 +11,11 @@ img_size = 224
 # The number of image scene classes. Don't change this.
 category_num = 15
 
+# Sample size for calculating the mean and standard deviation of the
+# training data. This many images will be randomly seleted to be read
+# into memory temporarily.
+preprocess_sample_size = 400
+
 # Training parameters
 
 # num_epochs is the number of epochs. If you experiment with more

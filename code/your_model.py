@@ -27,11 +27,11 @@ class YourModel(tf.keras.Model):
         #       Feel free to import other layers, but the layers already
         #       imported are enough for this assignment.
         #
-        #       Remember: your network must have under 15 million parameters!
+        #       Remember: Your network must have under 15 million parameters!
         #       You will see a model summary when you run the program that
         #       displays the total number of parameters of your network.
         #
-        #       Remember: because this is a 15-scene classification task,
+        #       Remember: Because this is a 15-scene classification task,
         #       the output dimension of the network must be 15. That is,
         #       passing a tensor of shape [batch_size, img_size, img_size, 1]
         #       into the network will produce an output of shape

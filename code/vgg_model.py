@@ -47,6 +47,7 @@ class VGGModel(tf.keras.Model):
         #       pretrained VGG16 weights into place so that only the classificaiton
         #       head is trained.
 
+
         # TODO: Write a classification head for our 15-scene classification task.
 
         self.head = []
