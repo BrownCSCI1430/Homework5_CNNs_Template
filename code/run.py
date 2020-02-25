@@ -34,7 +34,7 @@ def parse_args():
         '--load-vgg',
         default=os.getcwd() + '/vgg16_imagenet.h5',
         help='''Path to pre-trained VGG-16 file (only applicable to
-        task 2.''')
+        task 2).''')
     parser.add_argument(
         '--load-checkpoint',
         default=None,

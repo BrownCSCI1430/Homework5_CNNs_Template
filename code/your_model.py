@@ -47,8 +47,8 @@ class YourModel(tf.keras.Model):
         #             activation function so that the output of your network
         #             is a probability distribution.
         #
-        #      Note: Flatten is a very useful layer. You shouldn't have to
-        #            explicitly reshape any tensors anywhere in your network.
+        #       Note: Flatten is a very useful layer. You shouldn't have to
+        #             explicitly reshape any tensors anywhere in your network.
 
         self.architecture = []
 
