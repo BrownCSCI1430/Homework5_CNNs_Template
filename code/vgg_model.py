@@ -43,6 +43,8 @@ class VGGModel(tf.keras.Model):
             MaxPool2D(2, name="block5_pool")
         ]
 
+        # ============================================================================
+
         # TODO: Make all layers in self.vgg16 non-trainable. This will freeze the
         #       pretrained VGG16 weights into place so that only the classificaiton
         #       head is trained.
@@ -53,6 +55,7 @@ class VGGModel(tf.keras.Model):
 
         self.head = []
 
+        # ============================================================================
 
     def call(self, img):
         """ Passes the image through the network. """

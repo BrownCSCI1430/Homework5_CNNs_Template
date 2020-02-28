@@ -49,8 +49,12 @@ class YourModel(tf.keras.Model):
         #
         #       Note: Flatten is a very useful layer. You shouldn't have to
         #             explicitly reshape any tensors anywhere in your network.
+        #
+        # ====================================================================
 
         self.architecture = []
+
+        # ====================================================================
 
     def call(self, img):
         """ Passes input image through the network. """

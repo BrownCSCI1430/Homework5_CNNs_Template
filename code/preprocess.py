@@ -81,8 +81,12 @@ class Datasets():
         # TODO: Calculate the pixel-wise mean and standard deviation
         #       of the images in data_sample and store them in
         #       self.mean and self.std respectively.
+        # ==========================================================
+
         self.mean = np.zeros((3))
         self.std = np.ones((3))
+
+        # ==========================================================
 
         print("Dataset mean: [{0:.4f}, {1:.4f}, {2:.4f}]".format(
             self.mean[0], self.mean[1], self.mean[2]))
@@ -103,8 +107,11 @@ class Datasets():
         # TODO: Standardize the input image. Use self.mean and self.std
         #       that were calculated in calc_mean_and_std() to perform
         #       the standardization.
+        # =============================================================
 
 
+
+        # =============================================================
         return img
 
     def preprocess_fn(self, img):
@@ -165,8 +172,13 @@ class Datasets():
             #       function (see custom_preprocess_fn()).
             #
             # Documentation for ImageDataGenerator: https://bit.ly/2wN2EmK
+            #
+            # ============================================================
+
             data_gen = tf.keras.preprocessing.image.ImageDataGenerator(
                 preprocessing_function=self.preprocess_fn)
+
+            # ============================================================
         else:
             # Don't modify this
             data_gen = tf.keras.preprocessing.image.ImageDataGenerator(
