@@ -76,10 +76,10 @@
 \section*{Instructions}
 \begin{itemize}
   \item 6 questions (Q5 and Q6 with code components).
-  \item Write code where appropriate.
-  \item Feel free to include images or equations.
+  \item Write code where appropriate; feel free to include images or equations.
   \item Please make this document anonymous.
-  \item On upload, \textbf{Gradescope will ask you to assign question numbers to your pages}. Making each question end with a page break after your answer is a good way to ease this process. \textbf{Failing to assign page numbers will result in a deduction.}
+  \item This assignment is \textbf{fixed length}, and the pages have been assigned for you in Gradescope. As a result, \textbf{please do NOT add any new pages}. We will provide ample room for you to answer the questions. If you \emph{really} wish for more space, please add a page \emph{at the end of the document}.
+  \item \textbf{We do NOT expect you to fill up each page with your answer.} Some answers will only be a few sentences long, and that is okay.
 \end{itemize}
 
 \section*{Questions}
@@ -172,39 +172,62 @@ It's impossible & $\circ$ \\
 \pagebreak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{Q5 background:} 
-Let us consider using a neural network (non-convolutional) to perform classification on the \href{http://yann.lecun.com/exdb/mnist/}{MNIST dataset} of handwritten digits, with 10 classes covering the digits 0--9. Each image is 28$\times$28 pixels, and so the network input is a 784-dimensional vector $\mathbf{x}=(x_1,x_2,...,x_i,...x_{784})$. The output of the neural network is probability distribution $\mathbf{p}=(p_1,...,p_{10})$ over the 10 classes. Suppose our network only has one fully-connected layer with $10$ neurons with one for each class. As we only have one layer with no multi-layer composition, there's no need to use an activation function.
+Let us consider using a neural network (non-convolutional) to perform classification on the \href{http://yann.lecun.com/exdb/mnist/}{MNIST dataset} of handwritten digits, with 10 classes covering the digits 0--9. Each image is 28$\times$28 pixels, and so the network input is a 784-dimensional vector $\mathbf{x}=(x_1,x_2,\dots,x_i,\dots,x_{784})$. The output of the neural network is probability distribution $\mathbf{p}=(p_1,\dots,p_j,\dots,p_{10})$ over the 10 classes. Suppose our network has one fully-connected layer with $10$ neurons---one for each class. Each neuron has a weight for each input $\mathbf{w}=(w_1,\dots,w_i,\dots,w_{784})$, plus a bias $b$. As we only have one layer with no multi-layer composition, there's no need to use an activation function.
 
-We begin by computing a 10-dimensional vector $\mathbf{l}=(l_1,l_2,...,l_j,...,l_{10})$ as: 
+When we pass in a vector $\mathbf{x}$ to this layer, we will compute a 10-dimensional output vector $\mathbf{l}=(l_1,l_2,...,l_j,...,l_{10})$ as: 
 \begin{equation}
-    l_j = w_j \cdot x + b_j = \sum_{i=1}^{784}w_{ij}x_i + b_j
+    l_j = \mathbf{w}_j \cdot \mathbf{x} + b_j = \sum_{i=1}^{784}w_{ij}x_i + b_j
 \end{equation} 
 These distances from the hyperplane are sometimes called `logits' (hence $l$) when they are the output of the last layer of a network. In our case, we only have \emph{one} layer, so our single layer is the last layer.
 
 \hspace{\fill}\rule{0.5\linewidth}{.5pt}\hspace{\fill}
 
-Often we want to talk about the confidence of a classification. So, to turn our logits into a probability distribution for our ten classes, we apply the \emph{softmax} function:
+Often we want to talk about the confidence of a classification. So, to turn our logits into a probability distribution $\mathbf{p}$ for our ten classes, we apply the \emph{softmax} function:
 \begin{equation}
     p_j = \frac{e^{l_j}}{\sum_je^{l_j}}
+   \label{eq:softmax}
 \end{equation}
 Each $p_j$ will be positive, and $\sum_jp_j = 1$, and so softmax is guaranteed to output a probability distribution. Picking the most probable class provides our network's prediction.
 
-These operations would be sufficient to classify a new test example \emph{if} our weights and biases were trained.
+\emph{If} our weights and biases were trained, Eq.~\ref{eq:softmax} would classify a new test example.
 
 \hspace{\fill}\rule{0.5\linewidth}{.5pt}\hspace{\fill}
 
-To train our network, let's declare a loss function. Let $y_j=1$ if class $j$ is the true label for $x$, and $y_j = 0$ if $j$ is not the true label. Then, we define the \emph{cross-entropy loss}:
+We have two probability distributions: the true distribution of answers from our training labels $\mathbf{y}$, and the predicted distribution produced by our current classifier $\mathbf{p}$. To train our network, our goal is to define a loss to reduce the distance between these distributions. 
+
+Let $y_j=1$ if class $j$ is the true label for $x$, and $y_j = 0$ if $j$ is not the true label. Then, we define the \emph{cross-entropy loss}:
 \begin{equation}
     L(w,b,x) = - \sum_{j=1}^{10}y_j\ln(p_j),
 \end{equation}
 which, after substitution of Eqs. 2 and 1, lets us compute an error between the labeled ground truth distribution and our predicted distribution.
 
-The loss is computed once for every different training example. When every training example has been presented to the training process, we call this an \emph{epoch}. Typically we will train for many epochs until our loss over all training examples is minimized.
+So...why does this loss $L$ work? Using the cross-entropy loss exploits concepts from information theory---Aur\'{e}lien G\'{e}ron has produced \href{https://www.youtube.com/watch?v=ErfnhcEV1O8}{a video with a succinct explanation of this loss}. Briefly, the loss minimizes the difference in the amounts of information needed to represent the two distributions. Other losses are also applicable, with their own interpretations, but these details are beyond the scope of this course.
 
-So...why this loss? It can be shown that minimizing the cross-entropy loss is equivalent to minimizing a distance between probability distributions called the Kullback-Leibler divergence, and so this loss form has a useful probabilistic interpretation. Other losses are also applicable, with their own interpretations, but these details are beyond the scope of this course.
+%%%%%%%%%%%%%%%%%%%
+% Cheat sheet for information theory
+%
+% Probability distribution \mathbf{p}
+% Describes the likelihood of different outcomes, e.g., for our MNIST dataset samples, we might have a 0.09 chance that an image will be of a character '0', 0.11 for a '1', 0.08 for a '2', and so on, with the sum chances for all characters being 1.0.
+%
+% What is entropy?  H(\mathbf{p}) = - \sum_{i} p_i \log_2{p_i}
+% Probability of an event multiplied by the reduction in uncertainty (or amount of information) received from that event. Is the average amount of information (in bits) that you receive from one sample drawn from a probability distribution. It tells you how predictable that probability distribution is (or, written another way, how uncertain we are). 0 entropy = no uncertainty. High entropy = very uncertain probability distribution.
+%
+% What is cross-entropy?   H(\mathbf{p},\mathbf{q}) = - \sum_{i} p_i \log_2{q_i}  
+% The average message length in bits _across_ two distributions - the true distribution \mathbf{p} and some predicted distribution \mathbf{q}. If the predicted distribution is equal to the true distribution, then cross-entropy _is_ entropy. 
+%
+% So then what is entropy minus cross-entropy? 
+% This tells us how different the predicted distribution is from the true distribution. This is called the Kullback-Leibler divergence (or KL-divergence). It is a divergence and not a distance because it doesn't have a 'sidedness'.
+% D_{KL}(\mathbf{p} || \mathbf{q}) = H(\mathbf{p},\mathbf{q}) - H(\mathbf{p})
+% 
+% Why is it \emph{minus}?   The uncertainty reduction factor from a message is equal to 1 / p(event). So, we would normally compute ln( 1/p(event) ). But ln(1/x) = -ln(x), so we equivalently compute -ln( p(event) ).
+% 
+%%%%%%%%%%%%%%%%%%%
 
 \hspace{\fill}\rule{0.5\linewidth}{.5pt}\hspace{\fill}
 
-Onto the training algorithm. Neural networks are usually optimized using gradient descent. For each training example in each epoch, we compute gradients via backpropagation (an application of the chain rule in differentiation) to update the classifier parameters via a learning rate $\lambda$:
+Onto the training algorithm. The loss is computed once for every different training example. When every training example has been presented to the training process, we call this an \emph{epoch}. Typically we will train for many epochs until our loss over all training examples is minimized.
+
+Neural networks are usually optimized using gradient descent. For each training example in each epoch, we compute gradients via backpropagation (an application of the chain rule in differentiation) to update the classifier parameters via a learning rate $\lambda$:
 \begin{equation}
 w_{ij} = w_{ij} - \lambda\frac{\partial L}{\partial w_{ij}}, \\
 \end{equation}
@@ -214,16 +237,16 @@ b_j = b_j - \lambda\frac{\partial L}{\partial b_j}.
 
 We must deduce $\frac{\partial L}{\partial w_{ij}}$ and $\frac{\partial L}{\partial b_j}$ as expressions in terms of $x_i$ and $p_j$.
 
-\emph{Intuition:} Let's just consider the weights. To compute the change in the cross-entropy loss with respect to neuron weights $\frac{\partial L}{\partial w_{ij}}$, we will need to compute and chain together three different terms:
+\emph{Intuition:} Let's just consider the weights. Recall that our network has one layer of neurons followed by a softmax function. To compute the change in the cross-entropy loss with respect to neuron weights $\frac{\partial L}{\partial w_{ij}}$, we will need to compute and chain together three different terms:
 \begin{enumerate}
 \itemsep0em 
 \listparindent0em
 \topsep0em
 \parsep0em
 \partopsep0em
-\item the change in the loss with respect to the softmax output, 
-\item the change in the softmax output with respect to the neuron output, and
-\item the change in the neuron output with respect to the neuron weights.
+\item the change in the loss with respect to the softmax output $\frac{\delta L}{\delta p_j}$, 
+\item the change in the softmax output with respect to the neuron output $\frac{\delta p_j}{\delta l_j}$, and
+\item the change in the neuron output with respect to the neuron weights $\frac{\delta l_j}{w_{ij}}$.
 \end{enumerate}
 We must derive each individually, and then formulate the final term via the chain rule. The biases follow in a similar fashion.
 
@@ -265,25 +288,21 @@ Please also include your \texttt{train\_nn()} code overleaf (without our helper 
 \item NN on MNIST: xx\% (highest accuracy)
 	\begin{itemize}
 	\item Epoch 0 loss: xx     Accuracy: xx\%
-	\item Epoch 4 loss: xx     Accuracy: xx\%
 	\item Epoch 9 loss: xx     Accuracy: xx\%
 	\end{itemize}
 \item NN+SVM on MNIST: xx\% (highest accuracy)
 	\begin{itemize}
 	\item Epoch 0 loss: xx     Accuracy: xx\%
-	\item Epoch 4 loss: xx     Accuracy: xx\%
 	\item Epoch 9 loss: xx     Accuracy: xx\%
 	\end{itemize}
 \item NN on SceneRec: xx\% (highest accuracy)
 	\begin{itemize}
 	\item Epoch 0 loss: xx     Accuracy: xx\%
-	\item Epoch 4 loss: xx     Accuracy: xx\%
 	\item Epoch 9 loss: xx     Accuracy: xx\%
 	\end{itemize}
 \item NN+SVM on SceneRec: xx\% (highest accuracy)
 	\begin{itemize}
 	\item Epoch 0 loss: xx     Accuracy: xx\%
-	\item Epoch 4 loss: xx     Accuracy: xx\%
 	\item Epoch 9 loss: xx     Accuracy: xx\%
 	\end{itemize}
 \end{itemize}
@@ -336,8 +355,12 @@ def train_nn(self):
 The work for the tutorial can be done in a completely new Python file inside or outside of your project code (you won't have to turn it in).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{A6:} Screenshot of tutorial code output, running on GCP:
+\paragraph{A6:} Please insert a screenshot of the tutorial code output, running on GCP:
 
+
+% \begin{figure}[t]
+%     \includegraphics[width=\linewidth]{yourscreenshot.png}
+% \end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
