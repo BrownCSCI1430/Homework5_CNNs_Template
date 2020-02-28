@@ -49,6 +49,7 @@ class VGGModel(tf.keras.Model):
 
 
         # TODO: Write a classification head for our 15-scene classification task.
+        #       Hint: The layers Flatten and Dense are essential here.
 
         self.head = []
 

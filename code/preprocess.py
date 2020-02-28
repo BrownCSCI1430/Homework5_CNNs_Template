@@ -163,6 +163,8 @@ class Datasets():
             #       preprocessing_function argument as is unless
             #       you have written your own custom preprocessing
             #       function (see custom_preprocess_fn()).
+            #
+            # Documentation for ImageDataGenerator: https://bit.ly/2wN2EmK
             data_gen = tf.keras.preprocessing.image.ImageDataGenerator(
                 preprocessing_function=self.preprocess_fn)
         else:
