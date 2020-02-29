@@ -49,6 +49,9 @@
 \usepackage{microtype}
 \usepackage{times}
 \usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[shortlabels]{enumitem}
+\setlist[enumerate]{topsep=0pt}
 
 % python code format: https://github.com/olivierverdier/python-latex-highlighting
 \usepackage{pythonhighlight}
@@ -75,7 +78,8 @@
 
 \section*{Instructions}
 \begin{itemize}
-  \item 6 questions (Q5 and Q6 with code components).
+  \item 7 questions (Q6 and Q7 with code components).
+  \item \emph{This will take two weeks! Parts are tricky---start early!}.
   \item Write code where appropriate; feel free to include images or equations.
   \item Please make this document anonymous.
   \item This assignment is \textbf{fixed length}, and the pages have been assigned for you in Gradescope. As a result, \textbf{please do NOT add any new pages}. We will provide ample room for you to answer the questions. If you \emph{really} wish for more space, please add a page \emph{at the end of the document}.
@@ -88,10 +92,24 @@
 
 \paragraph{Q1:} Many traditional computer vision algorithms use convolutional filters to extract feature representations, e.g., in SIFT, to which we then often apply machine learning classification techniques. Convolutional neural networks also use filters within a machine learning algorithm.
 
-What is different about the construction of the filters in each of these approaches? Please declare and explain the advantages and disadvantages of these two approaches.
+\begin{enumerate} [(a)]
+\item What is different about the construction of the filters in each of these approaches? 
+\item Please declare and explain the advantages and disadvantages of these two approaches.
+\end{enumerate}
+\emph{Please answer on next page.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
 \paragraph{A1:} Your answer here.
+% Uncomment the stencil below and fill in your solution.
+
+% \begin{enumerate}[(a)]
+
+% \item 
+
+% \item 
+
+% \end{enumerate}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -112,43 +130,54 @@ Please give your answer in terms of the learned convolution feature maps, their 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{A3:} Your answer here.
+% Uncomment the stencil below and fill in your solution.
+
+% \begin{enumerate}[(a)]
+
+% \item 
+
+% \item 
+
+% \item 
+
+% \end{enumerate}
 
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagebreak
-\paragraph{Q4:} What effects does adding a max pooling layer have for a single convolutional layer, where the output with max pooling is some size larger than 1 x 1 x d? Here, we specifically mean a maxpooling operation which occurs spatially, and \emph{not} the multi-channel approach as in Goodfellow Figure 9.9.
+\paragraph{Q4:} What effects does adding a max pooling layer have for a single convolutional layer, where the output with max pooling is some size larger than 1 x 1 x d?
 
 \emph{Notes:} 'Global' here means whole image; 'local' means only in some image region.
 
-\emph{LaTeX:} Use command  `\textbackslash bullet' ($\bullet$) to fill in the dots.
+\emph{LaTeX:} To fill in boxes, replace `\textbackslash square' with `\textbackslash blacksquare' for your answer.
 
-\paragraph{A4:} Multiple choice. Choose all that apply. Feel free to leave written justification if desired.
+\paragraph{A4:} Multiple choice. Choose all that apply. 
 
+%%% See the tex for the bottom of the page to leave the optional written justification %%%
 \begin{tabular}[h]{lr}
 \toprule
-Increases computational cost of training & $\circ$ \\
-Decreases computational cost of training & $\circ$ \\
-Increases computational cost of testing & $\circ$ \\
-Decreases computational cost of testing & $\circ$ \\
+Increases computational cost of training & $\square$ \\
+Decreases computational cost of training & $\square$ \\
+Increases computational cost of testing & $\square$ \\
+Decreases computational cost of testing & $\square$ \\
 \midrule
-Increases overfitting & $\circ$ \\
-Decreases overfitting & $\circ$ \\
-Increases underfitting & $\circ$ \\
-Decreases underfitting & $\circ$ \\
+Increases overfitting & $\square$ \\
+Decreases overfitting & $\square$ \\
+Increases underfitting & $\square$ \\
+Decreases underfitting & $\square$ \\
 \midrule
-Increases the nonlinearity of the decision function & $\circ$ \\
-Decreases the nonlinearity of the decision function & $\circ$ \\
+Increases the nonlinearity of the decision function & $\square$ \\
+Decreases the nonlinearity of the decision function & $\square$ \\
 \midrule
-Provides local rotational invariance & $\circ$ \\
-Provides global rotational invariance & $\circ$ \\
-Provides local scale invariance & $\circ$ \\
-Provides global scale invariance & $\circ$ \\
-Provides local translational invariance & $\circ$ \\
-Provides global translational invariance & $\circ$ \\
+Provides local rotational invariance & $\square$ \\
+Provides global rotational invariance & $\square$ \\
+Provides local scale invariance & $\square$ \\
+Provides global scale invariance & $\square$ \\
+Provides local translational invariance & $\square$ \\
+Provides global translational invariance & $\square$ \\
 \bottomrule
 \end{tabular}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{Something to think about (ungraded):} Given some input to a convolutional layer with stride 2$\times$2 and kernel size 3$\times$3, and ignoring the boundary, what is the minimum number of convolutional filters required to preserve all input information in the output feature map?
@@ -159,19 +188,55 @@ Multiple choice.
 
 \begin{tabular}[h]{lc}
 \toprule
-0.5 & $\circ$ \\
-1 & $\circ$ \\
-2 & $\circ$ \\
-4 & $\circ$ \\
-It's impossible & $\circ$ \\
+0.5 & $\square$ \\
+1 & $\square$ \\
+2 & $\square$ \\
+4 & $\square$ \\
+It's impossible & $\square$ \\
 \bottomrule
 \end{tabular}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Space for optional justification. Do NOT go past this page!
+\emph{Here:} Feel free to leave optional short written justification if desired.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+\paragraph{Q5:} 
+Imagine that, while working on Project 4, you find a way to not only recognize scenes for their type of room, but also classify them for their ``mood.'' A small grass meadow nestled in the forest, dandelions waving in the wind: ``calm.'' The Sunlab the night before Tetris is due: ``stressed.'' A dark alley at night: ``dangerous.'' The main green on a sunny day: ``happy.''
+
+\begin{enumerate}[(a)]
+    \item 
+    What is the most `socially nurturing' or benevolent application of this technology that you can think of? What are its consequences? (2-3 sentences)
+    \item 
+    What is the most insidious or pernicious application of this technology that you can think of? What are its consequences? (2-3 sentences)
+    \item
+    Do you think the potential positive applications outweigh the negative ones? Should this technology be widely available? (3-5 sentences)
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{A5:} Your answer here.
+% Uncomment the stencil below and fill in your solution.
+
+% \begin{enumerate}[(a)]
+
+% \item 
+
+% \item 
+
+% \item 
+
+% \end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 
 % Please leave the pagebreak
 \pagebreak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{Q5 background:} 
+\paragraph{Q6 background:} 
 Let us consider using a neural network (non-convolutional) to perform classification on the \href{http://yann.lecun.com/exdb/mnist/}{MNIST dataset} of handwritten digits, with 10 classes covering the digits 0--9. Each image is 28$\times$28 pixels, and so the network input is a 784-dimensional vector $\mathbf{x}=(x_1,x_2,\dots,x_i,\dots,x_{784})$. The output of the neural network is probability distribution $\mathbf{p}=(p_1,\dots,p_j,\dots,p_{10})$ over the 10 classes. Suppose our network has one fully-connected layer with $10$ neurons---one for each class. Each neuron has a weight for each input $\mathbf{w}=(w_1,\dots,w_i,\dots,w_{784})$, plus a bias $b$. As we only have one layer with no multi-layer composition, there's no need to use an activation function.
 
 When we pass in a vector $\mathbf{x}$ to this layer, we will compute a 10-dimensional output vector $\mathbf{l}=(l_1,l_2,...,l_j,...,l_{10})$ as: 
@@ -282,7 +347,7 @@ What do these numbers tell us about the capacity of the network, the complexity 
 
 Please also include your \texttt{train\_nn()} code overleaf (without our helper comments).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{A5:}
+\paragraph{A6:}
 
 \begin{itemize}
 \item NN on MNIST: xx\% (highest accuracy)
@@ -343,10 +408,16 @@ def train_nn(self):
        print( "Epoch "+str(epoch)+": Total loss: "+str(loss_sum) )
 \end{python}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \pagebreak
-\paragraph{Q6:} Follow the \href{https://cs.brown.edu/courses/csci1430/proj4/gcp-guide/}{GCP guide} to set up GCP. Once finished, complete one of these two Tensorflow MNIST tutorials on GCP:
+Extra page. Please remember to keep your page length the same.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagebreak
+\paragraph{Q7:} Follow the \href{https://cs.brown.edu/courses/csci1430/proj4/gcp-guide/}{GCP guide} to set up GCP. \emph{Note:} This is tricky, and it will take you some time to become familiar with the system! Once finished, complete one of these two Tensorflow MNIST tutorials on GCP:
 \begin{itemize}
 	\item \href{https://www.tensorflow.org/tutorials/quickstart/beginner}{TensorFlow 2 quickstart for beginners}
 	\item \href{https://www.tensorflow.org/tutorials/quickstart/advanced}{TensorFlow 2 quickstart for experts}
@@ -354,9 +425,9 @@ def train_nn(self):
 
 The work for the tutorial can be done in a completely new Python file inside or outside of your project code (you won't have to turn it in).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{A6:} Please insert a screenshot of the tutorial code output, running on GCP:
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{A7:} Please insert a screenshot of the tutorial code output, running on GCP:
 
 % \begin{figure}[t]
 %     \includegraphics[width=\linewidth]{yourscreenshot.png}
@@ -364,5 +435,16 @@ The work for the tutorial can be done in a completely new Python file inside or 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+\section*{Feedback? (Optional)}
+Please help us make the course better. If you have any feedback for this assignment, we'd love to hear it!
+
+
+% \pagebreak
+% \section*{Any additional pages would go here.}
+
 
 \end{document}
