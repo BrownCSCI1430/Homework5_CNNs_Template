@@ -1,8 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
-# File: parameters.py
 # Brown CSCI 1430 assignment
-# Created by Aaron Gokaslan
 
 # Data parameters (scene_rec)
 # Resize image for task 1. Task 2 _must_ have an image size of 224, so we hard code this for you in Scene15 constructor
@@ -19,8 +15,7 @@ mnist_class_count = 10
 # numEpochs is the number of epochs. If you experiment with more
 # complex networks you might need to increase this. Likewise if you add
 # regularization that slows training.
-# num_epochs = 10
-num_epochs = 1
+num_epochs = 10
 
 # batch_size defines the number of training examples per batch:
 # You don't need to modify this.

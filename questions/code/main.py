@@ -5,7 +5,7 @@ By Ruizhao Zhu, Aaron Gokaslan, James Tompkin
 This executable is used to launch the model on a given dataset. Additionally, it the data processing
 parsing data into numpy arrays.
 
-Usage: 
+Usage:
     python main.py -data [DATA] -mode [MODE]
         DATA | "mnist" or "scenerec"
         MODE | "nn" or "svm"
@@ -51,26 +51,30 @@ def get_categories_scene(search_path):
             dir_list.append(filename)
     return dir_list
 
-def format_data_scene_rec():
-    train_path = "../../data/train/"
-    test_path = "../../data/test/"
-    categories = get_categories_scene(train_path)    
+def format_data_scene_rec(data_filepath):
+    train_path = os.path.join(data_filepath, "train/")
+    test_path = os.path.join(data_filepath, "test/")
+    categories = get_categories_scene(train_path)
     train_images, train_labels = load_data_scene(train_path, categories, hp.num_train_per_category)
     test_images, test_labels = load_data_scene(test_path, categories, hp.num_test_per_category)
     return train_images, train_labels, test_images, test_labels
 
-def format_data_mnist():
+
+def format_data_mnist(data_filepath):
     # Reading in MNIST data.
     # Stolen from CS 1420
 
-    # TODO: Update filepaths
-    with open("../../data/train-images-idx3-ubyte.gz", 'rb') as f1, open("../../data/train-labels-idx1-ubyte.gz", 'rb') as f2:
+    with open(os.path.join(data_filepath, "train-images-idx3-ubyte.gz"), 'rb') as f1,\
+            open(os.path.join(data_filepath, "train-labels-idx1-ubyte.gz"), 'rb') as f2:
+
         buf1 = gzip.GzipFile(fileobj=f1).read(16 + 60000 * 28 * 28)
         buf2 = gzip.GzipFile(fileobj=f2).read(8 + 60000)
         train_images = np.frombuffer(buf1, dtype='uint8', offset=16).reshape(60000, 28 * 28)
         train_images = np.where(train_images > 99, 1, 0)
         train_labels = np.frombuffer(buf2, dtype='uint8', offset=8)
-    with open("../../data/t10k-images-idx3-ubyte.gz", 'rb') as f1, open("../../data/t10k-labels-idx1-ubyte.gz", 'rb') as f2:
+    with open(os.path.join(data_filepath, "t10k-images-idx3-ubyte.gz"), 'rb') as f1,\
+            open(os.path.join(data_filepath, "t10k-labels-idx1-ubyte.gz"), 'rb') as f2:
+
         buf1 = gzip.GzipFile(fileobj=f1).read(16 + 10000 * 28 * 28)
         buf2 = gzip.GzipFile(fileobj=f2).read(8 + 10000)
         test_images = np.frombuffer(buf1, dtype='uint8', offset=16).reshape(10000, 28 * 28)
@@ -78,6 +82,7 @@ def format_data_mnist():
         test_labels = np.frombuffer(buf2, dtype='uint8', offset=8)
 
     return train_images, train_labels, test_images, test_labels
+
 
 def main(argv):
 
@@ -91,23 +96,24 @@ def main(argv):
         raise ValueError("Mode must be one of %r.", mode)
 
     if argv[1] == "scenerec":
-        train_images, train_labels, test_images, test_labels = format_data_scene_rec()
+        train_images, train_labels, test_images, test_labels = format_data_scene_rec("../../data")
         num_classes = hp.scene_class_count
     else:
-        train_images, train_labels, test_images, test_labels = format_data_mnist()
+        train_images, train_labels, test_images, test_labels = format_data_mnist("../../data")
         num_classes = hp.mnist_class_count
 
-    model = Model(train_images, train_labels, num_classes)
+    model = Model(train_images, train_labels, num_classes, hp)
 
     if argv[3] == "nn":
         model.train_nn()
         accuracy = model.accuracy_nn(test_images, test_labels)
-        print ('nn model training accuracy: {:.0%}'.format(accuracy))
+        print('nn model training accuracy: {:.0%}'.format(accuracy))
     else:
         model.train_nn()
         model.train_svm()
         accuracy = model.accuracy_svm(test_images, test_labels)
-        print ('nn+svm model training accuracy: {:.0%}'.format(accuracy))
+        print('nn+svm model training accuracy: {:.0%}'.format(accuracy))
+
 
 if __name__ == '__main__':
     main(sys.argv[1:])
