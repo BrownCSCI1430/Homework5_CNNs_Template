@@ -157,15 +157,26 @@ class Model:
             print("Epoch " + str(epoch) + ": Total loss: " + str(loss_sum))
 
     def train_svm(self):
+        """
+        Use the response from the learned weights and biases on the training
+        data as input into an SVM. I.E., train an SVM on the multi-class
+        hyperplane distance outputs.
+        """
         scores = np.dot(self.train_images, self.W) + self.b
         self.clf.fit(scores, self.train_labels)
 
     def accuracy_nn(self, test_images, test_labels):
+        """
+        Computes the accuracy of the neural network model over the test set.
+        """
         scores = np.dot(test_images, self.W) + self.b
         predicted_classes = np.argmax(scores, axis=1)
         return np.mean(predicted_classes == test_labels)
 
     def accuracy_svm(self, test_images, test_labels):
+        """
+        Computes the accuracy of the SVM model over the test set.
+        """
         scores = np.dot(test_images, self.W) + self.b
         predicted_classes = self.clf.predict(scores)
         return np.mean(predicted_classes == test_labels)
