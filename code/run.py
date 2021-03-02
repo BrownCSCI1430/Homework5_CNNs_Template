@@ -18,6 +18,7 @@ from tensorboard_utils import \
         ImageLabelingLogger, ConfusionMatrixLogger, CustomModelSaver
 
 from skimage.io import imread
+from skimage.color import rgb2grey
 import lime
 from lime import lime_image
 from skimage.segmentation import mark_boundaries
@@ -78,7 +79,7 @@ def LIME_explainer(model, image):
     explainer = lime_image.LimeImageExplainer()
 
     # TODO: change the image path to be the image of your choice, test images can be found in the data folder
-    path = '/Project4_CNNs_Template/data/test/Bedroom/image_0003.jpg'
+    path = '../data/test/Bedroom/image_0003.jpg'
 
     image = imread(path)
     explanation = explainer.explain_instance(image.astype('double'), model.predict, top_labels=5, hide_color=0, num_samples=1000)
