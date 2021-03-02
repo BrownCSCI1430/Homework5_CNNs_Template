@@ -64,7 +64,26 @@
 \fancyhf{}
 \lhead{Project 4 Questions}
 \rhead{CSCI 1430}
-\rfoot{\thepage}
+\lfoot{\textcolor{red}{Only
+\ifcase\thepage
+\or instructions and Q1
+\or A1 answers
+\or Q2 and A2 answers
+\or Q3 and A3 answers
+\or Q4 and A4 answers
+\or Q5 and A5 answers
+\or A5 answers
+\or Q6
+\or Q6
+\or Q6
+\or Q7 and A7 answers
+\or feedback
+\else
+EXTRA PAGE ADDED
+\fi
+should be on this page
+}}
+\rfoot{\thepage~/ 11}
 
 \date{}
 
@@ -84,6 +103,7 @@
   \item Please make this document anonymous.
   \item This assignment is \textbf{fixed length}, and the pages have been assigned for you in Gradescope. As a result, \textbf{please do NOT add any new pages}. We will provide ample room for you to answer the questions. If you \emph{really} wish for more space, please add a page \emph{at the end of the document}.
   \item \textbf{We do NOT expect you to fill up each page with your answer.} Some answers will only be a few sentences long, and that is okay.
+  \item Question 6 has a coding component that must be submitted to Gradescope under a separate assignment (Project 4 Written Code (Numpy)) and is due a week after the rest of the written questions.
 \end{itemize}
 
 \section*{Questions}
@@ -93,7 +113,7 @@
 \paragraph{Q1:} Many traditional computer vision algorithms use convolutional filters to extract feature representations, e.g., in SIFT, to which we then often apply machine learning classification techniques. Convolutional neural networks also use filters within a machine learning algorithm.
 
 \begin{enumerate} [(a)]
-\item What is different about the construction of the filters in each of these approaches? 
+\item What is different about the construction of the filters in each of these approaches?
 \item Please declare and explain the advantages and disadvantages of these two approaches.
 \end{enumerate}
 \emph{Please answer on next page.}
@@ -105,16 +125,16 @@
 
 % \begin{enumerate}[(a)]
 
-% \item 
+% \item
 
-% \item 
+% \item
 
 % \end{enumerate}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagebreak
-\paragraph{Q2:} Many CNNs have a fully connected multi-layer perceptron (MLP) after the convolutional layers as a general purpose `decision-making' subnetwork. What effects might a \emph{locally-connected} MLP have on computer vision applications, and why? 
+\paragraph{Q2:} Many CNNs have a fully connected multi-layer perceptron (MLP) after the convolutional layers as a general purpose `decision-making' subnetwork. What effects might a \emph{locally-connected} MLP have on computer vision applications, and why?
 
 Please give your answer in terms of the learned convolution feature maps, their connections, and the perceptrons in the MLP.
 
@@ -134,11 +154,11 @@ Please give your answer in terms of the learned convolution feature maps, their 
 
 % \begin{enumerate}[(a)]
 
-% \item 
+% \item
 
-% \item 
+% \item
 
-% \item 
+% \item
 
 % \end{enumerate}
 
@@ -151,7 +171,7 @@ Please give your answer in terms of the learned convolution feature maps, their 
 
 \emph{LaTeX:} To fill in boxes, replace `\textbackslash square' with `\textbackslash blacksquare' for your answer.
 
-\paragraph{A4:} Multiple choice. Choose all that apply. 
+\paragraph{A4:} Multiple choice. Choose all that apply.
 
 %%% See the tex for the bottom of the page to leave the optional written justification %%%
 \begin{tabular}[h]{lr}
@@ -183,7 +203,7 @@ Provides global translational invariance & $\square$ \\
 \paragraph{Something to think about (ungraded):} Given some input to a convolutional layer with stride 2$\times$2 and kernel size 3$\times$3, and ignoring the boundary, what is the minimum number of convolutional filters required to preserve all input information in the output feature map?
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Multiple choice. 
+Multiple choice.
 \emph{LaTeX:} Use command  `\textbackslash bullet' ($\bullet$) to fill in the dots.
 
 \begin{tabular}[h]{lc}
@@ -203,16 +223,20 @@ It's impossible & $\square$ \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagebreak
-\paragraph{Q5:} 
-Imagine that, while working on Project 4, you find a way to not only recognize scenes for their type of room, but also classify them for their ``mood.'' A small grass meadow nestled in the forest, dandelions waving in the wind: ``calm.'' The Sunlab the night before Tetris is due: ``stressed.'' A dark alley at night: ``dangerous.'' The main green on a sunny day: ``happy.''
+\paragraph{Q5:}
+In medical imaging, hand designing features with biological experts might lead to a generalizable and explainable method for physicians, regulators, or patients. However, deep learning methods can show higher test accuracy, even if their results may be less explainable.
+Please read this \href{https://drive.google.com/file/d/16CztlicOOTImvP9ZrtTUNKwLuv6srOBW/view?usp=sharing}{short article}.
 
 \begin{enumerate}[(a)]
-    \item 
-    What is the most `socially nurturing' or benevolent application of this technology that you can think of? What are its consequences? (2-3 sentences)
-    \item 
-    What is the most insidious or pernicious application of this technology that you can think of? What are its consequences? (2-3 sentences)
     \item
-    Do you think the potential positive applications outweigh the negative ones? Should this technology be widely available? (3-5 sentences)
+    In the article, physician Dr. Nicholas Price expresses the view that a lack of explainability should not hamper advances in health care, pointing out that Aspirin’s mechanism was not understood for 70 years and that Lithium’s mechanism to treat bipolar disorder is still unknown. Do you agree with Dr. Price? Would you feel comfortable allowing your doctor to rely on a ‘black box’ algorithm for medical diagnoses? (3-4 sentences)
+    \item
+    When deciding whether a medical algorithm is suitable for clinical use, what accuracy would you consider to be ‘good enough’? In which different ways could we measure this? (3-4 sentences)
+    \item
+    In the event that a medical imaging algorithm makes an error and causes a patient harm, who should be held responsible? \textit{Think about everyone involved: the algorithm engineer, the company selling the algorithm, the FDA approving it, the hospital or clinic purchasing it, the physician using it, etc.} (3-4 sentences)
+    \item
+    Nicholas Price is actually a \href{https://drive.google.com/file/d/1bDAqEtW482OJeqMBt5A4AradVa4gf_o9/view}{legal scholar} who specializes in health law at the University of Michigan. Does this information change your responses? (3-4 sentences)
+
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -221,28 +245,31 @@ Imagine that, while working on Project 4, you find a way to not only recognize s
 
 % \begin{enumerate}[(a)]
 
-% \item 
+% \item
 
-% \item 
+% \item
 
-% \item 
+% \item
 
 % \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagebreak
+Extra page. Please remember to keep your page length the same.
 
 
 
 % Please leave the pagebreak
 \pagebreak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{Q6 background:} 
+\paragraph{Q6 background:}
 Let us consider using a neural network (non-convolutional) to perform classification on the \href{http://yann.lecun.com/exdb/mnist/}{MNIST dataset} of handwritten digits, with 10 classes covering the digits 0--9. Each image is 28$\times$28 pixels, and so the network input is a 784-dimensional vector $\mathbf{x}=(x_1,x_2,\dots,x_i,\dots,x_{784})$. The output of the neural network is probability distribution $\mathbf{p}=(p_1,\dots,p_j,\dots,p_{10})$ over the 10 classes. Suppose our network has one fully-connected layer with $10$ neurons---one for each class. Each neuron has a weight for each input $\mathbf{w}=(w_1,\dots,w_i,\dots,w_{784})$, plus a bias $b$. As we only have one layer with no multi-layer composition, there's no need to use an activation function.
 
-When we pass in a vector $\mathbf{x}$ to this layer, we will compute a 10-dimensional output vector $\mathbf{l}=(l_1,l_2,...,l_j,...,l_{10})$ as: 
+When we pass in a vector $\mathbf{x}$ to this layer, we will compute a 10-dimensional output vector $\mathbf{l}=(l_1,l_2,...,l_j,...,l_{10})$ as:
 \begin{equation}
     l_j = \mathbf{w}_j \cdot \mathbf{x} + b_j = \sum_{i=1}^{784}w_{ij}x_i + b_j
-\end{equation} 
+\end{equation}
 These distances from the hyperplane are sometimes called `logits' (hence $l$) when they are the output of the last layer of a network. In our case, we only have \emph{one} layer, so our single layer is the last layer.
 
 \hspace{\fill}\rule{0.5\linewidth}{.5pt}\hspace{\fill}
@@ -258,7 +285,7 @@ Each $p_j$ will be positive, and $\sum_jp_j = 1$, and so softmax is guaranteed t
 
 \hspace{\fill}\rule{0.5\linewidth}{.5pt}\hspace{\fill}
 
-We have two probability distributions: the true distribution of answers from our training labels $\mathbf{y}$, and the predicted distribution produced by our current classifier $\mathbf{p}$. To train our network, our goal is to define a loss to reduce the distance between these distributions. 
+We have two probability distributions: the true distribution of answers from our training labels $\mathbf{y}$, and the predicted distribution produced by our current classifier $\mathbf{p}$. To train our network, our goal is to define a loss to reduce the distance between these distributions.
 
 Let $y_j=1$ if class $j$ is the true label for $x$, and $y_j = 0$ if $j$ is not the true label. Then, we define the \emph{cross-entropy loss}:
 \begin{equation}
@@ -277,15 +304,15 @@ So...why does this loss $L$ work? Using the cross-entropy loss exploits concepts
 % What is entropy?  H(\mathbf{p}) = - \sum_{i} p_i \log_2{p_i}
 % Probability of an event multiplied by the reduction in uncertainty (or amount of information) received from that event. Is the average amount of information (in bits) that you receive from one sample drawn from a probability distribution. It tells you how predictable that probability distribution is (or, written another way, how uncertain we are). 0 entropy = no uncertainty. High entropy = very uncertain probability distribution.
 %
-% What is cross-entropy?   H(\mathbf{p},\mathbf{q}) = - \sum_{i} p_i \log_2{q_i}  
-% The average message length in bits _across_ two distributions - the true distribution \mathbf{p} and some predicted distribution \mathbf{q}. If the predicted distribution is equal to the true distribution, then cross-entropy _is_ entropy. 
+% What is cross-entropy?   H(\mathbf{p},\mathbf{q}) = - \sum_{i} p_i \log_2{q_i}
+% The average message length in bits _across_ two distributions - the true distribution \mathbf{p} and some predicted distribution \mathbf{q}. If the predicted distribution is equal to the true distribution, then cross-entropy _is_ entropy.
 %
-% So then what is entropy minus cross-entropy? 
+% So then what is entropy minus cross-entropy?
 % This tells us how different the predicted distribution is from the true distribution. This is called the Kullback-Leibler divergence (or KL-divergence). It is a divergence and not a distance because it doesn't have a 'sidedness'.
 % D_{KL}(\mathbf{p} || \mathbf{q}) = H(\mathbf{p},\mathbf{q}) - H(\mathbf{p})
-% 
+%
 % Why is it \emph{minus}?   The uncertainty reduction factor from a message is equal to 1 / p(event). So, we would normally compute ln( 1/p(event) ). But ln(1/x) = -ln(x), so we equivalently compute -ln( p(event) ).
-% 
+%
 %%%%%%%%%%%%%%%%%%%
 
 \hspace{\fill}\rule{0.5\linewidth}{.5pt}\hspace{\fill}
@@ -304,12 +331,12 @@ We must deduce $\frac{\partial L}{\partial w_{ij}}$ and $\frac{\partial L}{\part
 
 \emph{Intuition:} Let's just consider the weights. Recall that our network has one layer of neurons followed by a softmax function. To compute the change in the cross-entropy loss with respect to neuron weights $\frac{\partial L}{\partial w_{ij}}$, we will need to compute and chain together three different terms:
 \begin{enumerate}
-\itemsep0em 
+\itemsep0em
 \listparindent0em
 \topsep0em
 \parsep0em
 \partopsep0em
-\item the change in the loss with respect to the softmax output $\frac{\delta L}{\delta p_j}$, 
+\item the change in the loss with respect to the softmax output $\frac{\delta L}{\delta p_j}$,
 \item the change in the softmax output with respect to the neuron output $\frac{\delta p_j}{\delta l_j}$, and
 \item the change in the neuron output with respect to the neuron weights $\frac{\delta l_j}{w_{ij}}$.
 \end{enumerate}
@@ -343,81 +370,43 @@ So...after all of that, our gradient update rules are surprisingly simple!
 
 \emph{Tasks:} Please follow the steps to implement the forward model evaluation and backward gradient update steps. Then, run your model on all four conditions and report training loss and accuracy as the number of training epochs increases.
 
-What do these numbers tell us about the capacity of the network, the complexity of the two problems, the value of training, and the value of the two different classification approaches?
 
-Please upload your completed \texttt{main.py} to Gradescope under the assignment titled "Project 4 Written Code (Numpy)". The autograder will check that you correctly implemented parts of your model.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{A6:}
+Please upload your completed \texttt{main.py} to Gradescope under the assignment titled "Project 4 Written Code (Numpy)". The autograder will check that you correctly implemented parts of your model. Please also include a \texttt{writeup.pdf} with your responses to the following questions.
 
-\begin{itemize}
-\item NN on MNIST: xx\% (highest accuracy)
-	\begin{itemize}
-	\item Epoch 0 loss: xx     Accuracy: xx\%
-	\item Epoch 9 loss: xx     Accuracy: xx\%
-	\end{itemize}
-\item NN+SVM on MNIST: xx\% (highest accuracy)
-	\begin{itemize}
-	\item Epoch 0 loss: xx     Accuracy: xx\%
-	\item Epoch 9 loss: xx     Accuracy: xx\%
-	\end{itemize}
-\item NN on SceneRec: xx\% (highest accuracy)
-	\begin{itemize}
-	\item Epoch 0 loss: xx     Accuracy: xx\%
-	\item Epoch 9 loss: xx     Accuracy: xx\%
-	\end{itemize}
-\item NN+SVM on SceneRec: xx\% (highest accuracy)
-	\begin{itemize}
-	\item Epoch 0 loss: xx     Accuracy: xx\%
-	\item Epoch 9 loss: xx     Accuracy: xx\%
-	\end{itemize}
-\end{itemize}
+\begin{enumerate}
+    \item What do these numbers tell us about the capacity of the network, the complexity of the two problems, the value of training, and the value of the two different classification approaches?
 
+    \item How well did each model perform on each dataset? Please use this table to structure your response.
 
-\pagebreak
-\begin{python}
-def train_nn(self):
-    indices = list(range(self.train_images.shape[0]))
-    delta_W = np.zeros((self.input_size, self.num_classes))
-    delta_b = np.zeros((1, self.num_classes))
+    \begin{itemize}
+        \item NN on MNIST: xx\% (highest accuracy)
+        	\begin{itemize}
+        	\item Epoch 0 loss: xx     Accuracy: xx\%
+        	\item Epoch 9 loss: xx     Accuracy: xx\%
+        	\end{itemize}
+        \item NN+SVM on MNIST: xx\% (highest accuracy)
+        	\begin{itemize}
+        	\item Epoch 0 loss: xx     Accuracy: xx\%
+        	\item Epoch 9 loss: xx     Accuracy: xx\%
+        	\end{itemize}
+        \item NN on SceneRec: xx\% (highest accuracy)
+        	\begin{itemize}
+        	\item Epoch 0 loss: xx     Accuracy: xx\%
+        	\item Epoch 9 loss: xx     Accuracy: xx\%
+        	\end{itemize}
+        \item NN+SVM on SceneRec: xx\% (highest accuracy)
+        	\begin{itemize}
+        	\item Epoch 0 loss: xx     Accuracy: xx\%
+        	\item Epoch 9 loss: xx     Accuracy: xx\%
+    	    s\end{itemize}
+    \end{itemize}
 
-    for epoch in range(hp.num_epochs):
-	   loss_sum = 0
-        random.shuffle(indices)
-
-        for index in range(len(indices)):
-            i = indices[index]
-            img = self.train_images[i]
-            gt_label = self.train_labels[i]
-
-            ################
-            # FORWARD PASS:
-            # Step 1:
-
-            # Step 2:
-
-            # Step 3:
-                
-            #loss_sum = loss_sum + your_loss
-                
-            ################
-            # BACKWARD PASS (BACK PROPAGATION):            
-            # Step 4:                
-
-            # Step 5:
-                
-       print( "Epoch "+str(epoch)+": Total loss: "+str(loss_sum) )
-\end{python}
-
+\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \pagebreak
-Extra page. Please remember to keep your page length the same.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\pagebreak
-\paragraph{Q7:} Follow the \href{https://cs.brown.edu/courses/csci1430/proj4/gcp-guide/}{GCP guide} to set up GCP. \emph{Note:} This is tricky, and it will take you some time to become familiar with the system! Once finished, complete one of these two Tensorflow MNIST tutorials on GCP:
+\paragraph{Q7:} Follow the \href{https://browncsci1430.github.io/webpage/resources/gcp_guide/}{GCP guide} to set up GCP. \emph{Note:} This is tricky, and it will take you some time to become familiar with the system! Once finished, complete one of these two Tensorflow MNIST tutorials on GCP:
 \begin{itemize}
 	\item \href{https://www.tensorflow.org/tutorials/quickstart/beginner}{TensorFlow 2 quickstart for beginners}
 	\item \href{https://www.tensorflow.org/tutorials/quickstart/advanced}{TensorFlow 2 quickstart for experts}
