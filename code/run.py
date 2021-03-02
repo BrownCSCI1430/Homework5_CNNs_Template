@@ -82,7 +82,7 @@ def LIME_explainer(model, image):
     path = '../data/test/Bedroom/image_0003.jpg'
 
     image = imread(path)
-    image = np.reshape(image, (224, 224, 3))
+    image = np.resize(image, (224, 224, 3))
     # image = image[0][0][0, :, :, :]
     explanation = explainer.explain_instance(image.astype('double'), model.predict, top_labels=5, hide_color=0, num_samples=1000)
 
@@ -223,6 +223,11 @@ def main():
         metrics=["sparse_categorical_accuracy"])
 
     if ARGS.evaluate:
+        # path = '../data/test/Bedroom/image_0004.jpg'
+
+        # image = imread(path)
+        # print(image.shape)
+        # image = np.resize(image, (224, 224, 3))
         test(model, datasets.test_data)
         LIME_explainer(model, datasets.test_data)
     else:
