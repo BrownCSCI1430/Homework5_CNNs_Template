@@ -9,6 +9,7 @@ import random
 import numpy as np
 from PIL import Image
 import tensorflow as tf
+
 import hyperparameters as hp
 
 class Datasets():
@@ -18,6 +19,7 @@ class Datasets():
     """
 
     def __init__(self, data_path, task):
+
         self.data_path = data_path
         self.task = task
 
@@ -26,11 +28,11 @@ class Datasets():
         self.class_to_idx = {}
 
         # For storing list of classes
-        self.classes = [""] * hp.category_num
+        self.classes = [""] * hp.num_classes
 
         # Mean and std for standardization
         self.mean = np.zeros((3,))
-        self.std = np.ones((3,))
+        self.std = np.zeros((3,))
         self.calc_mean_and_std()
 
         # Setup data generators
@@ -83,8 +85,8 @@ class Datasets():
         #       self.mean and self.std respectively.
         # ==========================================================
 
-        self.mean = np.zeros((3))
-        self.std = np.ones((3))
+        self.mean = None
+        self.std = None
 
         # ==========================================================
 
@@ -112,6 +114,7 @@ class Datasets():
 
 
         # =============================================================
+
         return img
 
     def preprocess_fn(self, img):
@@ -133,7 +136,7 @@ class Datasets():
             img = img / 255.
             img = self.standardize(img)
 
-        # OPTIONAL:
+        # EXTRA CREDIT:
         # Write your own custom data augmentation procedure, creating
         # an effect that cannot be achieved using the arguments of
         # ImageDataGenerator. This can potentially boost your accuracy
@@ -143,6 +146,11 @@ class Datasets():
         # that ImageDataGenerator uses *this* function for preprocessing
         # on augmented data.
 
+        if random.random() < 0.3:
+            img = img + tf.random.uniform(
+                (hp.img_size, hp.img_size, 1),
+                minval=-0.1,
+                maxval=0.1)
 
         return img
 
