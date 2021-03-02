@@ -17,6 +17,13 @@ from preprocess import Datasets
 from tensorboard_utils import \
         ImageLabelingLogger, ConfusionMatrixLogger, CustomModelSaver
 
+from skimage.io import imread
+import lime
+from lime import lime_image
+from skimage.segmentation import mark_boundaries
+from matplotlib import pyplot as plt
+import numpy as np
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 def parse_args():
@@ -61,6 +68,37 @@ def parse_args():
         its checkpoint.''')
 
     return parser.parse_args()
+
+def LIME_explainer(model, images):
+    explainer = lime_image.LimeImageExplainer()
+    
+    image = images[0][0][0,:,:,:] #getting the first test image, can change
+    explanation = explainer.explain_instance(image.astype('double'), model.predict, top_labels=5, hide_color=0, num_samples=1000)
+
+    #the top 5 superpixels that are most positive towards the class with the rest of the image hidden
+    temp, mask = explanation.get_image_and_mask(explanation.top_labels[0], positive_only=True, num_features=5, hide_rest=True)
+    plt.imshow(mark_boundaries(temp / 2 + 0.5, mask))
+    plt.title("Top 5 superpixels")
+    plt.show()
+    #the top 5 superpixels with the rest of the image present
+    temp, mask = explanation.get_image_and_mask(explanation.top_labels[0], positive_only=True, num_features=5, hide_rest=False)
+    plt.imshow(mark_boundaries(temp / 2 + 0.5, mask))
+    plt.title("Top 5 superpixels with the rest of the image present")
+    plt.show()
+    # the 'pros and cons' (pros in green, cons in red)
+    temp, mask = explanation.get_image_and_mask(explanation.top_labels[0], positive_only=False, num_features=10, hide_rest=False)
+    plt.imshow(mark_boundaries(temp / 2 + 0.5, mask))
+    plt.title("Pros(green) and Cons(red)")
+    #Select the same class explained on the figures above.
+    ind =  explanation.top_labels[0]
+    plt.show()
+    #Map each explanation weight to the corresponding superpixel
+    dict_heatmap = dict(explanation.local_exp[ind])
+    heatmap = np.vectorize(dict_heatmap.get)(explanation.segments) 
+    plt.imshow(heatmap, cmap = 'RdBu', vmin  = -heatmap.max(), vmax = heatmap.max())
+    plt.colorbar()
+    plt.title("Map each explanation weight to the corresponding superpixel")
+    plt.show()
 
 
 def train(model, datasets, checkpoint_path, logs_path, init_epoch):
@@ -175,6 +213,7 @@ def main():
 
     if ARGS.evaluate:
         test(model, datasets.test_data)
+        LIME_explainer(model, datasets.test_data)
     else:
         train(model, datasets, checkpoint_path, logs_path, init_epoch)
 
