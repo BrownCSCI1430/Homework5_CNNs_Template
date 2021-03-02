@@ -223,11 +223,6 @@ def main():
         metrics=["sparse_categorical_accuracy"])
 
     if ARGS.evaluate:
-        # path = '../data/test/Bedroom/image_0004.jpg'
-
-        # image = imread(path)
-        # print(image.shape)
-        # image = np.resize(image, (224, 224, 3))
         test(model, datasets.test_data)
         LIME_explainer(model, datasets.test_data)
     else:
