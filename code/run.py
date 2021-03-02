@@ -69,10 +69,18 @@ def parse_args():
 
     return parser.parse_args()
 
-def LIME_explainer(model, images):
+
+def LIME_explainer(model, image):
+    '''
+    This function takes in an image and outputs 5 visual explanations using the 
+    LIME model
+    '''
     explainer = lime_image.LimeImageExplainer()
-    
-    image = images[0][0][0,:,:,:] #getting the first test image, can change
+
+    # TODO: change the image path to be the image of your choice, test images can be found in the data folder
+    path = '/Project4_CNNs_Template/data/test/Bedroom/image_0003.jpg'
+
+    image = imread(path)
     explanation = explainer.explain_instance(image.astype('double'), model.predict, top_labels=5, hide_color=0, num_samples=1000)
 
     #the top 5 superpixels that are most positive towards the class with the rest of the image hidden
