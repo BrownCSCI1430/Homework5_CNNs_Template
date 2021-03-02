@@ -18,6 +18,7 @@ from tensorboard_utils import \
         ImageLabelingLogger, ConfusionMatrixLogger, CustomModelSaver
 
 from skimage.io import imread
+from skimage.color import rgb2grey
 import lime
 from lime import lime_image
 from skimage.segmentation import mark_boundaries
@@ -81,6 +82,8 @@ def LIME_explainer(model, image):
     path = '../data/test/Bedroom/image_0003.jpg'
 
     image = imread(path)
+    image = np.resize(image, (224, 224, 3))
+    # image = image[0][0][0, :, :, :]
     explanation = explainer.explain_instance(image.astype('double'), model.predict, top_labels=5, hide_color=0, num_samples=1000)
 
     #the top 5 superpixels that are most positive towards the class with the rest of the image hidden
@@ -220,6 +223,11 @@ def main():
         metrics=["sparse_categorical_accuracy"])
 
     if ARGS.evaluate:
+        # path = '../data/test/Bedroom/image_0004.jpg'
+
+        # image = imread(path)
+        # print(image.shape)
+        # image = np.resize(image, (224, 224, 3))
         test(model, datasets.test_data)
         LIME_explainer(model, datasets.test_data)
     else:
