@@ -69,7 +69,7 @@ def parse_args():
         its checkpoint.''')
     parser.add_argument(
         '--lime-image',
-        default='test/Bedroom/image_0003',
+        default='test/Bedroom/image_0003.jpg',
         help='''Name of an image in the dataset to use for LIME evaluation.''')
 
     return parser.parse_args()
