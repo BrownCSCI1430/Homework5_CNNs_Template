@@ -24,7 +24,7 @@ Momentum on the gradient (if you use a momentum-based optimizer)
 momentum = 0.01
 
 """
-Resize image size for task 1. Task 2 must have an image size of 224,
+Resize image size for task 1. Task 3 must have an image size of 224,
 so that is hard-coded elsewhere.
 """
 img_size = 224

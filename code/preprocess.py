@@ -37,9 +37,9 @@ class Datasets():
 
         # Setup data generators
         self.train_data = self.get_data(
-            os.path.join(self.data_path, "train/"), task == '2', True, True)
+            os.path.join(self.data_path, "train/"), task == '3', True, True)
         self.test_data = self.get_data(
-            os.path.join(self.data_path, "test/"), task == '2', False, False)
+            os.path.join(self.data_path, "test/"), task == '3', False, False)
 
     def calc_mean_and_std(self):
         """ Calculate mean and standard deviation of a sample of the
@@ -120,7 +120,7 @@ class Datasets():
     def preprocess_fn(self, img):
         """ Preprocess function for ImageDataGenerator. """
 
-        if self.task == '2':
+        if self.task == '3':
             img = tf.keras.applications.vgg16.preprocess_input(img)
         else:
             img = img / 255.
@@ -130,7 +130,7 @@ class Datasets():
     def custom_preprocess_fn(self, img):
         """ Custom preprocess function for ImageDataGenerator. """
 
-        if self.task == '2':
+        if self.task == '3':
             img = tf.keras.applications.vgg16.preprocess_input(img)
         else:
             img = img / 255.

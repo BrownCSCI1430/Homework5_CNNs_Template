@@ -36,9 +36,9 @@ def parse_args():
     parser.add_argument(
         '--task',
         required=True,
-        choices=['1', '2'],
+        choices=['1', '3'],
         help='''Which task of the assignment to run -
-        training from scratch (1), or fine tuning VGG-16 (2).''')
+        training from scratch (1), or fine tuning VGG-16 (3).''')
     parser.add_argument(
         '--data',
         default='..'+os.sep+'data'+os.sep,
@@ -47,7 +47,7 @@ def parse_args():
         '--load-vgg',
         default='vgg16_imagenet.h5',
         help='''Path to pre-trained VGG-16 file (only applicable to
-        task 2).''')
+        task 3).''')
     parser.add_argument(
         '--load-checkpoint',
         default=None,
