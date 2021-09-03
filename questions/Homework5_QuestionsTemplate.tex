@@ -291,7 +291,7 @@ Let $y_j=1$ if class $j$ is the true label for $x$, and $y_j = 0$ if $j$ is not 
 \begin{equation}
     L(w,b,x) = - \sum_{j=1}^{10}y_j\ln(p_j),
 \end{equation}
-which, after substitution of Eqs. 2 and 1, lets us compute an error between the labeled ground truth distribution and our predicted distribution.
+which, after substitution of Eqs. 2 and 1, lets us compute an error (remember that: error = 1 - accuracy) between the labeled ground truth distribution and our predicted distribution.
 
 So...why does this loss $L$ work? Using the cross-entropy loss exploits concepts from information theory---Aur\'{e}lien G\'{e}ron has produced \href{https://www.youtube.com/watch?v=ErfnhcEV1O8}{a video with a succinct explanation of this loss}. Briefly, the loss minimizes the difference in the amounts of information needed to represent the two distributions. Other losses are also applicable, with their own interpretations, but these details are beyond the scope of this course.
 
