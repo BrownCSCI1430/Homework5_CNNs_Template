@@ -6,11 +6,13 @@ Brown University
 
 import io
 import os
+import re
 import sklearn.metrics
 import numpy as np
 import tensorflow as tf
 from matplotlib import pyplot as plt
 import hyperparameters as hp
+
 
 def plot_to_image(figure):
     """ Converts a pyplot figure to an image tensor. """
@@ -24,15 +26,17 @@ def plot_to_image(figure):
 
     return image
 
+
 class ImageLabelingLogger(tf.keras.callbacks.Callback):
     """ Keras callback for logging a plot of test images and their
     predicted labels for viewing in Tensorboard. """
 
-    def __init__(self, datasets):
+    def __init__(self, logs_path, datasets):
         super(ImageLabelingLogger, self).__init__()
 
         self.datasets = datasets
         self.task = datasets.task
+        self.logs_path = logs_path
 
         print("Done setting up image labeling logger.")
 
@@ -72,7 +76,9 @@ class ImageLabelingLogger(tf.keras.callbacks.Callback):
 
                 title_color = 'g' if is_correct else 'r'
 
-                plt.title(self.datasets.idx_to_class[predict_class_idx], color=title_color)
+                plt.title(
+                    self.datasets.idx_to_class[predict_class_idx],
+                    color=title_color)
                 plt.axis('off')
 
                 count += 1
@@ -84,20 +90,23 @@ class ImageLabelingLogger(tf.keras.callbacks.Callback):
 
         figure_img = plot_to_image(fig)
 
-        file_writer_il = tf.summary.create_file_writer('logs/image_labels')
+        file_writer_il = tf.summary.create_file_writer(
+            self.logs_path + os.sep + "image_labels")
 
         with file_writer_il.as_default():
-            tf.summary.image("Image Label Predictions", figure_img, step=epoch_num)
+            tf.summary.image("Image Label Predictions",
+                             figure_img, step=epoch_num)
 
 
 class ConfusionMatrixLogger(tf.keras.callbacks.Callback):
     """ Keras callback for logging a confusion matrix for viewing
     in Tensorboard. """
 
-    def __init__(self, datasets):
+    def __init__(self, logs_path, datasets):
         super(ConfusionMatrixLogger, self).__init__()
 
         self.datasets = datasets
+        self.logs_path = logs_path
 
     def on_epoch_end(self, epoch, logs=None):
         self.log_confusion_matrix(epoch, logs)
@@ -121,13 +130,16 @@ class ConfusionMatrixLogger(tf.keras.callbacks.Callback):
 
         # Source: https://www.tensorflow.org/tensorboard/image_summaries
         cm = sklearn.metrics.confusion_matrix(test_true, test_pred)
-        figure = self.plot_confusion_matrix(cm, class_names=self.datasets.classes)
+        figure = self.plot_confusion_matrix(
+            cm, class_names=self.datasets.classes)
         cm_image = plot_to_image(figure)
 
-        file_writer_cm = tf.summary.create_file_writer('logs/confusion_matrix')
+        file_writer_cm = tf.summary.create_file_writer(
+            self.logs_path + os.sep + "confusion_matrix")
 
         with file_writer_cm.as_default():
-            tf.summary.image("Confusion Matrix (on validation set)", cm_image, step=epoch)
+            tf.summary.image(
+                "Confusion Matrix (on validation set)", cm_image, step=epoch)
 
     def plot_confusion_matrix(self, cm, class_names):
         """ Plots a confusion matrix returned by
@@ -142,16 +154,83 @@ class ConfusionMatrixLogger(tf.keras.callbacks.Callback):
         plt.xticks(tick_marks, class_names, rotation=45)
         plt.yticks(tick_marks, class_names)
 
-        cm = np.around(cm.astype('float') / cm.sum(axis=1)[:, np.newaxis], decimals=2)
+        cm = np.around(cm.astype('float') / cm.sum(axis=1)
+                       [:, np.newaxis], decimals=2)
 
         threshold = cm.max() / 2.
         for i in range(cm.shape[0]):
             for j in range(cm.shape[1]):
                 color = "white" if cm[i, j] > threshold else "black"
-                plt.text(j, i, cm[i, j], horizontalalignment="center", color=color)
+                plt.text(j, i, cm[i, j],
+                         horizontalalignment="center", color=color)
 
         plt.tight_layout()
         plt.ylabel('True label')
         plt.xlabel('Predicted label')
 
         return figure
+
+
+class CustomModelSaver(tf.keras.callbacks.Callback):
+    """ Custom Keras callback for saving weights of networks. """
+
+    def __init__(self, checkpoint_dir, task, max_num_weights=5):
+        super(CustomModelSaver, self).__init__()
+
+        self.checkpoint_dir = checkpoint_dir
+        self.task = task
+        self.max_num_weights = max_num_weights
+
+    def on_epoch_end(self, epoch, logs=None):
+        """ At epoch end, weights are saved to checkpoint directory. """
+
+        min_acc_file, max_acc_file, max_acc, num_weights = \
+            self.scan_weight_files()
+
+        cur_acc = logs["val_sparse_categorical_accuracy"]
+
+        # Only save weights if test accuracy exceeds the previous best
+        # weight file
+        if cur_acc > max_acc:
+            save_name = "weights.e{0:03d}-acc{1:.4f}.h5".format(
+                epoch, cur_acc)
+
+            if self.task == '1':
+                self.model.save_weights(
+                    self.checkpoint_dir + os.sep + "your." + save_name)
+            else:
+                # Only save weights of classification head of VGGModel
+                self.model.head.save_weights(
+                    self.checkpoint_dir + os.sep + "vgg." + save_name)
+
+            # Ensure max_num_weights is not exceeded by removing
+            # minimum weight
+            if self.max_num_weights > 0 and \
+                    num_weights + 1 > self.max_num_weights:
+                os.remove(self.checkpoint_dir + os.sep + min_acc_file)
+
+    def scan_weight_files(self):
+        """ Scans checkpoint directory to find current minimum and maximum
+        accuracy weights files as well as the number of weights. """
+
+        min_acc = float('inf')
+        max_acc = 0
+        min_acc_file = ""
+        max_acc_file = ""
+        num_weights = 0
+
+        files = os.listdir(self.checkpoint_dir)
+
+        for weight_file in files:
+            if weight_file.endswith(".h5"):
+                num_weights += 1
+                file_acc = float(re.findall(
+                    r"[+-]?\d+\.\d+", weight_file.split("acc")[-1])[0])
+                if file_acc > max_acc:
+                    max_acc = file_acc
+                    max_acc_file = weight_file
+                if file_acc < min_acc:
+                    min_acc = file_acc
+                    min_acc_file = weight_file
+
+        return min_acc_file, max_acc_file, max_acc, num_weights

@@ -9,6 +9,7 @@ import random
 import numpy as np
 from PIL import Image
 import tensorflow as tf
+
 import hyperparameters as hp
 
 class Datasets():
@@ -18,6 +19,7 @@ class Datasets():
     """
 
     def __init__(self, data_path, task):
+
         self.data_path = data_path
         self.task = task
 
@@ -26,18 +28,18 @@ class Datasets():
         self.class_to_idx = {}
 
         # For storing list of classes
-        self.classes = [""] * hp.category_num
+        self.classes = [""] * hp.num_classes
 
         # Mean and std for standardization
         self.mean = np.zeros((3,))
-        self.std = np.ones((3,))
+        self.std = np.zeros((3,))
         self.calc_mean_and_std()
 
         # Setup data generators
         self.train_data = self.get_data(
-            os.path.join(self.data_path, "train/"), task == '2', True, True)
+            os.path.join(self.data_path, "train/"), task == '3', True, True)
         self.test_data = self.get_data(
-            os.path.join(self.data_path, "test/"), task == '2', False, False)
+            os.path.join(self.data_path, "test/"), task == '3', False, False)
 
     def calc_mean_and_std(self):
         """ Calculate mean and standard deviation of a sample of the
@@ -83,8 +85,8 @@ class Datasets():
         #       self.mean and self.std respectively.
         # ==========================================================
 
-        self.mean = np.zeros((3))
-        self.std = np.ones((3))
+        self.mean = None
+        self.std = None
 
         # ==========================================================
 
@@ -112,12 +114,13 @@ class Datasets():
 
 
         # =============================================================
+
         return img
 
     def preprocess_fn(self, img):
         """ Preprocess function for ImageDataGenerator. """
 
-        if self.task == '2':
+        if self.task == '3':
             img = tf.keras.applications.vgg16.preprocess_input(img)
         else:
             img = img / 255.
@@ -127,13 +130,13 @@ class Datasets():
     def custom_preprocess_fn(self, img):
         """ Custom preprocess function for ImageDataGenerator. """
 
-        if self.task == '2':
+        if self.task == '3':
             img = tf.keras.applications.vgg16.preprocess_input(img)
         else:
             img = img / 255.
             img = self.standardize(img)
 
-        # OPTIONAL:
+        # EXTRA CREDIT:
         # Write your own custom data augmentation procedure, creating
         # an effect that cannot be achieved using the arguments of
         # ImageDataGenerator. This can potentially boost your accuracy
@@ -143,6 +146,11 @@ class Datasets():
         # that ImageDataGenerator uses *this* function for preprocessing
         # on augmented data.
 
+        if random.random() < 0.3:
+            img = img + tf.random.uniform(
+                (hp.img_size, hp.img_size, 1),
+                minval=-0.1,
+                maxval=0.1)
 
         return img
 
