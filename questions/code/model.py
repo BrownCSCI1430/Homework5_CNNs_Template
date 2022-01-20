@@ -160,7 +160,7 @@ class Model:
             # to calculate acuuracy for each epoch on the testing set
             # epoch is a concept for neural network training, so using accuracy_nn for calculation
             accuracy = self.accuracy_nn(self.test_images, self.test_labels)
-            print("Epoch " + str(epoch) + ": Total loss: " + str(loss_sum) + "; Accuracy: " + str(accuracy))
+            print("Epoch " + str(epoch) + ": Total loss: " + str(loss_sum) + "; Accuracy: {:.0%}".format(accuracy))
 
     def train_svm(self):
         """
