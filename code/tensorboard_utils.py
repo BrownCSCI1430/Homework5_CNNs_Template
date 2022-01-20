@@ -48,10 +48,15 @@ class ImageLabelingLogger(tf.keras.callbacks.Callback):
         to disk. """
 
         fig = plt.figure(figsize=(9, 9))
-        count = 0
+        count_all = 0
+        count_misclassified = 0
+        
         for batch in self.datasets.train_data:
+            misclassified = []
+            mis_labels = []
+            
             for i, image in enumerate(batch[0]):
-                plt.subplot(5, 5, count+1)
+                plt.subplot(5, 5, min(count_all+1, 25))
 
                 correct_class_idx = batch[1][i]
                 probabilities = self.model(np.array([image])).numpy()[0]
@@ -80,12 +85,20 @@ class ImageLabelingLogger(tf.keras.callbacks.Callback):
                     self.datasets.idx_to_class[predict_class_idx],
                     color=title_color)
                 plt.axis('off')
+                
+                # output individual images with wrong labels
+                if not is_correct:
+                    count_misclassified += 1
+                    misclassified.append(image)
+                    mis_labels.append(correct_class_idx)
 
-                count += 1
-                if count == 25:
+                count_all += 1
+                
+                # ensure there are >= 2 misclassified images
+                if count_all >= 25 and count_misclassified >= 2:
                     break
 
-            if count == 25:
+            if count_all >= 25 and count_misclassified >= 2:
                 break
 
         figure_img = plot_to_image(fig)
@@ -96,7 +109,11 @@ class ImageLabelingLogger(tf.keras.callbacks.Callback):
         with file_writer_il.as_default():
             tf.summary.image("Image Label Predictions",
                              figure_img, step=epoch_num)
-
+            for label, img in zip(mis_labels, misclassified):
+                img = tf.expand_dims(img, axis=0)
+                # print(img.shape)
+                tf.summary.image(self.datasets.idx_to_class[label], 
+                                 img, step=epoch_num)
 
 class ConfusionMatrixLogger(tf.keras.callbacks.Callback):
     """ Keras callback for logging a confusion matrix for viewing
