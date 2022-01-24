@@ -56,17 +56,17 @@ def main():
         train_images, train_labels, test_images, test_labels = format_data_mnist(ARGS.data)
         num_classes = hp.mnist_class_count
 
-    model = Model(train_images, train_labels, num_classes, hp)
+    model = Model(train_images, train_labels, num_classes, hp, test_images, test_labels)
 
     if ARGS.mode == "nn":
         model.train_nn()
         accuracy = model.accuracy_nn(test_images, test_labels)
-        print('nn model training accuracy: {:.0%}'.format(accuracy))
+        print('nn model testing accuracy: {:.0%}'.format(accuracy))
     else:
         model.train_nn()
         model.train_svm()
         accuracy = model.accuracy_svm(test_images, test_labels)
-        print('nn+svm model training accuracy: {:.0%}'.format(accuracy))
+        print('nn+svm model testing accuracy: {:.0%}'.format(accuracy))
 
 
 if __name__ == '__main__':

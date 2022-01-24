@@ -5,7 +5,7 @@ from sklearn.svm import LinearSVC
 
 
 class Model:
-    def __init__(self, train_images, train_labels, num_classes, hp):
+    def __init__(self, train_images, train_labels, num_classes, hp, test_images, test_labels):
         self.input_size = train_images.shape[1]
         self.num_classes = num_classes
         self.num_epochs = hp.num_epochs
@@ -14,6 +14,8 @@ class Model:
         self.train_images = train_images
         self.train_labels = train_labels
         self.clf = LinearSVC(multi_class='ovr', dual=False)
+        self.test_images = test_images
+        self.test_labels = test_labels
 
         # TODO: Set up the weights and biases with the correct shapes
         # Recall that the weights should be of shape
@@ -153,8 +155,12 @@ class Model:
                 gradW, gradB = None
 
                 # TODO: 4. Update self.W and self.B with gradient descent
-
-            print("Epoch " + str(epoch) + ": Total loss: " + str(loss_sum))
+                
+                
+            # to calculate acuuracy for each epoch on the testing set
+            # epoch is a concept for neural network training, so using accuracy_nn for calculation
+            accuracy = self.accuracy_nn(self.test_images, self.test_labels)
+            print("Epoch " + str(epoch) + ": Total loss: " + str(loss_sum) + "; Accuracy: {:.0%}".format(accuracy))
 
     def train_svm(self):
         """

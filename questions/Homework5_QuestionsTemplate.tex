@@ -102,7 +102,7 @@ should be on this page
   \item Please make this document anonymous.
   \item This assignment is \textbf{fixed length}, and the pages have been assigned for you in Gradescope. As a result, \textbf{please do NOT add any new pages}. We will provide ample room for you to answer the questions. If you \emph{really} wish for more space, please add a page \emph{at the end of the document}.
   \item \textbf{We do NOT expect you to fill up each page with your answer.} Some answers will only be a few sentences long, and that is okay.
-  \item Question 6 has a coding component that must be submitted to Gradescope under a separate assignment (Project 4 Written Code (Numpy)) and is due a week after the rest of the written questions.
+  \item Question 6 has a coding component that must be submitted to Gradescope under a separate assignment (Homework 5 Written Code (Numpy)) and is due a week after the rest of the written questions.
 \end{itemize}
 
 \section*{Questions}
@@ -223,19 +223,20 @@ It's impossible & $\square$ \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagebreak
-\paragraph{Q5:}
-In medical imaging, hand designing features with biological experts might lead to a generalizable and explainable method for physicians, regulators, or patients. However, deep learning methods can show higher test accuracy, even if their results may be less explainable.
-Please read this \href{https://drive.google.com/file/d/16CztlicOOTImvP9ZrtTUNKwLuv6srOBW/view?usp=sharing}{short article}.
+\paragraph{Q5:} Goal: Discuss the effects of automating medical imaging and care and how it may be perceived to be both liberating and constraining. Reflect on your role as a (future) developer in shaping the scope and decision-making protocols of automated systems.
+
+In medicine, models with hand-designed features by biological experts might lead to a generalizable and explainable method for physicians, regulators, or patients. However, deep learning methods can show higher test accuracy, even if their results may be less explainable.
+Please read this \href{https://hai.stanford.edu/news/should-ai-models-be-explainable-depends}{short article}.
 
 \begin{enumerate}[(a)]
     \item
-    In the article, physician Dr. Nicholas Price expresses the view that a lack of explainability should not hamper advances in health care, pointing out that Aspirin’s mechanism was not understood for 70 years and that Lithium’s mechanism to treat bipolar disorder is still unknown. Do you agree with Dr. Price? Would you feel comfortable allowing your doctor to rely on a ‘black box’ algorithm for medical diagnoses? (3-4 sentences)
+    In the article, Dr. Shah expresses the view that especially in medicine, AI models do not need to be interpretable to be useful, pointing out that we don't understand how most prescription drugs work, yet trust them due to trials. Do you agree with Dr. Shah? Does it matter if a decision is made by a doctor or an algorithm in terms of quality? (3--4 sentences)
     \item
-    When deciding whether a medical algorithm is suitable for clinical use, what accuracy would you consider to be ‘good enough’? In which different ways could we measure this? (3-4 sentences)
+    When deciding whether a medical algorithm is suitable for clinical use, what accuracy would you consider to be ‘good enough’? In which different ways could we measure this? (3--4 sentences)
     \item
-    In the event that a medical imaging algorithm makes an error and causes a patient harm, who should be held responsible? \textit{Think about everyone involved: the algorithm engineer, the company selling the algorithm, the FDA approving it, the hospital or clinic purchasing it, the physician using it, etc.} (3-4 sentences)
+    In the event that a medical imaging algorithm makes an error and causes a patient harm, who should be held responsible? \textit{Think about everyone involved: the algorithm engineer, the company selling the algorithm, the FDA approving it, the hospital or clinic purchasing it, the physician using it, etc.} (3--4 sentences)
     \item
-    Nicholas Price is actually a \href{https://drive.google.com/file/d/1bDAqEtW482OJeqMBt5A4AradVa4gf_o9/view}{legal scholar} who specializes in health law at the University of Michigan. Does this information change your responses? (3-4 sentences)
+    When a model has an explanation that could erode its usefulness, should that explanation be provided to the doctor? the patient? What are the implications if an explanation is provided and if one is not? (3--4 sentences)
 
 \end{enumerate}
 
@@ -244,6 +245,8 @@ Please read this \href{https://drive.google.com/file/d/16CztlicOOTImvP9ZrtTUNKwL
 % Uncomment the stencil below and fill in your solution.
 
 % \begin{enumerate}[(a)]
+
+% \item
 
 % \item
 
@@ -291,7 +294,7 @@ Let $y_j=1$ if class $j$ is the true label for $x$, and $y_j = 0$ if $j$ is not 
 \begin{equation}
     L(w,b,x) = - \sum_{j=1}^{10}y_j\ln(p_j),
 \end{equation}
-which, after substitution of Eqs. 2 and 1, lets us compute an error between the labeled ground truth distribution and our predicted distribution.
+which, after substitution of Eqs. 2 and 1, lets us compute an error (remember that: error = 1 - accuracy) between the labeled ground truth distribution and our predicted distribution.
 
 So...why does this loss $L$ work? Using the cross-entropy loss exploits concepts from information theory---Aur\'{e}lien G\'{e}ron has produced \href{https://www.youtube.com/watch?v=ErfnhcEV1O8}{a video with a succinct explanation of this loss}. Briefly, the loss minimizes the difference in the amounts of information needed to represent the two distributions. Other losses are also applicable, with their own interpretations, but these details are beyond the scope of this course.
 
@@ -366,12 +369,12 @@ So...after all of that, our gradient update rules are surprisingly simple!
 \hspace{\fill}\rule{0.5\linewidth}{.5pt}\hspace{\fill}
 
 
-\paragraph{Q6:} We will implement these steps in code using numpy. We provide a code stencil \texttt{main.py} which loads one of two datasets: MINST and the scene recognition dataset from Project 3. We also provide two models: a neural network, and then a neural network whose logits are used as input to an SVM classifier. Please look at the comments in \texttt{main.py} for the arguments to pass in to the program for each condition. The neural network model is defined in \texttt{model.py}, and the parts we must implement are marked with TODO comments.
+\paragraph{Q6:} We will implement these steps in code using numpy. We provide a code stencil \texttt{main.py} which loads one of two datasets: MNIST and the scene recognition dataset from Homework 4. We also provide two models: a neural network, and then a neural network whose logits are used as input to an SVM classifier. Please look at the comments in \texttt{main.py} for the arguments to pass in to the program for each condition. The neural network model is defined in \texttt{model.py}, and the parts we must implement are marked with TODO comments.
 
-\emph{Tasks:} Please follow the steps to implement the forward model evaluation and backward gradient update steps. Then, run your model on all four conditions and report training loss and accuracy as the number of training epochs increases.
+\emph{Tasks:} Please follow the steps to implement the forward model evaluation and backward gradient update steps. Then, run your model on all four conditions and report training loss (calculated using \emph{training} set) and accuracy (calculated using \emph{testing} set) as the number of training epochs increases.
 
 
-Please upload your completed \texttt{model.py} to Gradescope under the assignment titled "Project 4 Written Code (Numpy)". The autograder will check that you correctly implemented parts of your model. Please also include a \texttt{writeup.pdf} with your responses to the following questions.
+Please upload your completed \texttt{model.py} to Gradescope under the assignment titled "Homework 5 Written Code (Numpy)". The autograder will check that you correctly implemented parts of your model. Please also include a \texttt{writeup.pdf} with your responses to the following questions.
 
 \begin{enumerate}
     \item What do these numbers tell us about the capacity of the network, the complexity of the two problems, the value of training, and the value of the two different classification approaches?
@@ -412,7 +415,7 @@ Please upload your completed \texttt{model.py} to Gradescope under the assignmen
 	\item \href{https://www.tensorflow.org/tutorials/quickstart/advanced}{TensorFlow 2 quickstart for experts}
 \end{itemize}
 
-The work for the tutorial can be done in a completely new Python file inside or outside of your project code (you won't have to turn it in).
+The work for the tutorial can be done in a completely new Python file inside or outside of your homework code (you won't have to turn it in).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
