@@ -66,17 +66,17 @@
 \rhead{CSCI 1430}
 \lfoot{\textcolor{red}{Only
 \ifcase\thepage
-\or instructions and Q1
-\or A1 answers
-\or Q2 and A2 answers
-\or Q3 and A3 answers
-\or Q4 and A4 answers
-\or Q5 and A5 answers
-\or A5 answers
-\or Q6
-\or Q6
-\or Q6
-\or Q7 and A7 answers
+\or instructions
+\or Q1.1 and A1.1 
+\or Q1.2, Q2, and A2 
+\or Q1 and A1 
+\or Q2 and A2 
+\or Q3 and A3
+\or Q4 and A4 
+\or Q5 
+\or Q5 
+\or Q5 
+\or Q6 and A6
 \or feedback
 \else
 EXTRA PAGE ADDED
@@ -96,7 +96,8 @@ should be on this page
 
 \section*{Instructions}
 \begin{itemize}
-  \item 7 questions (Q6 and Q7 with code components).
+  \item 2 ethical implications questions.
+  \item 6 technical questions (Q5 and Q6 with code components).
   \item \emph{This will take two weeks! Parts are tricky---start early!}.
   \item Write code where appropriate; feel free to include images or equations.
   \item Please make this document anonymous.
@@ -104,8 +105,31 @@ should be on this page
   \item \textbf{We do NOT expect you to fill up each page with your answer.} Some answers will only be a few sentences long, and that is okay.
   \item Question 6 has a coding component that must be submitted to Gradescope under a separate assignment (Homework 5 Written Code (Numpy)) and is due a week after the rest of the written questions.
 \end{itemize}
+\pagebreak 
+\section*{Ethical Implications}
+\paragraph{Q1.1:} CNN interpretability remains an open question. In medical imaging, hand designing features with biological experts might lead to a generalizable and explainable method for physicians, regulators, or patients. However, deep learning methods can show \href{https://drive.google.com/file/d/1bDAqEtW482OJeqMBt5A4AradVa4gf_o9/view}{higher test accuracy}, even if their results may be less explainable. 
 
-\section*{Questions}
+For your final project, you decide to create a CNN for medical imaging purposes. After extensive testing, you find that your CNN can detect a rare disease with 90\% accuracy. Existing technology is able to detect this disease with only 20\% accuracy. You have no medical background. (You are not a PLME). You cannot explain how your CNN accurately detects the disease, just that it does. 
+
+How confident are you that your model should be used in a clinical setting and why? What are three factors that would make you more or less confident? If your model is deployed and an incorrect result causes a patient harm, who should be held responsible? [6-7 sentences]
+
+\paragraph{A1.1:} Your answer here.
+\pagebreak
+\paragraph{Q1.2:} Please respond to this \href{https://docs.google.com/forms/d/e/1FAIpQLScJdjerPNCJu6kzMAhSgiUeturxoNUa3SdekSKJ-bc_Xutiiw/viewform?usp=sf_link}{multiple choice question} about the previous scenario. 
+
+\paragraph{Q2:} There have been many attempts to make CNNs more interpretable:
+\begin{itemize}
+\item This assignment requires you to use LIME to attempt to explain your model predictions. 
+\item James also mentioned \href{https://www.cs.cmu.edu/~aharley/vis/conv/}{this website} in class, which visualizes how a CNN works on the MNIST dataset.
+\item Another option is saliency maps. Please read this \href{https://www.geeksforgeeks.org/what-is-saliency-map/}{short article} describing how saliency maps work. 
+\end{itemize}
+
+To what extent would each of these methods make you more confident in your understanding of your medical imaging CNN and why? Outside of medical technology, when is being able to interpret the reasons a machine made a decision important and when is it not? [6-7 sentences]
+
+\paragraph{A2:} Your answer here.
+\pagebreak
+
+\section*{Technical Questions}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -115,10 +139,7 @@ should be on this page
 \item What is different about the construction of the filters in each of these approaches?
 \item Please declare and explain the advantages and disadvantages of these two approaches.
 \end{enumerate}
-\emph{Please answer on next page.}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagebreak
 \paragraph{A1:} Your answer here.
 % Uncomment the stencil below and fill in your solution.
 
@@ -222,51 +243,11 @@ It's impossible & $\square$ \\
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagebreak
-\paragraph{Q5:} Goal: Discuss the effects of automating medical imaging and care and how it may be perceived to be both liberating and constraining. Reflect on your role as a (future) developer in shaping the scope and decision-making protocols of automated systems.
-
-In medicine, models with hand-designed features by biological experts might lead to a generalizable and explainable method for physicians, regulators, or patients. However, deep learning methods can show higher test accuracy, even if their results may be less explainable.
-Please read this \href{https://hai.stanford.edu/news/should-ai-models-be-explainable-depends}{short article}.
-
-\begin{enumerate}[(a)]
-    \item
-    In the article, Dr. Shah expresses the view that especially in medicine, AI models do not need to be interpretable to be useful, pointing out that we don't understand how most prescription drugs work, yet trust them due to trials. Do you agree with Dr. Shah? Does it matter if a decision is made by a doctor or an algorithm in terms of quality? (3--4 sentences)
-    \item
-    When deciding whether a medical algorithm is suitable for clinical use, what accuracy would you consider to be ‘good enough’? In which different ways could we measure this? (3--4 sentences)
-    \item
-    In the event that a medical imaging algorithm makes an error and causes a patient harm, who should be held responsible? \textit{Think about everyone involved: the algorithm engineer, the company selling the algorithm, the FDA approving it, the hospital or clinic purchasing it, the physician using it, etc.} (3--4 sentences)
-    \item
-    When a model has an explanation that could erode its usefulness, should that explanation be provided to the doctor? the patient? What are the implications if an explanation is provided and if one is not? (3--4 sentences)
-
-\end{enumerate}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{A5:} Your answer here.
-% Uncomment the stencil below and fill in your solution.
-
-% \begin{enumerate}[(a)]
-
-% \item
-
-% \item
-
-% \item
-
-% \item
-
-% \end{enumerate}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\pagebreak
-Extra page. Please remember to keep your page length the same.
-
-
 
 % Please leave the pagebreak
 \pagebreak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{Q6 background:}
+\paragraph{Q5 background:}
 Let us consider using a neural network (non-convolutional) to perform classification on the \href{http://yann.lecun.com/exdb/mnist/}{MNIST dataset} of handwritten digits, with 10 classes covering the digits 0--9. Each image is 28$\times$28 pixels, and so the network input is a 784-dimensional vector $\mathbf{x}=(x_1,x_2,\dots,x_i,\dots,x_{784})$. The output of the neural network is probability distribution $\mathbf{p}=(p_1,\dots,p_j,\dots,p_{10})$ over the 10 classes. Suppose our network has one fully-connected layer with $10$ neurons---one for each class. Each neuron has a weight for each input $\mathbf{w}=(w_1,\dots,w_i,\dots,w_{784})$, plus a bias $b$. As we only have one layer with no multi-layer composition, there's no need to use an activation function.
 
 When we pass in a vector $\mathbf{x}$ to this layer, we will compute a 10-dimensional output vector $\mathbf{l}=(l_1,l_2,...,l_j,...,l_{10})$ as:
@@ -369,7 +350,7 @@ So...after all of that, our gradient update rules are surprisingly simple!
 \hspace{\fill}\rule{0.5\linewidth}{.5pt}\hspace{\fill}
 
 
-\paragraph{Q6:} We will implement these steps in code using numpy. We provide a code stencil \texttt{main.py} which loads one of two datasets: MNIST and the scene recognition dataset from Homework 4. We also provide two models: a neural network, and then a neural network whose logits are used as input to an SVM classifier. Please look at the comments in \texttt{main.py} for the arguments to pass in to the program for each condition. The neural network model is defined in \texttt{model.py}, and the parts we must implement are marked with TODO comments.
+\paragraph{Q5:} We will implement these steps in code using numpy. We provide a code stencil \texttt{main.py} which loads one of two datasets: MNIST and the scene recognition dataset from Homework 4. We also provide two models: a neural network, and then a neural network whose logits are used as input to an SVM classifier. Please look at the comments in \texttt{main.py} for the arguments to pass in to the program for each condition. The neural network model is defined in \texttt{model.py}, and the parts we must implement are marked with TODO comments.
 
 \emph{Tasks:} Please follow the steps to implement the forward model evaluation and backward gradient update steps. Then, run your model on all four conditions and report training loss (calculated using \emph{training} set) and accuracy (calculated using \emph{testing} set) as the number of training epochs increases.
 
@@ -409,7 +390,7 @@ Please upload your completed \texttt{model.py} to Gradescope under the assignmen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \pagebreak
-\paragraph{Q7:} Follow the \href{https://browncsci1430.github.io/webpage/resources/gcp_guide/}{GCP guide} to set up GCP. \emph{Note:} This is tricky, and it will take you some time to become familiar with the system! Once finished, complete one of these two Tensorflow MNIST tutorials on GCP:
+\paragraph{Q6:} Follow the \href{https://browncsci1430.github.io/webpage/resources/gcp_guide/}{GCP guide} to set up GCP. \emph{Note:} This is tricky, and it will take you some time to become familiar with the system! Once finished, complete one of these two Tensorflow MNIST tutorials on GCP:
 \begin{itemize}
 	\item \href{https://www.tensorflow.org/tutorials/quickstart/beginner}{TensorFlow 2 quickstart for beginners}
 	\item \href{https://www.tensorflow.org/tutorials/quickstart/advanced}{TensorFlow 2 quickstart for experts}
@@ -419,7 +400,7 @@ The work for the tutorial can be done in a completely new Python file inside or 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{A7:} Please insert a screenshot of the tutorial code output, running on GCP:
+\paragraph{A6:} Please insert a screenshot of the tutorial code output, running on GCP:
 
 % \begin{figure}[t]
 %     \includegraphics[width=\linewidth]{yourscreenshot.png}
