@@ -67,16 +67,17 @@
 \lfoot{\textcolor{red}{Only
 \ifcase\thepage
 \or instructions
-\or Q1.1 and A1.1 
-\or Q1.2, Q2, and A2 
-\or Q1 and A1 
-\or Q2 and A2 
-\or Q3 and A3
+\or Q1 and A1
+\or Q2 and A2
+\or Q3 and A3 
 \or Q4 and A4 
-\or Q5 
-\or Q5 
-\or Q5 
-\or Q6 and A6
+\or Q5.1 and A5.1
+\or Q5.2, Q6, and A6
+\or Q7
+\or Q7
+\or Q7 and A7.1
+\or A7.2 
+\or Q8 and A8
 \or feedback
 \else
 EXTRA PAGE ADDED
@@ -96,43 +97,20 @@ should be on this page
 
 \section*{Instructions}
 \begin{itemize}
-  \item 2 ethical implications questions, which will be expanded on in discussion sections.
-  \item 6 technical questions (Q5 and Q6 with code components).
-  \item \emph{This will take two weeks! Parts are tricky---start early!}.
+  \item 2 socially-responsible computing questions, which will be expanded on in discussion sections.
+  \item 6 technical questions (Q7 and Q8 with code components).
+  \item \emph{This will take longer than usual! Q7 is the most substantial technical written part so far, and Q8 is a tricky setup---start early!}.
   \item Write code where appropriate; feel free to include images or equations.
   \item Please make this document anonymous.
   \item This assignment is \textbf{fixed length}, and the pages have been assigned for you in Gradescope. As a result, \textbf{please do NOT add any new pages}. We will provide ample room for you to answer the questions. If you \emph{really} wish for more space, please add a page \emph{at the end of the document}.
   \item \textbf{We do NOT expect you to fill up each page with your answer.} Some answers will only be a few sentences long, and that is okay.
-  \item Question 6 has a coding component that must be submitted to Gradescope under a separate assignment (Homework 5 Written Code (Numpy)) and is due a week after the rest of the written questions.
-\end{itemize}
-\pagebreak 
-\section*{Ethical Implications}
-\paragraph{Q1.1:} CNN interpretability remains an open question. In medical imaging, hand designing features with biological experts might lead to a generalizable and explainable method for physicians, regulators, or patients. However, deep learning methods can show \href{https://drive.google.com/file/d/1bDAqEtW482OJeqMBt5A4AradVa4gf_o9/view}{higher test accuracy}, even if their results may be less explainable. 
-
-For your final project, you decide to create a CNN for medical imaging purposes. After extensive testing, you find that your CNN can detect a rare disease with 90\% accuracy. Existing technology is able to detect this disease with only 20\% accuracy. You have no medical background. (You are not a PLME). You cannot explain how your CNN accurately detects the disease, just that it does. 
-
-How confident are you that your model should be used in a clinical setting and why? What are three factors that would make you more or less confident? If your model is deployed and an incorrect result causes a patient harm, who should be held responsible? [6-7 sentences]
-
-\paragraph{A1.1:} Your answer here.
-\pagebreak
-\paragraph{Q1.2:} Please respond to this \href{https://docs.google.com/forms/d/e/1FAIpQLScJdjerPNCJu6kzMAhSgiUeturxoNUa3SdekSKJ-bc_Xutiiw/viewform?usp=sf_link}{multiple choice question} about the previous scenario. 
-
-\paragraph{Q2:} There have been many attempts to make CNNs more interpretable:
-\begin{itemize}
-\item This assignment requires you to use LIME to attempt to explain your model predictions. 
-\item James also mentioned \href{https://www.cs.cmu.edu/~aharley/vis/conv/}{this website} in class, which visualizes how a CNN works on the MNIST dataset.
-\item Another option is saliency maps. Please read this \href{https://www.geeksforgeeks.org/what-is-saliency-map/}{short article} describing how saliency maps work. 
+  \item Question 7 has a coding component that must be submitted to Gradescope under a separate assignment (Homework 5 Written Code (Numpy)).
 \end{itemize}
 
-To what extent would each of these methods make you more confident in your understanding of your medical imaging CNN and why? Outside of medical technology, when is being able to interpret the reasons a machine made a decision important and when is it not? [6-7 sentences]
 
-\paragraph{A2:} Your answer here.
-\pagebreak
-
-\section*{Technical Questions}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\pagebreak
 \paragraph{Q1:} Many traditional computer vision algorithms use convolutional filters to extract feature representations, e.g., in SIFT, to which we then often apply machine learning classification techniques. Convolutional neural networks also use filters within a machine learning algorithm.
 
 \begin{enumerate} [(a)]
@@ -154,7 +132,8 @@ To what extent would each of these methods make you more confident in your under
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagebreak
-\paragraph{Q2:} Many CNNs have a fully connected multi-layer perceptron (MLP) after the convolutional layers as a general purpose `decision-making' subnetwork. What effects might a \emph{locally-connected} MLP have on computer vision applications, and why?
+\paragraph{Q2:} Many CNNs have a fully connected multi-layer perceptron (MLP) after the convolutional layers as a general purpose `decision-making' subnetwork. 
+What effects might a \emph{locally-connected} MLP have on computer vision applications, and why?
 
 Please give your answer in terms of the learned convolution feature maps, their connections, and the perceptrons in the MLP.
 
@@ -166,7 +145,7 @@ Please give your answer in terms of the learned convolution feature maps, their 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \pagebreak
-\paragraph{Q3:} Given a neural network and the stochastic gradient descent training approach for that classifier, discuss how the \emph{learning rate}, \emph{batch size}, and \emph{number of epochs} hyperparameters might affect the training process and outcome.
+\paragraph{Q3:} Given a neural network classifier and the stochastic gradient descent training approach, discuss how the \emph{learning rate}, \emph{batch size}, and \emph{number of epochs} hyperparameters might affect the training process and outcome.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -244,10 +223,46 @@ It's impossible & $\square$ \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak 
+\paragraph{Q5.1:} CNN interpretability remains an open question. In medical imaging, hand designing features from biological experts might lead to a generalizable and explainable method for physicians, regulators, or patients. However, deep learning methods can show \href{https://drive.google.com/file/d/1bDAqEtW482OJeqMBt5A4AradVa4gf_o9/view}{higher test accuracy}, even if their results may be less explainable. 
+
+For your final project, you decide to create a CNN for medical imaging diagnosis. After extensive testing, you find that your CNN can detect a rare disease with 90\% accuracy. Prior technology can detect this disease with only 20\% accuracy. You have no medical background, trianing, or professional qualification. You cannot explain how your CNN accurately detects the disease so accurately, just that it does. 
+
+Should your model be used in a clinical setting? Describe three factors that would make you more or less confident in its use. If your model is deployed and an incorrect result causes patient harm, who should be held ressponsible? [6-7 sentences]
+
+\paragraph{A5.1:} Your answer here.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+\paragraph{Q5.2:} Please complete this \href{https://docs.google.com/forms/d/e/1FAIpQLScJdjerPNCJu6kzMAhSgiUeturxoNUa3SdekSKJ-bc_Xutiiw/viewform?usp=sf_link}{multiple choice question} about the previous scenario. 
+
+\paragraph{Q6:} There have been many attempts to interpret CNN predictions:
+\begin{itemize}
+    \item We saw \href{https://www.cs.cmu.edu/~aharley/vis/conv/}{this website} in class, which visualizes how a CNN predicts numerals when trained on the MNIST dataset.
+    
+    \item This homework asks you to use \href{https://www.oreilly.com/content/introduction-to-local-interpretable-model-agnostic-explanations-lime/}{LIME} to attempt to explain your model predictions. 
+
+    \item Another option is saliency maps. Please read this \href{https://www.geeksforgeeks.org/what-is-saliency-map/}{short article} describing how saliency maps work.
+\end{itemize}
+
+To what extent would each of these methods improve your understanding of your medical imaging CNN's predictions, and why?
+More generally, when is it important to be able to interpret the reasons a machine made a decision, and when is it not? [6-7 sentences]
+
+\paragraph{A6:} Your answer here.
+
+
+
+
+
 % Please leave the pagebreak
 \pagebreak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{Q5 background:}
+\paragraph{Q7 background:}
 Let us consider using a neural network (non-convolutional) to perform classification on the \href{http://yann.lecun.com/exdb/mnist/}{MNIST dataset} of handwritten digits, with 10 classes covering the digits 0--9. Each image is 28$\times$28 pixels, and so the network input is a 784-dimensional vector $\mathbf{x}=(x_1,x_2,\dots,x_i,\dots,x_{784})$. The output of the neural network is probability distribution $\mathbf{p}=(p_1,\dots,p_j,\dots,p_{10})$ over the 10 classes. Suppose our network has one fully-connected layer with $10$ neurons---one for each class. Each neuron has a weight for each input $\mathbf{w}=(w_1,\dots,w_i,\dots,w_{784})$, plus a bias $b$. As we only have one layer with no multi-layer composition, there's no need to use an activation function.
 
 When we pass in a vector $\mathbf{x}$ to this layer, we will compute a 10-dimensional output vector $\mathbf{l}=(l_1,l_2,...,l_j,...,l_{10})$ as:
@@ -292,7 +307,7 @@ So...why does this loss $L$ work? Using the cross-entropy loss exploits concepts
 % The average message length in bits _across_ two distributions - the true distribution \mathbf{p} and some predicted distribution \mathbf{q}. If the predicted distribution is equal to the true distribution, then cross-entropy _is_ entropy.
 %
 % So then what is entropy minus cross-entropy?
-% This tells us how different the predicted distribution is from the true distribution. This is called the Kullback-Leibler divergence (or KL-divergence). It is a divergence and not a distance because it doesn't have a 'sidedness'.
+% This tells us how different the predicted distribution is from the true distribution. This is called the Kullback-Leibler divergence (or KL-divergence). It is a divergence and not a distance because it doesn't have a `sidedness'.
 % D_{KL}(\mathbf{p} || \mathbf{q}) = H(\mathbf{p},\mathbf{q}) - H(\mathbf{p})
 %
 % Why is it \emph{minus}?   The uncertainty reduction factor from a message is equal to 1 / p(event). So, we would normally compute ln( 1/p(event) ). But ln(1/x) = -ln(x), so we equivalently compute -ln( p(event) ).
@@ -320,9 +335,9 @@ We must deduce $\frac{\partial L}{\partial w_{ij}}$ and $\frac{\partial L}{\part
 \topsep0em
 \parsep0em
 \partopsep0em
-\item the change in the loss with respect to the softmax output $\frac{\delta L}{\delta p_j}$,
-\item the change in the softmax output with respect to the neuron output $\frac{\delta p_j}{\delta l_j}$, and
-\item the change in the neuron output with respect to the neuron weights $\frac{\delta l_j}{w_{ij}}$.
+\item The change in the loss with respect to the softmax output $\frac{\delta L}{\delta p_j}$,
+\item The change in the softmax output with respect to the neuron output $\frac{\delta p_j}{\delta l_j}$, and
+\item The change in the neuron output with respect to the neuron weights $\frac{\delta l_j}{w_{ij}}$.
 \end{enumerate}
 We must derive each individually, and then formulate the final term via the chain rule. The biases follow in a similar fashion.
 
@@ -350,17 +365,16 @@ So...after all of that, our gradient update rules are surprisingly simple!
 \hspace{\fill}\rule{0.5\linewidth}{.5pt}\hspace{\fill}
 
 
-\paragraph{Q5:} We will implement these steps in code using numpy. We provide a code stencil \texttt{main.py} which loads one of two datasets: MNIST and the scene recognition dataset from Homework 4. We also provide two models: a neural network, and then a neural network whose logits are used as input to an SVM classifier. Please look at the comments in \texttt{main.py} for the arguments to pass in to the program for each condition. The neural network model is defined in \texttt{model.py}, and the parts we must implement are marked with TODO comments.
+\paragraph{Q7:} We will implement these steps in code using numpy. We provide a code stencil \texttt{main.py} which loads one of two datasets: MNIST and the scene recognition dataset from Homework 4. We also provide two models: a neural network, and then a neural network whose logits are used as input to an SVM classifier. Please look at the comments in \texttt{main.py} for the arguments to pass in to the program for each condition. The neural network model is defined in \texttt{model.py}, and the parts we must implement are marked with TODO comments.
 
 \emph{Tasks:} Please follow the steps to implement the forward model evaluation and backward gradient update steps. Then, run your model on all four conditions and report training loss (calculated using \emph{training} set) and accuracy (calculated using \emph{testing} set) as the number of training epochs increases.
 
 
-Please upload your completed \texttt{model.py} to Gradescope under the assignment titled "Homework 5 Written Code (Numpy)". The autograder will check that you correctly implemented parts of your model. Please also include a \texttt{writeup.pdf} with your responses to the following questions.
+Please upload your completed \texttt{model.py} to Gradescope under the assignment titled "Homework 5 Written Code (Numpy)". The autograder will check that you correctly implemented parts of your model. Then, complete the following questions.
 
-\begin{enumerate}
-    \item What do these numbers tell us about the capacity of the network, the complexity of the two problems, the value of training, and the value of the two different classification approaches?
+\paragraph{A7.1:}
 
-    \item How well did each model perform on each dataset? Please use this table to structure your response.
+How well did each model perform on each dataset? Please use this table to structure your response.
 
     \begin{itemize}
         \item NN on MNIST: xx\% (highest accuracy)
@@ -385,22 +399,29 @@ Please upload your completed \texttt{model.py} to Gradescope under the assignmen
     	    s\end{itemize}
     \end{itemize}
 
-\end{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+\paragraph{Q7.2:} What do the training loss and accuracy numbers tell us about a) the capacity of the network, b) the complexity of the two problems, and c) the value of the two different classification approaches?
+
+\paragraph{A7.2:} Answer here.
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \pagebreak
-\paragraph{Q6:} Follow the \href{https://browncsci1430.github.io/webpage/resources/gcp_guide/}{GCP guide} to set up GCP. \emph{Note:} This is tricky, and it will take you some time to become familiar with the system! Once finished, complete one of these two Tensorflow MNIST tutorials on GCP:
+\paragraph{Q8:} Follow the \href{https://browncsci1430.github.io/webpage/resources/gcp_guide/}{GCP guide} to set up Google Cloud Platform access. 
+\emph{Note:} This is tricky, and it will take you some time to become familiar with the system! 
+Once finished, complete one of these two Tensorflow MNIST tutorials on GCP:
 \begin{itemize}
 	\item \href{https://www.tensorflow.org/tutorials/quickstart/beginner}{TensorFlow 2 quickstart for beginners}
 	\item \href{https://www.tensorflow.org/tutorials/quickstart/advanced}{TensorFlow 2 quickstart for experts}
 \end{itemize}
 
-The work for the tutorial can be done in a completely new Python file inside or outside of your homework code (you won't have to turn it in).
+The work for the quickstart can be completed in a new Python file inside or outside of your homework code, as you won't have to turn in any quickstart code.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{A6:} Please insert a screenshot of the tutorial code output, running on GCP:
+\paragraph{A8:} Please insert a screenshot of the quickstart code output, running on GCP:
 
 % \begin{figure}[t]
 %     \includegraphics[width=\linewidth]{yourscreenshot.png}
