@@ -1,5 +1,5 @@
 """
-CSCI 1430 Deep Learning project
+CSCI 1430 Homework 5 CNNs
 By Ruizhao Zhu, Aaron Gokaslan, James Tompkin
 
 This executable is used to launch the model on a given dataset. Additionally, it the data processing

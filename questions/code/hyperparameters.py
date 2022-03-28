@@ -24,7 +24,7 @@ batch_size = 1
 
 # learning_rate is a critical parameter that can dramatically affect
 # whether training succeeds or fails. For most of the experiments in this
-# project the default learning rate is safe.
+# homework the default learning rate is safe.
 # learning_rate = 0.01
 learning_rate = 0.5
 
