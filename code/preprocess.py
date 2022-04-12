@@ -94,11 +94,17 @@ class Datasets():
 
         # ==========================================================
 
-        print("Dataset mean: [{0:.4f}, {1:.4f}, {2:.4f}]".format(
+        print("Dataset mean shape: [{0}, {1}, {2}]".format(
             self.mean.shape[0], self.mean.shape[1], self.mean.shape[2]))
 
-        print("Dataset std: [{0:.4f}, {1:.4f}, {2:.4f}]".format(
+        print("Dataset mean top left pixel value: [{0:.4f}, {1:.4f}, {2:.4f}]".format(
+            self.mean[0,0,0], self.mean[0,0,1], self.mean[0,0,2]))
+
+        print("Dataset std shape: [{0}, {1}, {2}]".format(
             self.std.shape[0], self.std.shape[1], self.std.shape[2]))
+
+        print("Dataset std top left pixel value: [{0:.4f}, {1:.4f}, {2:.4f}]".format(
+            self.std[0,0,0], self.std[0,0,1], self.std[0,0,2]))
 
     def standardize(self, img):
         """ Function for applying standardization to an input image.
