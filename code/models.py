@@ -17,11 +17,13 @@ class YourModel(tf.keras.Model):
     def __init__(self):
         super(YourModel, self).__init__()
 
+        # TASK 1
         # TODO: Select an optimizer for your network (see the documentation
         #       for tf.keras.optimizers)
 
         self.optimizer = None
 
+        # TASK 1
         # TODO: Build your own convolutional neural network, using Dropout at
         #       least once. The input image will be passed through each Keras
         #       layer in self.architecture sequentially. Refer to the imports
@@ -66,6 +68,7 @@ class YourModel(tf.keras.Model):
     def loss_fn(labels, predictions):
         """ Loss function for the model. """
 
+        # TASK 1
         # TODO: Select a loss function for your network (see the documentation
         #       for tf.keras.losses)
 
@@ -76,6 +79,7 @@ class VGGModel(tf.keras.Model):
     def __init__(self):
         super(VGGModel, self).__init__()
 
+        # TASK 3
         # TODO: Select an optimizer for your network (see the documentation
         #       for tf.keras.optimizers)
 
@@ -122,6 +126,7 @@ class VGGModel(tf.keras.Model):
             MaxPool2D(2, name="block5_pool")
         ]
 
+        # TASK 3
         # TODO: Make all layers in self.vgg16 non-trainable. This will freeze the
         #       pretrained VGG16 weights into place so that only the classificaiton
         #       head is trained.
@@ -146,6 +151,7 @@ class VGGModel(tf.keras.Model):
     def loss_fn(labels, predictions):
         """ Loss function for model. """
 
+        # TASK 3
         # TODO: Select a loss function for your network (see the documentation
         #       for tf.keras.losses)
 

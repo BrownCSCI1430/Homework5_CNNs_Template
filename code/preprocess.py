@@ -80,6 +80,7 @@ class Datasets():
 
             data_sample[i] = img
 
+        # TASK 1
         # TODO: Calculate the pixel-wise mean and standard deviation
         #       of the images in data_sample and store them in
         #       self.mean and self.std respectively.
@@ -116,6 +117,7 @@ class Datasets():
             img - numpy array of shape (image size, image size, 3)
         """
 
+        # TASK 1
         # TODO: Standardize the input image. Use self.mean and self.std
         #       that were calculated in calc_mean_and_std() to perform
         #       the standardization.
