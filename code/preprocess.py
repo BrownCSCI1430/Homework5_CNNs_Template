@@ -31,8 +31,8 @@ class Datasets():
         self.classes = [""] * hp.num_classes
 
         # Mean and std for standardization
-        self.mean = np.zeros((3,))
-        self.std = np.zeros((3,))
+        self.mean = np.zeros((hp.img_size,hp.img_size,3))
+        self.std = np.ones((hp.img_size,hp.img_size,3))
         self.calc_mean_and_std()
 
         # Setup data generators
@@ -83,18 +83,22 @@ class Datasets():
         # TODO: Calculate the pixel-wise mean and standard deviation
         #       of the images in data_sample and store them in
         #       self.mean and self.std respectively.
+        #
+        #       Note: This is _not_ a mean over all pixels;
+        #             it is a mean image (the mean input data point).
+        #       
         # ==========================================================
 
-        self.mean = None
-        self.std = None
+        # self.mean = your code
+        # self.std = your code
 
         # ==========================================================
 
         print("Dataset mean: [{0:.4f}, {1:.4f}, {2:.4f}]".format(
-            self.mean[0], self.mean[1], self.mean[2]))
+            self.mean.shape[0], self.mean.shape[1], self.mean.shape[2]))
 
         print("Dataset std: [{0:.4f}, {1:.4f}, {2:.4f}]".format(
-            self.std[0], self.std[1], self.std[2]))
+            self.std.shape[0], self.std.shape[1], self.std.shape[2]))
 
     def standardize(self, img):
         """ Function for applying standardization to an input image.
@@ -111,7 +115,7 @@ class Datasets():
         #       the standardization.
         # =============================================================
 
-
+        img = img      # replace this code
 
         # =============================================================
 
