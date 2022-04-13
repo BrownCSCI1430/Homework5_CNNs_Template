@@ -81,8 +81,8 @@ class Datasets():
             data_sample[i] = img
 
         # TASK 1
-        # TODO: Calculate the pixel-wise mean and standard deviation
-        #       of the images in data_sample and store them in
+        # TODO: Calculate the mean and standard deviation
+        #       of the samples in data_sample and store them in
         #       self.mean and self.std respectively.
         #
         #       Note: This is _not_ a mean over all pixels;
