@@ -90,11 +90,13 @@ def LIME_explainer(model, path, preprocess_fn):
         plt.title(title)
         plt.show()
 
+    # Read the image and preprocess it as before
     image = imread(path)
     if len(image.shape) == 2:
         image = np.stack([image, image, image], axis=-1)
-    image = preprocess_fn(image)
     image = resize(image, (hp.img_size, hp.img_size, 3))
+    image = preprocess_fn(image)
+    
 
     explainer = lime_image.LimeImageExplainer()
 
