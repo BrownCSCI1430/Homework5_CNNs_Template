@@ -94,7 +94,7 @@ def LIME_explainer(model, path, preprocess_fn):
     image = imread(path)
     if len(image.shape) == 2:
         image = np.stack([image, image, image], axis=-1)
-    image = resize(image, (hp.img_size, hp.img_size, 3))
+    image = resize(image, (hp.img_size, hp.img_size, 3), preserve_range=True)
     image = preprocess_fn(image)
     
 
