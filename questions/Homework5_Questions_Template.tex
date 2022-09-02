@@ -52,6 +52,7 @@
 \usepackage{amssymb}
 \usepackage[shortlabels]{enumitem}
 \setlist[enumerate]{topsep=0pt}
+\usepackage{mdframed}
 
 % python code format: https://github.com/olivierverdier/python-latex-highlighting
 \usepackage{pythonhighlight}
@@ -64,27 +65,27 @@
 \fancyhf{}
 \lhead{Homework 5 Questions}
 \rhead{CSCI 1430}
-\lfoot{\textcolor{red}{Only
-\ifcase\thepage
-\or instructions
-\or Q1 and A1
-\or Q2 and A2
-\or Q3 and A3 
-\or Q4 and A4 
-\or Q5.1 and A5.1
-\or Q5.2 and A5.2
-\or Q6 and A6
-\or Q7
-\or Q7
-\or Q7 and A7.1
-\or A7.2 
-\or Q8 and A8
-\or feedback
-\else
-EXTRA PAGE ADDED
-\fi
-should be on this page
-}}
+% \lfoot{\textcolor{red}{Only
+% \ifcase\thepage
+% \or instructions
+% \or Q1 and A1
+% \or Q2 and A2
+% \or Q3 and A3 
+% \or Q4 and A4 
+% \or Q5.1 and A5.1
+% \or Q5.2 and A5.2
+% \or Q6 and A6
+% \or Q7
+% \or Q7
+% \or Q7 and A7.1
+% \or A7.2 
+% \or Q8 and A8
+% \or feedback
+% \else
+% EXTRA PAGE ADDED
+% \fi
+% should be on this page
+% }}
 \rfoot{\thepage~/ 12}
 
 \date{}
@@ -96,30 +97,44 @@ should be on this page
 \vspace{-2cm}
 \thispagestyle{fancy}
 
-\section*{Instructions}
+
+\section*{Document Instructions}
 \begin{itemize}
-  \item 2 socially-responsible computing questions, which will be expanded on in discussion sections.
-  \item 6 technical questions (Q7 and Q8 with code components).
-  \item \emph{This will take longer than usual! Q7 is the most substantial technical written part so far, and Q8 is a tricky setup---start early!}.
-  \item Write code where appropriate; feel free to include images or equations.
+  \item 8 questions \textbf{[6 + 6 + 6 + 4 + 4 + 4 + 10 = 40 points]}.
+  \item Fill all your answers within the answer boxes, and \textbf{please do NOT remove the answer box outlines}.
+  \item Include code, images, and equations where appropriate.
+  \item To identify all places where your responses are expected, search for `TODO'.
   \item Please make this document anonymous.
-  \item This assignment is \textbf{fixed length}, and the pages have been assigned for you in Gradescope. As a result, \textbf{please do NOT add any new pages}. We will provide ample room for you to answer the questions. If you \emph{really} wish for more space, please add a page \emph{at the end of the document}.
-  \item \textbf{We do NOT expect you to fill up each page with your answer.} Some answers will only be a few sentences long, and that is okay.
-  \item Question 7 has a coding component that must be submitted to Gradescope under a separate assignment (Homework 5 Written (Numpy)).
 \end{itemize}
+
+\section*{ Gradescope Instructions}
+\begin{itemize}
+  \item When you are finished, compile this document to a PDF and submit it directly to Gradescope. 
+  \item You will be required to assign the appropriate answers to the right pages on Gradescope. \textbf{Failure to assign pages correctly will lead to a deduction of 2 points per misaligned page (capped at a maxmimum 6 point deduction).}
+\end{itemize}
+\pagebreak
+
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagebreak
-\paragraph{Q1:} Many traditional computer vision algorithms use convolutional filters to extract feature representations, e.g., in SIFT, to which we then often apply machine learning classification techniques. Convolutional neural networks also use filters within a machine learning algorithm.
+\paragraph{Q1:} \textbf{[6 points]} Many traditional computer vision algorithms use convolutional filters to extract feature representations, e.g., in SIFT, to which we then often apply machine learning classification techniques. Convolutional neural networks also use filters within a machine learning algorithm.
 
 \begin{enumerate} [(a)]
-\item What is different about the construction of the filters in each of these approaches?
-\item Please declare and explain the advantages and disadvantages of these two approaches.
+\item \textbf{[2 points]} What is different about the construction of the filters in each of these approaches?
+
+\begin{mdframed}
+TODO: Your answer to (a) here.
+\end{mdframed}
+
+\item \textbf{[4 points]} Please declare and explain at least two advantages and disadvantages of each of these two approaches.
+\begin{mdframed}
+TODO: Your answer to (b) here.
+\end{mdframed}
 \end{enumerate}
 
-\paragraph{A1:} Your answer here.
+% \paragraph{A1:} Your answer here.
 % Uncomment the stencil below and fill in your solution.
 
 % \begin{enumerate}[(a)]
@@ -133,24 +148,34 @@ should be on this page
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagebreak
-\paragraph{Q2:} Many CNNs have a fully connected multi-layer perceptron (MLP) after the convolutional layers as a general purpose `decision-making' subnetwork. 
+\paragraph{Q2:} \textbf{[3 points]} Many CNNs have a fully connected multi-layer perceptron (MLP) after the convolutional layers as a general purpose `decision-making' subnetwork. 
 What effects might a \emph{locally-connected} MLP have on computer vision applications, and why?
 
 Please give your answer in terms of the learned convolution feature maps, their connections, and the perceptrons in the MLP.
 
+\begin{mdframed}
+TODO: Your answer here.
+\end{mdframed}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{A2:} Your answer here.
+% \paragraph{A2:} Your answer here.
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \pagebreak
-\paragraph{Q3:} Given a neural network classifier and the stochastic gradient descent training approach, discuss how the \emph{learning rate}, \emph{batch size}, and \emph{number of epochs} hyperparameters might affect the training process and outcome.
+\paragraph{Q3:} \textbf{[6 points]} Given a neural network classifier and the stochastic gradient descent training approach, discuss how the following hyperparameters might affect the training process and outcome.
+
+\begin{enumerate}[(a)]
+    \item \textbf{[2 points]} Learning rate
+    \item \textbf{[2 points]} Batch size
+    \item \textbf{[2 points]} Number of epochs
+\end{enumerate}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{A3:} Your answer here.
+% \paragraph{A3:} Your answer here.
 % Uncomment the stencil below and fill in your solution.
 
 % \begin{enumerate}[(a)]
@@ -166,30 +191,92 @@ Please give your answer in terms of the learned convolution feature maps, their 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagebreak
-\paragraph{Q4:} What effects are caused by adding a spatial max pooling layer (stride > 1) after a single convolutional layer, where the output with max pooling is some size larger than 1 x 1 x d?
+\paragraph{Q4:} \textbf{[7 + 1 bonus points]} What effects are caused by adding a spatial max pooling layer (stride $>$ 1) after a single convolutional layer, where the output with max pooling is some size larger than $1 \times 1 \times d$?
 
-\emph{Notes:} `Global' here means whole image; `local' means only in some image region.
+There may be multiple correct answers per question.
 
-\emph{LaTeX:} To fill in boxes, replace `\textbackslash square' with `\textbackslash blacksquare' for your answer.
+\emph{Note:} `Global' here means whole image; `local' means only in some image region.
 
-\paragraph{A4:} Multiple choice. Choose all that apply.
+\emph{Tip:} To fill in boxes, replace `\textbackslash square' with `\textbackslash blacksquare' for your answer.
+
+% \paragraph{A4:} Multiple choice. Choose all that apply.
 
 %%% See the tex for the bottom of the page to leave the optional written justification %%%
+
+\begin{enumerate}[(a)]
+    \item \textbf{[1 point]}
+What happens to the computational cost of training?
+    \begin{mdframed}
+    TODO: Select the right option
+    
 \begin{tabular}[h]{lr}
 \toprule
-Increases computational cost of training & $\square$ \\
-Decreases computational cost of training & $\square$ \\
-Increases computational cost of testing & $\square$ \\
-Decreases computational cost of testing & $\square$ \\
-\midrule
-Increases overfitting & $\square$ \\
-Decreases overfitting & $\square$ \\
-Increases underfitting & $\square$ \\
-Decreases underfitting & $\square$ \\
-\midrule
-Increases the nonlinearity of the decision function & $\square$ \\
-Decreases the nonlinearity of the decision function & $\square$ \\
-\midrule
+Increases & $\square$ \\
+Decreases & $\square$ \\
+\bottomrule
+\end{tabular}
+    \end{mdframed}
+    
+    \item \textbf{[1 point]}
+What happens to the computational cost of testing?
+    \begin{mdframed}
+    TODO: Select the right option
+    
+\begin{tabular}[h]{lr}
+\toprule
+Increases & $\square$ \\
+Decreases & $\square$ \\
+\bottomrule
+\end{tabular}
+    \end{mdframed}
+
+    \item \textbf{[1 point]}
+    What happens to overfitting?
+    \begin{mdframed}
+    TODO: Select the right option
+
+\begin{tabular}[h]{lr}
+\toprule
+Increases & $\square$ \\
+Decreases & $\square$ \\
+\bottomrule
+\end{tabular}
+    \end{mdframed}
+
+    \item \textbf{[1 point]}
+    What happens to underfitting?
+    \begin{mdframed}
+    TODO: Select the right option
+
+\begin{tabular}[h]{lr}
+\toprule
+Increases & $\square$ \\
+Decreases & $\square$ \\
+\bottomrule
+\end{tabular}
+    \end{mdframed}
+    
+    \item \textbf{[1 point]}
+    What happens to the nonlinearity of the decision function?
+    \begin{mdframed}
+    TODO: Select the right option
+
+\begin{tabular}[h]{lr}
+\toprule
+Increases & $\square$ \\
+Decreases & $\square$ \\
+\bottomrule
+\end{tabular}
+    \end{mdframed}
+
+\item \textbf{[2 point]}
+Which of the following occur?
+
+\begin{mdframed}
+TODO: Select all that apply
+
+\begin{tabular}[h]{lr}
+\toprule
 Provides local rotational invariance & $\square$ \\
 Provides global rotational invariance & $\square$ \\
 Provides local scale invariance & $\square$ \\
@@ -198,14 +285,20 @@ Provides local translational invariance & $\square$ \\
 Provides global translational invariance & $\square$ \\
 \bottomrule
 \end{tabular}
+\end{mdframed}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{Something to think about (ungraded):} Given some input to a convolutional layer with stride 2$\times$2 and kernel size 3$\times$3, and ignoring the boundary, what is the minimum number of convolutional filters required to preserve all input information in the output feature map?
+\item
+\textbf{[1 point]} \textbf{(Bonus)} Given some input to a convolutional layer with stride 2$\times$2 and kernel size 3$\times$3, and ignoring the boundary, what is the minimum number of convolutional filters required to preserve all input information in the output feature map?
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Multiple choice.
-\emph{LaTeX:} Use command  `\textbackslash bullet' ($\bullet$) to fill in the dots.
+
+\emph{Tip:} Use command  `\textbackslash bullet' ($\bullet$) to fill in the dots.
+
+\begin{mdframed}
+TODO: Choose one
 
 \begin{tabular}[h]{lc}
 \toprule
@@ -216,11 +309,17 @@ Multiple choice.
 It's impossible & $\square$ \\
 \bottomrule
 \end{tabular}
+\end{mdframed}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Space for optional justification. Do NOT go past this page!
-\emph{Here:} Feel free to leave optional short written justification if desired.
 
+Feel free to leave optional short written justification if desired.
+
+\begin{mdframed}
+TODO: Your response to (g) here.
+\end{mdframed}
+\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
