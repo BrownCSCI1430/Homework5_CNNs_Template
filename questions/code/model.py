@@ -48,6 +48,10 @@ class Model:
         ask that you subtract the value of the greatest logit from all logits
         before exponentiating.
 
+        In addition, this function along with others on this homework should
+        not use loops in the implementation. Using vectorized approaches will be
+        necessary to ensure that the code runs in an appropriate amount of time.
+
         :param inputs: a batch of train images
         :return: probabilities for each per image
         """
@@ -101,7 +105,7 @@ class Model:
         """
         # TODO: Back propagation: use gradient descent to update parameters
 
-        # TODO: Reshape train image data to be matrix, dimension [784, 1]
+        # TODO: Reshape train image data to be matrix, dimension [img.size, 1]
         gradW, gradB = None, None
         return gradW, gradB
 

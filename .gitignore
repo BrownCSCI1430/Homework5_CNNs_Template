@@ -10,3 +10,5 @@ results/*
 *.fls
 *.fdb_latexmk
 *.aux
+logs/*
+checkpoints/*
