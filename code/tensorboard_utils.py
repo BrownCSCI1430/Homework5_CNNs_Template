@@ -79,7 +79,7 @@ class ImageLabelingLogger(tf.keras.callbacks.Callback):
 
                 is_correct = correct_class_idx == predict_class_idx
 
-                title_color = 'g' if is_correct else 'r'
+                title_color = 'b' if is_correct else 'r'
 
                 plt.title(
                     self.datasets.idx_to_class[predict_class_idx],
@@ -106,12 +106,17 @@ class ImageLabelingLogger(tf.keras.callbacks.Callback):
         file_writer_il = tf.summary.create_file_writer(
             self.logs_path + os.sep + "image_labels")
 
+        i = 0
+        for label, img in zip(mis_labels, misclassified):
+            plt.imsave("misclassified" +
+                    self.logs_path[self.logs_path.index(os.sep):] +
+                    os.sep + i + label + ".png")
+
         with file_writer_il.as_default():
             tf.summary.image("Image Label Predictions",
                              figure_img, step=epoch_num)
             for label, img in zip(mis_labels, misclassified):
                 img = tf.expand_dims(img, axis=0)
-                # print(img.shape)
                 tf.summary.image(self.datasets.idx_to_class[label], 
                                  img, step=epoch_num)
 
@@ -213,18 +218,31 @@ class CustomModelSaver(tf.keras.callbacks.Callback):
                 epoch, cur_acc)
 
             if self.task == '1':
-                self.model.save_weights(
-                    self.checkpoint_dir + os.sep + "your." + save_name)
+                save_loc = self.checkpoint_dir + os.sep + "your." + save_name
+                self.model.save_weights(save_location)
             else:
+                save_loc = self.checkpoint_dir + os.sep + "vgg." + save_name
                 # Only save weights of classification head of VGGModel
-                self.model.head.save_weights(
-                    self.checkpoint_dir + os.sep + "vgg." + save_name)
+                self.model.head.save_weights(save_location)
 
             # Ensure max_num_weights is not exceeded by removing
             # minimum weight
             if self.max_num_weights > 0 and \
                     num_weights + 1 > self.max_num_weights:
                 os.remove(self.checkpoint_dir + os.sep + min_acc_file)
+
+            print("%" * 30)
+            print(("Epoch {0:03d} TEST accuracy ({1:.4f}) EXCEEDED previous"
+                   "maximum TEST accuracy ({1:.4f}). Checkpoint saved at {loc}")
+                   .format(epoch, cur_acc, max_acc, save_loc))
+            print("%" * 30)
+        else:
+            print("%" * 30)
+            print(("Epoch {0:03d} TEST accuracy ({1:.4f}) DID NOT EXCEED"
+                   "previous maximum TEST accuracy ({1:.4f}). No checkpoint was"
+                   "saved").format(epoch, cur_acc, max_acc))
+            print("%" * 30)
+
 
     def scan_weight_files(self):
         """ Scans checkpoint directory to find current minimum and maximum
