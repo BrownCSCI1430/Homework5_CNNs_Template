@@ -1,5 +1,5 @@
 """
-Homework 5 - CNNs
+Homework 5 CNNs
 CS1430 - Computer Vision
 Brown University
 """
@@ -17,13 +17,12 @@ class YourModel(tf.keras.Model):
     def __init__(self):
         super(YourModel, self).__init__()
 
-        # TASK 1
         # TODO: Select an optimizer for your network (see the documentation
         #       for tf.keras.optimizers)
+        self.optimizer = tf.keras.optimizers.RMSprop(
+            learning_rate=hp.learning_rate,
+            momentum=hp.momentum)
 
-        self.optimizer = None
-
-        # TASK 1
         # TODO: Build your own convolutional neural network, using Dropout at
         #       least once. The input image will be passed through each Keras
         #       layer in self.architecture sequentially. Refer to the imports
@@ -54,7 +53,36 @@ class YourModel(tf.keras.Model):
         #       Note: Flatten is a very useful layer. You shouldn't have to
         #             explicitly reshape any tensors anywhere in your network.
 
-        self.architecture = []
+        self.architecture = [
+            # Block 1
+            Conv2D(filters=32, kernel_size=(5, 5), padding='same',
+                   strides=(1, 1), activation='relu'),
+            Conv2D(filters=32, kernel_size=(3, 3), padding='same',
+                   strides=(1, 1), activation='relu'),
+            MaxPool2D(pool_size=(2, 2)),
+
+            # Block 2
+            Conv2D(filters=64, kernel_size=(3, 3), padding='same',
+                   strides=(1, 1), activation='relu'),
+            Conv2D(filters=64, kernel_size=(3, 3), padding='same',
+                   strides=(1, 1), activation='relu'),
+            MaxPool2D(pool_size=(2, 2)),
+
+            # Block 3
+            Conv2D(filters=128, kernel_size=(3, 3), padding='same',
+                   strides=(1, 1), activation='relu'),
+            Conv2D(filters=128, kernel_size=(3, 3), padding='same',
+                   strides=(1, 1), activation='relu'),
+            MaxPool2D(pool_size=(4, 4)),
+            Dropout(rate=0.3),
+
+            # Block 4
+            Flatten(),
+            Dense(units=512, activation='relu'),
+
+            # Block 5
+            Dense(units=hp.num_classes, activation='softmax')
+        ]
 
     def call(self, x):
         """ Passes input image through the network. """
@@ -68,24 +96,23 @@ class YourModel(tf.keras.Model):
     def loss_fn(labels, predictions):
         """ Loss function for the model. """
 
-        # TASK 1
         # TODO: Select a loss function for your network (see the documentation
         #       for tf.keras.losses)
 
-        pass
+        return tf.keras.losses.sparse_categorical_crossentropy(
+            labels, predictions, from_logits=False)
 
 
 class VGGModel(tf.keras.Model):
     def __init__(self):
         super(VGGModel, self).__init__()
 
-        # TASK 3
         # TODO: Select an optimizer for your network (see the documentation
         #       for tf.keras.optimizers)
 
-        self.optimizer = None
-
-        # Don't change the below:
+        self.optimizer = tf.keras.optimizers.RMSprop(
+            learning_rate=hp.learning_rate,
+            momentum=hp.momentum)
 
         self.vgg16 = [
             # Block 1
@@ -126,14 +153,24 @@ class VGGModel(tf.keras.Model):
             MaxPool2D(2, name="block5_pool")
         ]
 
-        # TASK 3
         # TODO: Make all layers in self.vgg16 non-trainable. This will freeze the
         #       pretrained VGG16 weights into place so that only the classificaiton
         #       head is trained.
 
+        for layer in self.vgg16:
+            layer.trainable = False
+
         # TODO: Write a classification head for our 15-scene classification task.
 
-        self.head = []
+        self.head = [
+            # Block 6
+            Flatten(name="block5_flatten"),
+            Dense(512, activation="relu"),
+            # Block 7
+            Dense(512, activation="relu"),
+            # Block 8
+            Dense(hp.num_classes, activation="softmax"),
+        ]
 
         # Don't change the below:
         self.vgg16 = tf.keras.Sequential(self.vgg16, name="vgg_base")
@@ -151,8 +188,8 @@ class VGGModel(tf.keras.Model):
     def loss_fn(labels, predictions):
         """ Loss function for model. """
 
-        # TASK 3
         # TODO: Select a loss function for your network (see the documentation
         #       for tf.keras.losses)
 
-        pass
+        return tf.keras.losses.sparse_categorical_crossentropy(
+            labels, predictions, from_logits=False)

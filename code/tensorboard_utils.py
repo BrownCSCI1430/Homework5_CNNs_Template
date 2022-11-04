@@ -53,8 +53,9 @@ class ImageLabelingLogger(tf.keras.callbacks.Callback):
         
         for batch in self.datasets.train_data:
             misclassified = []
-            mis_labels = []
-            
+            correct_labels = []
+            wrong_labels = []
+
             for i, image in enumerate(batch[0]):
                 plt.subplot(5, 5, min(count_all+1, 25))
 
@@ -90,7 +91,8 @@ class ImageLabelingLogger(tf.keras.callbacks.Callback):
                 if not is_correct:
                     count_misclassified += 1
                     misclassified.append(image)
-                    mis_labels.append(correct_class_idx)
+                    correct_labels.append(correct_class_idx)
+                    wrong_labels.append(predict_class_idx)
 
                 count_all += 1
                 
@@ -106,16 +108,21 @@ class ImageLabelingLogger(tf.keras.callbacks.Callback):
         file_writer_il = tf.summary.create_file_writer(
             self.logs_path + os.sep + "image_labels")
 
-        i = 0
-        for label, img in zip(mis_labels, misclassified):
-            plt.imsave("misclassified" +
-                    self.logs_path[self.logs_path.index(os.sep):] +
-                    os.sep + i + label + ".png")
+        misclassified_path = "misclassified" + self.logs_path[self.logs_path.index(os.sep):]
+        if not os.path.exists(misclassified_path):
+            os.makedirs(misclassified_path)
+        for correct, wrong, img in zip(correct_labels, wrong_labels, misclassified):
+            wrong = self.datasets.idx_to_class[wrong]
+            correct= self.datasets.idx_to_class[correct]
+            image_name = wrong + "_predicted" + ".png"
+            if not os.path.exists(misclassified_path + os.sep + correct):
+                os.makedirs(misclassified_path + os.sep + correct)
+            plt.imsave(misclassified_path + os.sep + correct + os.sep + image_name, img)
 
         with file_writer_il.as_default():
             tf.summary.image("Image Label Predictions",
                              figure_img, step=epoch_num)
-            for label, img in zip(mis_labels, misclassified):
+            for label, img in zip(correct_labels, misclassified):
                 img = tf.expand_dims(img, axis=0)
                 tf.summary.image(self.datasets.idx_to_class[label], 
                                  img, step=epoch_num)
@@ -218,10 +225,16 @@ class CustomModelSaver(tf.keras.callbacks.Callback):
                 epoch, cur_acc)
 
             if self.task == '1':
-                save_loc = self.checkpoint_dir + os.sep + "your." + save_name
+                save_location = self.checkpoint_dir + os.sep + "your." + save_name
+                print(("\nEpoch {0:03d} TEST accuracy ({1:.4f}) EXCEEDED previous "
+                       "maximum TEST accuracy.\nSaving checkpoint at {location}")
+                       .format(epoch + 1, cur_acc, location = save_location))
                 self.model.save_weights(save_location)
             else:
                 save_loc = self.checkpoint_dir + os.sep + "vgg." + save_name
+                print(("\nEpoch {0:03d} TEST accuracy ({1:.4f}) EXCEEDED previous "
+                       "maximum TEST accuracy.\nSaving checkpoint at {location}")
+                       .format(epoch + 1, cur_acc, location = save_location))
                 # Only save weights of classification head of VGGModel
                 self.model.head.save_weights(save_location)
 
@@ -230,18 +243,10 @@ class CustomModelSaver(tf.keras.callbacks.Callback):
             if self.max_num_weights > 0 and \
                     num_weights + 1 > self.max_num_weights:
                 os.remove(self.checkpoint_dir + os.sep + min_acc_file)
-
-            print("%" * 30)
-            print(("Epoch {0:03d} TEST accuracy ({1:.4f}) EXCEEDED previous"
-                   "maximum TEST accuracy ({1:.4f}). Checkpoint saved at {loc}")
-                   .format(epoch, cur_acc, max_acc, save_loc))
-            print("%" * 30)
         else:
-            print("%" * 30)
-            print(("Epoch {0:03d} TEST accuracy ({1:.4f}) DID NOT EXCEED"
-                   "previous maximum TEST accuracy ({1:.4f}). No checkpoint was"
-                   "saved").format(epoch, cur_acc, max_acc))
-            print("%" * 30)
+            print(("\nEpoch {0:03d} TEST accuracy ({1:.4f}) DID NOT EXCEED "
+                   "previous maximum TEST accuracy.\nNo checkpoint was "
+                   "saved").format(epoch + 1, cur_acc))
 
 
     def scan_weight_files(self):

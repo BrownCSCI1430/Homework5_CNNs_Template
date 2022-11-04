@@ -1,5 +1,5 @@
 """
-Homework 5 - CNNs
+Homework 5 CNNs
 CS1430 - Computer Vision
 Brown University
 """
@@ -32,7 +32,7 @@ class Datasets():
 
         # Mean and std for standardization
         self.mean = np.zeros((hp.img_size,hp.img_size,3))
-        self.std = np.ones((hp.img_size,hp.img_size,3))
+        self.std = np.zeros((hp.img_size,hp.img_size,3))
         self.calc_mean_and_std()
 
         # Setup data generators
@@ -80,44 +80,12 @@ class Datasets():
 
             data_sample[i] = img
 
-        # TASK 1
         # TODO: Calculate the mean and standard deviation
-        #       of the samples in data_sample and store them in
+        #       of the samples (whole images) in data_sample and store them in
         #       self.mean and self.std respectively.
-        #
-        #       Note: This is _not_ a mean over all pixels;
-        #             it is a mean image (the mean input data point).
-        #       
-        #             For example, the mean of the two images:
-        #
-        #             [[[0, 0, 100], [0, 0, 100]],      [[[100, 0, 0], [100, 0, 0]],
-        #              [[0, 100, 0], [0, 100, 0]],  and  [[0, 100, 0], [0, 100, 0]],
-        #              [[100, 0, 0], [100, 0, 0]]]       [[0, 0, 100], [0, 0, 100]]]
-        #
-        #             would be
-        #
-        #             [[[50, 0, 50], [50, 0, 50]],
-        #              [[0, 100, 0], [0, 100, 0]],
-        #              [[50, 0, 50], [50, 0, 50]]]
-        #
-        # ==========================================================
+        self.mean = np.mean(data_sample, axis=0)
+        self.std = np.std(data_sample, axis=0)
 
-        # self.mean = your code
-        # self.std = your code
-
-        # ==========================================================
-
-        print("Dataset mean shape: [{0}, {1}, {2}]".format(
-            self.mean.shape[0], self.mean.shape[1], self.mean.shape[2]))
-
-        print("Dataset mean top left pixel value: [{0:.4f}, {1:.4f}, {2:.4f}]".format(
-            self.mean[0,0,0], self.mean[0,0,1], self.mean[0,0,2]))
-
-        print("Dataset std shape: [{0}, {1}, {2}]".format(
-            self.std.shape[0], self.std.shape[1], self.std.shape[2]))
-
-        print("Dataset std top left pixel value: [{0:.4f}, {1:.4f}, {2:.4f}]".format(
-            self.std[0,0,0], self.std[0,0,1], self.std[0,0,2]))
 
     def standardize(self, img):
         """ Function for applying standardization to an input image.
@@ -129,15 +97,11 @@ class Datasets():
             img - numpy array of shape (image size, image size, 3)
         """
 
-        # TASK 1
         # TODO: Standardize the input image. Use self.mean and self.std
         #       that were calculated in calc_mean_and_std() to perform
         #       the standardization.
-        # =============================================================
-
-        img = img      # replace this code
-
-        # =============================================================
+        img -= self.mean
+        img /= self.std
 
         return img
 
@@ -202,15 +166,12 @@ class Datasets():
             #       preprocessing_function argument as is unless
             #       you have written your own custom preprocessing
             #       function (see custom_preprocess_fn()).
-            #
-            # Documentation for ImageDataGenerator: https://bit.ly/2wN2EmK
-            #
-            # ============================================================
-
             data_gen = tf.keras.preprocessing.image.ImageDataGenerator(
-                preprocessing_function=self.preprocess_fn)
-
-            # ============================================================
+                preprocessing_function=self.preprocess_fn,
+                zoom_range=0.5,
+                shear_range=10.,
+                horizontal_flip=True,
+                rotation_range=20)
         else:
             # Don't modify this
             data_gen = tf.keras.preprocessing.image.ImageDataGenerator(

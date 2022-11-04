@@ -12,3 +12,4 @@ results/*
 *.aux
 logs/*
 checkpoints/*
+misclassified/*
