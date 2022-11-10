@@ -8,17 +8,18 @@
 %
 % TO COMPILE:
 % > pdflatex thisfile.tex
+
+% If you do not have LaTeX, your options are:
+% - VSCode extension: https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop
+% - Online Tool: https://www.overleaf.com/ - most LaTeX packages are pre-installed here (e.g., \usepackage{}).
+% - Personal laptops (all common OS): http://www.latex-project.org/get/ 
 %
-% If you do not have LaTeX and need a LaTeX distribution:
-% - Departmental machines have one installed.
-% - Personal laptops (all common OS): http://www.latex-project.org/get/
-%
-% If you need help with LaTeX, come to office hours. Or, there is plenty of help online:
+% If you need help with LaTeX, please come to office hours.
+% Or, there is plenty of help online:
 % https://en.wikibooks.org/wiki/LaTeX
 %
 % Good luck!
 % Srinath and the 1430 staff
-%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % How to include two graphics on the same line:
@@ -38,24 +39,30 @@
 
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{xcolor}
 \usepackage[colorlinks = true,
             linkcolor = blue,
             urlcolor  = blue]{hyperref}
 \usepackage[a4paper,margin=1.5in]{geometry}
-\usepackage{booktabs}
 \usepackage{stackengine,graphicx}
 \usepackage{fancyhdr}
 \setlength{\headheight}{15pt}
 \usepackage{microtype}
 \usepackage{times}
-\usepackage{amsmath}
-\usepackage{amssymb}
 \usepackage[shortlabels]{enumitem}
 \setlist[enumerate]{topsep=0pt}
+\usepackage{amsmath}
+\usepackage{framed}
 \usepackage{mdframed}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs}
 
-% python code format: https://github.com/olivierverdier/python-latex-highlighting
+% a great python code format: https://github.com/olivierverdier/python-latex-highlighting
 \usepackage{pythonhighlight}
+
+\usepackage{trimclip,lipsum}
 
 \frenchspacing
 \setlength{\parindent}{0cm} % Default is 15pt.
@@ -63,75 +70,102 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\lhead{Homework 5 Questions}
+\lhead{Homework 5 Written Questions}
 \rhead{CSCI 1430}
-% \lfoot{\textcolor{red}{Only
-% \ifcase\thepage
-% \or instructions
-% \or Q1 and A1
-% \or Q2 and A2
-% \or Q3 and A3 
-% \or Q4 and A4 
-% \or Q5.1 and A5.1
-% \or Q5.2 and A5.2
-% \or Q6 and A6
-% \or Q7
-% \or Q7
-% \or Q7 and A7.1
-% \or A7.2 
-% \or Q8 and A8
-% \or feedback
-% \else
-% EXTRA PAGE ADDED
-% \fi
-% should be on this page
-% }}
-\rfoot{\thepage~/ 12}
+\lfoot{\textcolor{red}{\textbf{Only}
+\ifcase\thepage
+\or \textbf{instructions}
+\or \textbf{A1 (a)}
+\or \textbf{A1 (b)}
+\or \textbf{A2 (a)}
+\or \textbf{A2 (b)}
+\or \textbf{A3 (a) - (b)}
+\or \textbf{A3 (c)}
+\or \textbf{A4 (a) - (c)}
+\or \textbf{A4 (d) - (f)}
+\or \textbf{A4 (g) - (i)}
+\or \textbf{A5}
+\or \textbf{Q6}
+\or \textbf{Q6}
+\or \textbf{Q6}
+\or \textbf{A6 (a)}
+\or \textbf{A6 (b)}
+\or \textbf{discussion attendance}
+\or \textbf{feedback}
+\else
+\textbf{[ERROR: PAGE MISALIGNMENT]}
+\fi
+\textbf{should be on this page}
+}}
+\rfoot{\thepage~/ 15}
+
 
 \date{}
-\title{\vspace{-1cm}Homework 5 Questions}
+
+\title{\vspace{-1cm}Homework 5 Written Questions}
 
 
 \begin{document}
 \maketitle
-\vspace{-2cm}
+\vspace{-3cm}
 \thispagestyle{fancy}
 
-
-\section*{Document Instructions}
+\section*{ Document Instructions}
 \begin{itemize}
-  \item 8 questions \textbf{[6 + 6 + 6 + 4 + 4 + 4 + 10 = 40 points]}.
+
+  \item 6 questions \textbf{[8 + 8 + 6 + 11 + 4 + 8 = 45 + 3 bonus points]}.
   \item Fill all your answers within the answer boxes, and \textbf{please do NOT remove the answer box outlines}.
+  \item Questions are highlighted in the \textbf{orange boxes}, bonus questions are highlighted in \textbf{blue boxes}, answers should be recorded in the \textbf{green boxes}.
   \item Include code, images, and equations where appropriate.
   \item To identify all places where your responses are expected, search for `TODO'.
+  \item The answer box sizes have been set by the staff beforehand and will truncate your text if it goes beyond the limit. Please make sure your responses fit in the appropriate spaces. \textbf{Extra pages are not permitted unless otherwise specified.}
+  \item Make sure your submission has the right number of pages to validate page alignment sanity (check the footer).
   \item Please make this document anonymous.
 \end{itemize}
 
 \section*{ Gradescope Instructions}
 \begin{itemize}
   \item When you are finished, compile this document to a PDF and submit it directly to Gradescope. 
-  \item You will be required to assign the appropriate answers to the right pages on Gradescope. \textbf{Failure to assign pages correctly will lead to a deduction of 2 points per misaligned page (capped at a maxmimum 6 point deduction).}
+  \item The pages will be automatically assigned to the right questions on Gradescope \textit{assuming you do not add any unnecessary pages}. \textbf{Inconsistently assigned pages will lead to a deduction of 2 points per misaligned page (capped at a maximum 6 point deduction).}
 \end{itemize}
+
 \pagebreak
-
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagebreak
-\paragraph{Q1:} \textbf{[6 points]} Many traditional computer vision algorithms use convolutional filters to extract feature representations, e.g., in SIFT, to which we then often apply machine learning classification techniques. Convolutional neural networks also use filters within a machine learning algorithm.
+\paragraph{Q1:} \textbf{[8 points]} Many traditional computer vision algorithms use convolutional filters to extract feature representations, e.g., in SIFT, to which we then often apply machine learning classification techniques. Convolutional neural networks also use filters within a machine learning algorithm.
 
 \begin{enumerate} [(a)]
-\item \textbf{[2 points]} What is different about the construction of the filters in each of these approaches?
+\item \textbf{[4 points]}
 
-\begin{mdframed}
-TODO: Your answer to (a) here.
-\end{mdframed}
+\begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
+What is different about the construction of the filters in each of these approaches? \textbf{[6-7 sentences]}
+\end{tcolorbox}
+\begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+    \setbox0=\hbox{\parbox[t]{\textwidth}{
+    %%%%%%% ANSWER STARTS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    TODO: Your answer for (a) here %%%%%% Remove this line in your answer! %%%%%%
+    
+    %%%%%%% ANSWER ENDS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    }}
+    \clipbox{0pt \dimexpr\dp0-16\baselineskip\relax{} 0in 0pt}{\copy0}
+\end{tcolorbox}
 
-\item \textbf{[4 points]} Please declare and explain at least two advantages and disadvantages of each of these two approaches.
-\begin{mdframed}
-TODO: Your answer to (b) here.
-\end{mdframed}
+\item \textbf{[4 points]}
+
+\begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
+Please declare and explain at least two advantages and disadvantages of each of these two approaches. \textbf{[6-7 sentences]}
+\end{tcolorbox}
+\begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+    \setbox0=\hbox{\parbox[t]{\textwidth}{
+    %%%%%%% ANSWER STARTS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    TODO: Your answer for (b) here %%%%%% Remove this line in your answer! %%%%%%
+    
+    %%%%%%% ANSWER ENDS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    }}
+    \clipbox{0pt \dimexpr\dp0-16\baselineskip\relax{} 0in 0pt}{\copy0}
+\end{tcolorbox}
 \end{enumerate}
 
 % \paragraph{A1:} Your answer here.
@@ -148,50 +182,95 @@ TODO: Your answer to (b) here.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagebreak
-\paragraph{Q2:} \textbf{[3 points]} Many CNNs have a fully connected multi-layer perceptron (MLP) after the convolutional layers as a general purpose `decision-making' subnetwork. 
-What effects might a \emph{locally-connected} MLP have on computer vision applications, and why?
+\paragraph{Q2:} \textbf{[8 points]} Many CNNs have a fully connected multi-layer perceptron (MLP) after the convolutional layers as a general purpose `decision-making' subnetwork. Unlike in convolutional layers and locally connected MLPs, where not every input connects to every perceptron, a fully connected MLP guarantees that every input is conntected to every perceptron.
 
-Please give your answer in terms of the learned convolution feature maps, their connections, and the perceptrons in the MLP.
+\begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
+What differences in impact could be caused by using a \emph{locally-connected} MLP versus a \emph{fully-connected} MLP, and why?
+\end{tcolorbox}
 
-\begin{mdframed}
-TODO: Your answer here.
-\end{mdframed}
+\includegraphics[width=\linewidth]{images/q2mlp.png}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \paragraph{A2:} Your answer here.
+\begin{enumerate} [(a)]
+\item \textbf{[4 points]} 
+\begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
+Explain these differences in terms of learned convolution feature maps, their connections, and the perceptrons in the MLP. \textbf{[5 - 6 sentences]}
+\end{tcolorbox}
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+    \setbox0=\hbox{\parbox[t]{\textwidth}{
+    %%%%%%% ANSWER STARTS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    TODO: Your answer for (a) here %%%%%% Remove this line in your answer! %%%%%%
+    
+    %%%%%%% ANSWER ENDS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    }}
+    \clipbox{0pt \dimexpr\dp0-16\baselineskip\relax{} 0in 0pt}{\copy0}
+\end{tcolorbox}
 
 \pagebreak
-\paragraph{Q3:} \textbf{[6 points]} Given a neural network classifier and the stochastic gradient descent training approach, discuss how the following hyperparameters might affect the training process and outcome.
+\item \textbf{[4 points]}
+\begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
+Explain these differences in the context of a few different real world examples of computer vision. What cases would a locally connected MLP work better than a fully connected MLP? What could be the stakes if the wrong type of MLP is chosen? \textbf{[5 - 6 sentences]}
+\end{tcolorbox}
 
-\begin{enumerate}[(a)]
-    \item \textbf{[2 points]} Learning rate
-    \item \textbf{[2 points]} Batch size
-    \item \textbf{[2 points]} Number of epochs
+\begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+    \setbox0=\hbox{\parbox[t]{\textwidth}{
+    %%%%%%% ANSWER STARTS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    TODO: Your answer for (b) here %%%%%% Remove this line in your answer! %%%%%%
+    
+    %%%%%%% ANSWER ENDS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    }}
+    \clipbox{0pt \dimexpr\dp0-16\baselineskip\relax{} 0in 0pt}{\copy0}
+\end{tcolorbox}
+
 \end{enumerate}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \paragraph{A3:} Your answer here.
-% Uncomment the stencil below and fill in your solution.
-
-% \begin{enumerate}[(a)]
-
-% \item
-
-% \item
-
-% \item
-
-% \end{enumerate}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagebreak
-\paragraph{Q4:} \textbf{[7 + 1 bonus points]} What effects are caused by adding a spatial max pooling layer (stride $>$ 1) after a single convolutional layer, where the output with max pooling is some size larger than $1 \times 1 \times d$?
+\paragraph{Q3:} \textbf{[6 points]} 
+\begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
+Given a neural network classifier and the stochastic gradient descent training approach, discuss how the following hyperparameters might affect the training process and outcome.
+\end{tcolorbox}
+
+\begin{enumerate}[(a)]
+    \item \textbf{[2 points]} Learning rate \textbf{[4-6 sentences]}
+    \begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+    \setbox0=\hbox{\parbox[t]{\textwidth}{
+    %%%%%%% ANSWER STARTS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    TODO: Your answer for (a) here %%%%%% Remove this line in your answer! %%%%%%
+    
+    %%%%%%% ANSWER ENDS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    }}
+    \clipbox{0pt \dimexpr\dp0-12\baselineskip\relax{} 0in 0pt}{\copy0}
+    \end{tcolorbox}
+    \item \textbf{[2 points]} Batch size \textbf{[4-6 sentences]}
+    \begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+    \setbox0=\hbox{\parbox[t]{\textwidth}{
+    %%%%%%% ANSWER STARTS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    TODO: Your answer for (b) here %%%%%% Remove this line in your answer! %%%%%%
+    
+    %%%%%%% ANSWER ENDS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    }}
+    \clipbox{0pt \dimexpr\dp0-12\baselineskip\relax{} 0in 0pt}{\copy0}
+    \end{tcolorbox}
+    \item \textbf{[2 points]} Number of epochs  \textbf{[4-6 sentences]}
+    \begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+    \setbox0=\hbox{\parbox[t]{\textwidth}{
+    %%%%%%% ANSWER STARTS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    TODO: Your answer for (c) here %%%%%% Remove this line in your answer! %%%%%%
+    
+    %%%%%%% ANSWER ENDS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    }}
+    \clipbox{0pt \dimexpr\dp0-12\baselineskip\relax{} 0in 0pt}{\copy0}
+    \end{tcolorbox}
+\end{enumerate}
+
+\pagebreak
+\paragraph{Q4:} \textbf{[11 + 1 bonus points]} What effects are caused by adding a spatial max pooling layer (stride $>$ 1) after a single convolutional layer, where the output with max pooling is some size larger than $1 \times 1 \times d$?
 
 There may be multiple correct answers per question.
 
@@ -205,9 +284,11 @@ There may be multiple correct answers per question.
 
 \begin{enumerate}[(a)]
     \item \textbf{[1 point]}
-What happens to the computational cost of training?
-    \begin{mdframed}
-    TODO: Select the right option
+    \begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
+    What happens to the computational cost of training?
+    \end{tcolorbox}
+    \begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+    TODO: Select the right option %%%%%% Remove this line in your answer! %%%%%%
     
 \begin{tabular}[h]{lr}
 \toprule
@@ -215,12 +296,14 @@ Increases & $\square$ \\
 Decreases & $\square$ \\
 \bottomrule
 \end{tabular}
-    \end{mdframed}
+\end{tcolorbox}
     
     \item \textbf{[1 point]}
-What happens to the computational cost of testing?
-    \begin{mdframed}
-    TODO: Select the right option
+    \begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
+    What happens to the computational cost of testing?
+    \end{tcolorbox}
+    \begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+    TODO: Select the right option %%%%%% Remove this line in your answer! %%%%%%
     
 \begin{tabular}[h]{lr}
 \toprule
@@ -228,12 +311,31 @@ Increases & $\square$ \\
 Decreases & $\square$ \\
 \bottomrule
 \end{tabular}
-    \end{mdframed}
+    \end{tcolorbox}
 
+    \item \textbf{[2 points]} Read \href{https://interestingengineering.com/innovation/training-ai-is-shockingly-costly-to-the-environment}{this article} about the environmental impacts that deep learning can have. 
+    \begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
+    How does the implementation of this max pooling layer and its resulting implications for the model's computational costs fit into this discussion? \textbf{[3-4 sentences]}
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+    \setbox0=\hbox{\parbox[t]{\textwidth}{
+    %%%%%%% ANSWER STARTS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    TODO: Your answer for (c) here %%%%%% Remove this line in your answer! %%%%%%
+    
+    %%%%%%% ANSWER ENDS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    }}
+    \clipbox{0pt \dimexpr\dp0-10\baselineskip\relax{} 0in 0pt}{\copy0}
+    \end{tcolorbox}
+
+    \pagebreak
     \item \textbf{[1 point]}
+    \begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
     What happens to overfitting?
-    \begin{mdframed}
-    TODO: Select the right option
+    \end{tcolorbox}
+    \begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+    TODO: Select the right option %%%%%% Remove this line in your answer! %%%%%%
 
 \begin{tabular}[h]{lr}
 \toprule
@@ -241,12 +343,14 @@ Increases & $\square$ \\
 Decreases & $\square$ \\
 \bottomrule
 \end{tabular}
-    \end{mdframed}
+    \end{tcolorbox}
 
     \item \textbf{[1 point]}
+    \begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
     What happens to underfitting?
-    \begin{mdframed}
-    TODO: Select the right option
+    \end{tcolorbox}
+    \begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+    TODO: Select the right option %%%%%% Remove this line in your answer! %%%%%%
 
 \begin{tabular}[h]{lr}
 \toprule
@@ -254,12 +358,29 @@ Increases & $\square$ \\
 Decreases & $\square$ \\
 \bottomrule
 \end{tabular}
-    \end{mdframed}
+    \end{tcolorbox}
+
+    \item \textbf{[2 points]} 
+    \begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
+    Briefly discuss the tradeoff between overfitting and underfitting in the context of a CNN. Why wouldn't you want to go too far in either direction and what real-world stakeholders might it affect if you do? \textbf{[3 - 5 sentences]}
+    \end{tcolorbox}
+    \begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+    \setbox0=\hbox{\parbox[t]{\textwidth}{
+    %%%%%%% ANSWER STARTS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    TODO: Your answer for (f) here %%%%%% Remove this line in your answer! %%%%%%
+    
+    %%%%%%% ANSWER ENDS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    }}
+    \clipbox{0pt \dimexpr\dp0-12\baselineskip\relax{} 0in 0pt}{\copy0}
+    \end{tcolorbox}
     
     \item \textbf{[1 point]}
+    \begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
     What happens to the nonlinearity of the decision function?
-    \begin{mdframed}
-    TODO: Select the right option
+    \end{tcolorbox}
+    \begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+    TODO: Select the right option %%%%%% Remove this line in your answer! %%%%%%
 
 \begin{tabular}[h]{lr}
 \toprule
@@ -267,13 +388,16 @@ Increases & $\square$ \\
 Decreases & $\square$ \\
 \bottomrule
 \end{tabular}
-    \end{mdframed}
+    \end{tcolorbox}
 
+% \pagebreak
 \item \textbf{[2 point]}
+\begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
 Which of the following occur?
+\end{tcolorbox}
 
-\begin{mdframed}
-TODO: Select all that apply
+\begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+TODO: Select all that apply %%%%%% Remove this line in your answer! %%%%%%
 
 \begin{tabular}[h]{lr}
 \toprule
@@ -285,20 +409,23 @@ Provides local translational invariance & $\square$ \\
 Provides global translational invariance & $\square$ \\
 \bottomrule
 \end{tabular}
-\end{mdframed}
+\end{tcolorbox}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \item
-\textbf{[1 point]} \textbf{(Bonus)} Given some input to a convolutional layer with stride 2$\times$2 and kernel size 3$\times$3, and ignoring the boundary, what is the minimum number of convolutional filters required to preserve all input information in the output feature map?
+\textbf{(Bonus)} \textbf{[1 point]}
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black]
+Given some input to a convolutional layer with stride 2$\times$2 and kernel size 3$\times$3, and ignoring the boundary, what is the minimum number of convolutional filters required to preserve all input information in the output feature map?
+\end{tcolorbox}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Multiple choice.
 
 \emph{Tip:} Use command  `\textbackslash bullet' ($\bullet$) to fill in the dots.
 
-\begin{mdframed}
-TODO: Choose one
+\begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+TODO: Choose one %%%%%% Remove this line in your answer! %%%%%%
 
 \begin{tabular}[h]{lc}
 \toprule
@@ -309,47 +436,12 @@ TODO: Choose one
 It's impossible & $\square$ \\
 \bottomrule
 \end{tabular}
-\end{mdframed}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Space for optional justification. Do NOT go past this page!
-
-Feel free to leave optional short written justification if desired.
-
-\begin{mdframed}
-TODO: Your response to (g) here.
-\end{mdframed}
+\end{tcolorbox}
 \end{enumerate}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagebreak 
-\paragraph{Q5.1:} CNN interpretability remains an open question. In medical imaging, hand designing features from biological experts might lead to a generalizable and explainable method for physicians, regulators, or patients. However, deep learning methods can show \href{https://drive.google.com/file/d/1bDAqEtW482OJeqMBt5A4AradVa4gf_o9/view}{higher test accuracy}, even if their results may be less explainable. 
-
-For your final project, you decide to create a CNN for medical imaging diagnosis. After extensive testing, you find that your CNN can detect a rare disease with 90\% accuracy. Prior technology can detect this disease with only 50\% accuracy. You have no medical background, training, or professional qualification. You cannot explain how your CNN accurately detects the disease so accurately, just that it does. 
-
-Should your model be used in a clinical setting? Describe three factors that would make you more or less confident in its use. If your model is deployed and an incorrect result causes patient harm, who should be held responsible? [6--7 sentences]
-
-\paragraph{A5.1:} Your answer here.
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagebreak
-\paragraph{Q5.2:} Please complete this \href{https://docs.google.com/forms/d/e/1FAIpQLScJdjerPNCJu6kzMAhSgiUeturxoNUa3SdekSKJ-bc_Xutiiw/viewform?usp=sf_link}{multiple choice question} about the previous scenario. 
-
-What answer did you pick, and why?
-
-\paragraph{A5.2:} Your answer here.
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagebreak
-\paragraph{Q6:} There have been many attempts to interpret CNN predictions:
+\paragraph{Q5:} \textbf{[4 points]} There have been many attempts to interpret CNN predictions:
 \begin{itemize}
     \item We saw \href{https://www.cs.cmu.edu/~aharley/vis/conv/}{this website} in class, which visualizes how a CNN predicts numerals when trained on the MNIST dataset.
     
@@ -357,20 +449,28 @@ What answer did you pick, and why?
 
     \item Another option is saliency maps. Please read this \href{https://opendatascience.com/visualizing-your-convolutional-neural-network-predictions-with-saliency-maps/}{short article} describing how saliency maps work, and see more examples \href{https://github.com/jacobgil/pytorch-grad-cam}{here from a saliency map software package}.
 \end{itemize}
+CNN interpretability remains an open question. For example, in medical imaging, hand designing features from biological experts might lead to a generalizable and explainable method for physicians, regulators, or patients. However, deep learning methods can show \href{https://drive.google.com/file/d/1bDAqEtW482OJeqMBt5A4AradVa4gf_o9/view}{higher test accuracy}, even if their results may be less explainable.
 
-To what extent would each of these methods improve your understanding of your medical imaging CNN's predictions, and why?
-More generally, when is it important to be able to interpret the reasons a machine made a decision, and when is it not? [6--7 sentences]
+\begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
+When is it important to be able to interpret the reasons a machine made a decision, and when is it not? \textbf{[5-7 sentences]}
+\end{tcolorbox}
 
-\paragraph{A6:} Your answer here.
+\begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+\setbox0=\hbox{\parbox[t]{\textwidth}{
+%%%%%%% ANSWER STARTS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+TODO: Your answer here %%%%%% Remove this line in your answer! %%%%%%
 
-
+%%%%%%% ANSWER ENDS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+}}
+\clipbox{0pt \dimexpr\dp0-16\baselineskip\relax{} 0in 0pt}{\copy0}
+\end{tcolorbox}
 
 
 % Please leave the pagebreak
 \pagebreak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{Q7 background:}
+\paragraph{Q6 background:}
 Let us consider using a neural network (non-convolutional) to perform classification on the \href{http://yann.lecun.com/exdb/mnist/}{MNIST dataset} of handwritten digits, with 10 classes covering the digits 0--9. Each image is 28$\times$28 pixels, and so the network input is a 784-dimensional vector $\mathbf{x}=(x_1,x_2,\dots,x_i,\dots,x_{784})$. The output of the neural network is probability distribution $\mathbf{p}=(p_1,\dots,p_j,\dots,p_{10})$ over the 10 classes. Suppose our network has one fully-connected layer with $10$ neurons---one for each class. Each neuron has a weight for each input $\mathbf{w}=(w_1,\dots,w_i,\dots,w_{784})$, plus a bias $b$. As we only have one layer with no multi-layer composition, there's no need to use an activation function.
 
 When we pass in a vector $\mathbf{x}$ to this layer, we will compute a 10-dimensional output vector $\mathbf{l}=(l_1,l_2,...,l_j,...,l_{10})$ as:
@@ -473,71 +573,77 @@ So...after all of that, our gradient update rules are surprisingly simple!
 \hspace{\fill}\rule{0.5\linewidth}{.5pt}\hspace{\fill}
 
 
-\paragraph{Q7:} We will implement these steps in code using numpy. We provide a code stencil \texttt{main.py} which loads one of two datasets: MNIST and the scene recognition dataset from Homework 4. We also provide two models: a neural network, and then a neural network whose logits are used as input to an SVM classifier. Please look at the comments in \texttt{main.py} for the arguments to pass in to the program for each condition. The neural network model is defined in \texttt{model.py}, and the parts we must implement are marked with TODO comments.
+\paragraph{Q6:} We will implement these steps in code using numpy. We provide a code stencil \texttt{main.py} which loads one of two datasets: MNIST and the scene recognition dataset from Homework 4. We also provide two models: a neural network, and then a neural network whose logits are used as input to an SVM classifier. Please look at the comments in \texttt{main.py} for the arguments to pass in to the program for each condition. The neural network model is defined in \texttt{model.py}, and the parts we must implement are marked with TODO comments.
 
-\emph{Tasks:} Please follow the steps to implement the forward model evaluation and backward gradient update steps. Then, run your model on all four conditions and report training loss (calculated using \emph{training} set) and accuracy (calculated using \emph{testing} set) as the number of training epochs increases---see A7.1 below.
-
-
+\begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
+\emph{Tasks:} Please follow the steps to implement the forward model evaluation and backward gradient update steps. Then, run your model on all four conditions and report training loss (calculated using \emph{training} set) and accuracy (calculated using \emph{testing} set) as the number of training epochs increases.
+\\
+\\
 Please upload your completed \texttt{model.py} to Gradescope under the assignment titled "Homework 5 Written (Numpy)". The autograder will check that you correctly implemented parts of your model. Then, complete the following questions.
-
-\paragraph{A7.1:}
-
-How well did each model perform on each dataset? Please use this table to structure your response.
-
-    \begin{itemize}
-        \item NN on MNIST: xx\% (highest accuracy)
-        	\begin{itemize}
-        	\item Epoch 0 loss: xx     Accuracy: xx\%
-        	\item Epoch 9 loss: xx     Accuracy: xx\%
-        	\end{itemize}
-        \item NN+SVM on MNIST: xx\% (highest accuracy)
-        	\begin{itemize}
-        	\item Epoch 0 loss: xx     Accuracy: xx\%
-        	\item Epoch 9 loss: xx     Accuracy: xx\%
-        	\end{itemize}
-        \item NN on SceneRec: xx\% (highest accuracy)
-        	\begin{itemize}
-        	\item Epoch 0 loss: xx     Accuracy: xx\%
-        	\item Epoch 9 loss: xx     Accuracy: xx\%
-        	\end{itemize}
-        \item NN+SVM on SceneRec: xx\% (highest accuracy)
-        	\begin{itemize}
-        	\item Epoch 0 loss: xx     Accuracy: xx\%
-        	\item Epoch 9 loss: xx     Accuracy: xx\%
-    	    s\end{itemize}
-    \end{itemize}
-
+\end{tcolorbox}
+\pagebreak
+\begin{enumerate} [(a)]
+    \item \textbf{[4 points]}
+    \begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
+    How well did each model perform on each dataset?
+    \end{tcolorbox}
+    \begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+    %%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%
+    % ANSWER STARTS HERE
+    % Replace all the 'xx's with your results
+        \begin{itemize}
+            \item NN on MNIST: xx\% (highest accuracy)
+            	\begin{itemize}
+            	\item Epoch 0 loss: xx     Accuracy: xx\%
+            	\item Epoch 9 loss: xx     Accuracy: xx\%
+            	\end{itemize}
+            \item NN+SVM on MNIST: xx\% (highest accuracy)
+            	\begin{itemize}
+            	\item Epoch 0 loss: xx     Accuracy: xx\%
+            	\item Epoch 9 loss: xx     Accuracy: xx\%
+            	\end{itemize}
+            \item NN on SceneRec: xx\% (highest accuracy)
+            	\begin{itemize}
+            	\item Epoch 0 loss: xx     Accuracy: xx\%
+            	\item Epoch 9 loss: xx     Accuracy: xx\%
+            	\end{itemize}
+            \item NN+SVM on SceneRec: xx\% (highest accuracy)
+            	\begin{itemize}
+            	\item Epoch 0 loss: xx     Accuracy: xx\%
+            	\item Epoch 9 loss: xx     Accuracy: xx\%
+        	    s\end{itemize}
+        \end{itemize}
+    % ANSWER ENDS HERE
+    %%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%
+    \end{tcolorbox}
+    \item \textbf{[4 points]}
+    \begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black]
+    What do the training loss and accuracy numbers tell us about a) the capability of the network, b) the complexity of the two problems, and c) the usefulness of the two different classification approaches?
+    \end{tcolorbox}
+    \begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
+    \setbox0=\hbox{\parbox[t]{\textwidth}{
+    %%%%%%% ANSWER STARTS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    TODO: Your answer for (b) here %%%%%% Remove this line in your answer! %%%%%%
+    
+    %%%%%%% ANSWER ENDS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    }}
+    \clipbox{0pt \dimexpr\dp0-18\baselineskip\relax{} 0in 0pt}{\copy0}
+    \end{tcolorbox}
+    
+\end{enumerate}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagebreak
-\paragraph{Q7.2:} What do the training loss and accuracy numbers tell us about a) the capacity of the network, b) the complexity of the two problems, and c) the value of the two different classification approaches?
+\section*{Discussion Attendance:}
+\paragraph{Extra Credit:} \textbf{[2 points]}
 
-\paragraph{A7.2:} Answer here.
+Please mark this box only if you've attended the discussion session in person.
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagebreak
-\paragraph{Q8:} Follow the \href{https://browncsci1430.github.io/webpage/resources/gcp_guide/}{GCP guide} to set up Google Cloud Platform access. 
-\emph{Note:} This is tricky, and it will take you some time to become familiar with the system! 
-Once finished, complete one of these two Tensorflow MNIST tutorials on GCP:
-\begin{itemize}
-	\item \href{https://www.tensorflow.org/tutorials/quickstart/beginner}{TensorFlow 2 quickstart for beginners}
-	\item \href{https://www.tensorflow.org/tutorials/quickstart/advanced}{TensorFlow 2 quickstart for experts}
-\end{itemize}
-
-The work for the quickstart can be completed in a new Python file inside or outside of your homework code, as you won't have to turn in any quickstart code.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{A8:} Please insert a screenshot of the quickstart code output, running on GCP:
-
-% \begin{figure}[t]
-%     \includegraphics[width=\linewidth]{yourscreenshot.png}
-% \end{figure}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\begin{tabular}[h]{ll}
+$\square$ & I attended the discussion session on DATE \\
+\end{tabular}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagebreak
