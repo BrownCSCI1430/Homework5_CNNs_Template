@@ -231,7 +231,7 @@ class CustomModelSaver(tf.keras.callbacks.Callback):
                        .format(epoch + 1, cur_acc, location = save_location))
                 self.model.save_weights(save_location)
             else:
-                save_loc = self.checkpoint_dir + os.sep + "vgg." + save_name
+                save_location = self.checkpoint_dir + os.sep + "vgg." + save_name
                 print(("\nEpoch {0:03d} TEST accuracy ({1:.4f}) EXCEEDED previous "
                        "maximum TEST accuracy.\nSaving checkpoint at {location}")
                        .format(epoch + 1, cur_acc, location = save_location))
