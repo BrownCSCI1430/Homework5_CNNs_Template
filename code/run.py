@@ -77,7 +77,7 @@ def parse_args():
 
 def LIME_explainer(model, path, preprocess_fn):
     """
-    This function takes in a trained model and a path to an image and outputs 5
+    This function takes in a trained model and a path to an image and outputs 4
     visual explanations using the LIME model
     """
 
