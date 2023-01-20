@@ -5,8 +5,8 @@ Brown University
 """
 
 import tensorflow as tf
-from tensorflow.keras.layers import \
-    Conv2D, MaxPool2D, Dropout, Flatten, Dense
+from keras.layers import \
+       Conv2D, MaxPool2D, Dropout, Flatten, Dense
 
 import hyperparameters as hp
 
