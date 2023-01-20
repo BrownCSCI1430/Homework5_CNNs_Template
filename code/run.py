@@ -81,9 +81,9 @@ def LIME_explainer(model, path, preprocess_fn, timestamp):
     visual explanations using the LIME model
     """
 
-    save_directory = "images" + os.sep + timestamp
-    if not os.path.exists("images"):
-        os.mkdir("images")
+    save_directory = "lime_explainer_images" + os.sep + timestamp
+    if not os.path.exists("lime_explainer_images"):
+        os.mkdir("lime_explainer_images")
     if not os.path.exists(save_directory):
         os.mkdir(save_directory)
     image_index = 0
