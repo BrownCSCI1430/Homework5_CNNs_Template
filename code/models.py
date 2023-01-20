@@ -71,6 +71,8 @@ class YourModel(tf.keras.Model):
         # TASK 1
         # TODO: Select a loss function for your network (see the documentation
         #       for tf.keras.losses)
+        #       Read the documentation carefully, some might not work with our 
+        #       model!
 
         pass
 
@@ -154,5 +156,7 @@ class VGGModel(tf.keras.Model):
         # TASK 3
         # TODO: Select a loss function for your network (see the documentation
         #       for tf.keras.losses)
+        #       Read the documentation carefully, some might not work with our 
+        #       model!
 
         pass
