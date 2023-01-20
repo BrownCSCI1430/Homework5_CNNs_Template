@@ -75,20 +75,34 @@ def parse_args():
     return parser.parse_args()
 
 
-def LIME_explainer(model, path, preprocess_fn):
+def LIME_explainer(model, path, preprocess_fn, timestamp):
     """
     This function takes in a trained model and a path to an image and outputs 4
     visual explanations using the LIME model
     """
 
+    save_directory = "images" + os.sep + timestamp
+    if not os.path.exists("images"):
+        os.mkdir("images")
+    if not os.path.exists(save_directory):
+        os.mkdir(save_directory)
+    image_index = 0
+
     def image_and_mask(title, positive_only=True, num_features=5,
                        hide_rest=True):
+        nonlocal image_index
+
         temp, mask = explanation.get_image_and_mask(
             explanation.top_labels[0], positive_only=positive_only,
             num_features=num_features, hide_rest=hide_rest)
         plt.imshow(mark_boundaries(temp / 2 + 0.5, mask))
         plt.title(title)
+
+        image_save_path = save_directory + os.sep + str(image_index) + ".png"
+        plt.savefig(image_save_path, dpi=300, bbox_inches='tight')
         plt.show()
+
+        image_index += 1
 
     # Read the image and preprocess it as before
     image = imread(path)
@@ -125,6 +139,9 @@ def LIME_explainer(model, path, preprocess_fn):
     plt.imshow(heatmap, cmap='RdBu', vmin=-heatmap.max(), vmax=heatmap.max())
     plt.colorbar()
     plt.title("Map each explanation weight to the corresponding superpixel")
+
+    image_save_path = save_directory + os.sep + str(image_index) + ".png"
+    plt.savefig(image_save_path, dpi=300, bbox_inches='tight')
     plt.show()
 
 
@@ -245,7 +262,7 @@ def main():
         # the lime-image flag when calling run.py to investigate
         # i.e. python run.py --evaluate --lime-image test/Bedroom/image_003.jpg
         path = ARGS.data + os.sep + ARGS.lime_image
-        LIME_explainer(model, path, datasets.preprocess_fn)
+        LIME_explainer(model, path, datasets.preprocess_fn, timestamp)
     else:
         train(model, datasets, checkpoint_path, logs_path, init_epoch)
 
