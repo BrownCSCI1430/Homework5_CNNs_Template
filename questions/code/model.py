@@ -41,6 +41,10 @@ class Model:
             self.b
         Remember: use matrix operations.
 
+        The outputs from the neurons in the last layer are called 'logits'.
+        As this is a single-layer neural network, our outputs are also 
+        from the last layer and so are called 'logits'.
+
         Step 2:
         Convert these to probabilities by implementing the softmax function.
 
@@ -55,9 +59,11 @@ class Model:
         :param inputs: a batch of train images
         :return: probabilities for each per image
         """
-        # TODO: Calculate logits for linear units
+        # TODO: First, work out the size of `inputs`, `self.W`, `self.b`
 
-        # TODO: Get probabilities by using softmax on the logits
+        # TODO: Calculate response for each logits
+
+        # TODO: Obtain probabilities by using softmax on the logits
         probabilities = None
         return probabilities
 
@@ -70,14 +76,14 @@ class Model:
             log has a potential divide by zero error so we recommend adding a
             small number (1E-10) to the probability before taking the log
 
-        :param probabilities: a matrix of shape [batchSz, num_classes]
+        :param probabilities: a matrix of shape [batch_size, num_classes]
                 containing the probability of each class
         :param gt_label: ground truth label index
         :return: cross-entropy loss
         """
         # TODO: compute loss value
-        # Note that while probabilities is [batchSz, num_classes], in our
-        # problem, batchSz = 1, so you will have to index into the 0th element
+        # Note that while probabilities is [batch_size, num_classes], in our
+        # problem, batch_size = 1, so you will have to index into the 0th element
         loss = None
         return loss
 

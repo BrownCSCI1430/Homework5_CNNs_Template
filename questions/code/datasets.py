@@ -39,7 +39,7 @@ def format_data_scene_rec(data_filepath, hp):
 
 def format_data_mnist(data_filepath):
     # Reading in MNIST data.
-    # Stolen from CS 1420
+    # Thank you to CSCI 1420
 
     with open(os.path.join(data_filepath, "train-images-idx3-ubyte.gz"), 'rb') as f1,\
             open(os.path.join(data_filepath, "train-labels-idx1-ubyte.gz"), 'rb') as f2:
