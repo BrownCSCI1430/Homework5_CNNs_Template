@@ -21,40 +21,42 @@ class YourModel(tf.keras.Model):
         # TODO: Select an optimizer for your network (see the documentation
         #       for tf.keras.optimizers)
 
-        self.optimizer = None
-
         # TASK 1
-        # TODO: Build your own convolutional neural network, using Dropout at
-        #       least once. The input image will be passed through each Keras
-        #       layer in self.architecture sequentially. Refer to the imports
-        #       to see what Keras layers you can use to build your network.
-        #       Feel free to import other layers, but the layers already
-        #       imported are enough for this assignment.
+        # TODO: Build your own convolutional neural network with a 
+        #       15 million parameter budget. The input image will be 
+        #       passed through each layer in self.architecture sequentially. 
+        #       The imported layers at the top of this file are sufficient
+        #       to pass the homework, but feel free to import other layers.
         #
-        #       Remember: Your network must have under 15 million parameters!
+        #       Note 1: 
         #       You will see a model summary when you run the program that
         #       displays the total number of parameters of your network.
         #
-        #       Remember: Because this is a 15-scene classification task,
+        #       Note 2: 
+        #       Because this is a 15-scene classification task,
         #       the output dimension of the network must be 15. That is,
         #       passing a tensor of shape [batch_size, img_size, img_size, 1]
         #       into the network will produce an output of shape
         #       [batch_size, 15].
         #
-        #       Note: Keras layers such as Conv2D and Dense give you the
-        #             option of defining an activation function for the layer.
-        #             For example, if you wanted ReLU activation on a Conv2D
-        #             layer, you'd simply pass the string 'relu' to the
-        #             activation parameter when instantiating the layer.
-        #             While the choice of what activation functions you use
-        #             is up to you, the final layer must use the softmax
-        #             activation function so that the output of your network
-        #             is a probability distribution.
+        #       Note 3: 
+        #       Keras layers such as Conv2D and Dense give you the
+        #       option of defining an activation function for the layer.
+        #       For example, if you wanted ReLU activation on a Conv2D
+        #       layer, you'd simply pass the string 'relu' to the
+        #       activation parameter when instantiating the layer.
+        #       While the choice of what activation functions you use
+        #       is up to you, the final layer must use the softmax
+        #       activation function so that the output of your network
+        #       is a probability distribution.
         #
-        #       Note: Flatten is a very useful layer. You shouldn't have to
-        #             explicitly reshape any tensors anywhere in your network.
+        #       Note 4: 
+        #       Flatten is a useful layer to vectorize activations. 
+        #       This saves having to reshape tensors in your network.
 
-        self.architecture = []
+        self.architecture = [
+              ## Add layers here separated by commas.
+        ]
 
     def call(self, x):
         """ Passes input image through the network. """
@@ -69,10 +71,8 @@ class YourModel(tf.keras.Model):
         """ Loss function for the model. """
 
         # TASK 1
-        # TODO: Select a loss function for your network (see the documentation
-        #       for tf.keras.losses)
-        #       Read the documentation carefully, some might not work with our 
-        #       model!
+        # TODO: Select a loss function for your network 
+        #       (see the documentation for tf.keras.losses)
 
         pass
 

@@ -120,11 +120,11 @@ class ImageLabelingLogger(tf.keras.callbacks.Callback):
             plt.imsave(misclassified_path + os.sep + correct + os.sep + image_name, img)
 
         with file_writer_il.as_default():
-            tf.summary.image("Image Label Predictions",
+            tf.summary.image("0 Example Set of Image Label Predictions (blue is correct; red is incorrect)",
                              figure_img, step=epoch_num)
-            for label, img in zip(correct_labels, misclassified):
+            for label, wrong, img in zip(correct_labels, wrong_labels, misclassified):
                 img = tf.expand_dims(img, axis=0)
-                tf.summary.image(self.datasets.idx_to_class[label], 
+                tf.summary.image("1 Example @ epoch " + str(epoch_num) + ": " + self.datasets.idx_to_class[label] + " misclassified as " + self.datasets.idx_to_class[wrong], 
                                  img, step=epoch_num)
 
 class ConfusionMatrixLogger(tf.keras.callbacks.Callback):

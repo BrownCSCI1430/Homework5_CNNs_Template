@@ -36,6 +36,7 @@ class Datasets():
         self.calc_mean_and_std()
 
         # Setup data generators
+        # These feed data to the training and testing routine based on the dataset
         self.train_data = self.get_data(
             os.path.join(self.data_path, "train/"), task == '3', True, True)
         self.test_data = self.get_data(
