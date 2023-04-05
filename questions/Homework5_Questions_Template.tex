@@ -587,8 +587,8 @@ Please upload your completed \texttt{model.py} to Gradescope under the assignmen
 Run your model on all four conditions and report training loss (calculated using \emph{training} set) and accuracy (calculated using \emph{testing} set) as the number of training epochs increases. Why does the SVM perform differently?
 \end{tcolorbox}
 \begin{tcolorbox}[colback=white!5!white,colframe=green!75!black]
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
+\setbox0=\hbox{\parbox[t]{\textwidth}{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ANSWER STARTS HERE
 % Replace all the 'xx's with your results
     \begin{itemize}
@@ -611,11 +611,16 @@ Run your model on all four conditions and report training loss (calculated using
             \begin{itemize}
             \item Epoch 0 loss: xx     Accuracy: xx\%
             \item Epoch 9 loss: xx     Accuracy: xx\%
-            s\end{itemize}
+            \end{itemize}
     \end{itemize}
+
+\emph{Why does the SVM perform differently?}
+
+TODO: Answer here
 % ANSWER ENDS HERE
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+}}
+\clipbox{0pt \dimexpr\dp0-36\baselineskip\relax{} 0in 0pt}{\copy0}
 \end{tcolorbox}
 
 
