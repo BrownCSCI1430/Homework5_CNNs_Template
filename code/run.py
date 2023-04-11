@@ -260,8 +260,8 @@ def main():
 
         # TODO: change the image path to be the image of your choice by changing
         # the lime-image flag when calling run.py to investigate
-        # i.e. python run.py --evaluate --lime-image test/Bedroom/image_003.jpg
-        path = ARGS.data + os.sep + ARGS.lime_image
+        # i.e. python run.py --evaluate --lime-image misclassified/your_model/Bedroom/Store_predicted.png
+        path = ARGS.lime_image
         LIME_explainer(model, path, datasets.preprocess_fn, timestamp)
     else:
         train(model, datasets, checkpoint_path, logs_path, init_epoch)
