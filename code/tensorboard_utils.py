@@ -51,7 +51,7 @@ class ImageLabelingLogger(tf.keras.callbacks.Callback):
         count_all = 0
         count_misclassified = 0
         
-        for batch in self.datasets.train_data:
+        for batch in self.datasets.test_data:
             misclassified = []
             correct_labels = []
             wrong_labels = []
