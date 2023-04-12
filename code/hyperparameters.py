@@ -5,9 +5,9 @@ Brown University
 """
 
 """
-Number of epochs. If you experiment with more complex networks you
-might need to increase this. Likewise if you add regularization that
-slows training.
+Number of epochs. We as you to use only 50 epochs as your budget.
+For extra credit, if you experiment with more complex networks, you
+can change this.
 """
 num_epochs = 50
 
