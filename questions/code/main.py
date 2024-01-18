@@ -8,7 +8,7 @@ parsing data into numpy arrays.
 Usage:
     python main.py --dataset [DATA] --mode [MODE] --data [DATA_PATH]
         DATA | "mnist" or "scenerec"
-        MODE | "nn" or "svm"
+        MODE | "nn" or "nn+svm"
         DATA_PATH | path to dataset
 """
 import os
