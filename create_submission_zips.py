@@ -37,7 +37,7 @@ def main():
                           "renamed.")
                 sys.exit(1)
 
-    required_code_files = ["run.py", "hyperparameters.py", "models.py",
+    required_code_files = ["main.py", "hyperparameters.py", "models.py",
                            "preprocess.py", "tensorboard_utils.py"]
 
     # Check that required code files exist

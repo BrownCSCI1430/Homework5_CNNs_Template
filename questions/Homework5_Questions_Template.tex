@@ -542,14 +542,14 @@ We must derive each individually, and then formulate the final term via the chai
 
 The derivation is beyond the scope of this class, and so we provide them here:
 \begin{equation}
-\frac{\delta L}{\delta w_{ij}} = \frac{\delta L}{\delta p_a} \frac{\delta p_a}{\delta l_j} \frac{\delta l_j}{w_{ij}} =\begin{cases}
+\frac{\delta L}{\delta w_{ij}} = \frac{\delta L}{\delta p_a} \frac{\delta p_a}{\delta l_j} \frac{\delta l_j}{\delta w_{ij}} =\begin{cases}
 x_i(p_j-1), a = j\\
 x_ip_j,  a\neq j
 \end{cases}
 \label{eq:wupdate}
 \end{equation}
 \begin{equation}
-\frac{\delta L}{\delta b_j} = \frac{\delta L}{\delta p_a} \frac{\delta p_a}{\delta l_j} \frac{\delta l_j}{b_j} =\begin{cases}
+\frac{\delta L}{\delta b_j} = \frac{\delta L}{\delta p_a} \frac{\delta p_a}{\delta l_j} \frac{\delta l_j}{\delta b_j} =\begin{cases}
 (p_j-1), a = j\\
 p_j,  a\neq j
 \end{cases}

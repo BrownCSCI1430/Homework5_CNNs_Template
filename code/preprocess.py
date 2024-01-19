@@ -161,7 +161,7 @@ class Datasets():
             img = img / 255.
             img = self.standardize(img)
 
-        # TODO:
+        # EXTRA CREDIT: 
         # Write your own custom data augmentation procedure, creating
         # an effect that cannot be achieved using the arguments of
         # ImageDataGenerator. This can potentially boost your accuracy

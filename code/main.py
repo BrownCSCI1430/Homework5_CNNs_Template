@@ -202,13 +202,13 @@ def main():
 
     # If paths provided by program arguments are accurate, then this will
     # ensure they are used. If not, these directories/files will be
-    # set relative to the directory of run.py
+    # set relative to the directory of main.py
     if os.path.exists(ARGS.data):
         ARGS.data = os.path.abspath(ARGS.data)
     if os.path.exists(ARGS.load_vgg):
         ARGS.load_vgg = os.path.abspath(ARGS.load_vgg)
 
-    # Run script from location of run.py
+    # Run script from location of main.py
     os.chdir(sys.path[0])
 
     datasets = Datasets(ARGS.data, ARGS.task)
@@ -259,8 +259,8 @@ def main():
         test(model, datasets.test_data)
 
         # TODO: change the image path to be the image of your choice by changing
-        # the lime-image flag when calling run.py to investigate
-        # i.e. python run.py --evaluate --lime-image misclassified/your_model/Bedroom/Store_predicted.png
+        # the lime-image flag when calling main.py to investigate
+        # i.e. python main.py --evaluate --lime-image test/Bedroom/image_003.jpg
         path = ARGS.lime_image
         LIME_explainer(model, path, datasets.preprocess_fn, timestamp)
     else:
