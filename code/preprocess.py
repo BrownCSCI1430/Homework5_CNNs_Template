@@ -176,6 +176,17 @@ class Datasets():
                 (hp.img_size, hp.img_size, 1),
                 minval=-0.1,
                 maxval=0.1)
+            
+        # Extra Credit Ex: Random Crop
+    
+        if random.random() < 0.2:
+            h, w, _ = img.shape
+            crop_h = random.randint(h // 4, h // 2)
+            crop_w = random.randint(w // 4, w // 2)
+            start_h = random.randint(0, h - crop_h)
+            start_w = random.randint(0, w - crop_w)
+            img = img[start_h:start_h+crop_h, start_w:start_w+crop_w]
+            img = tf.image.resize(img, (h, w))
 
         return img
 
