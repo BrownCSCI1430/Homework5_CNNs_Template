@@ -220,7 +220,7 @@ class Datasets():
             # ============================================================
 
             data_gen = tf.keras.preprocessing.image.ImageDataGenerator(
-                preprocessing_function=self.preprocess_fn)
+                preprocessing_function=self.custom_preprocess_fn)
 
             # ============================================================
         else:
