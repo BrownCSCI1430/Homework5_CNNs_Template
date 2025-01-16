@@ -56,12 +56,21 @@ class YourModel(tf.keras.Model):
               ## Add layers here separated by commas.
         ]
 
+        #       Don't change the line below. This line creates an instance
+        #       of a Sequential model using the layers you defined above. 
+        #       A sequential model, when called, calls its own layers in 
+        #       order to produce its output! 
+        self.your_model = tf.keras.Sequential(self.architecture, name="your_model")
+
     def call(self, x):
         """ Passes input image through the network. """
 
-        for layer in self.architecture:
-            x = layer(x)
+        x = self.your_model(x)
 
+        #       Note: If we hadn't defined the Sequential instance, the below 
+        #       lines would achieve the same output!
+        # for layer in self.architecture:
+        #     x = layer(x)
         return x
 
     @staticmethod
