@@ -1,3 +1,4 @@
+
 import numpy as np
 import random
 
@@ -24,8 +25,8 @@ class Model:
         #           [1, number_classes]
         # Fill in the below
         # functions with the correct shapes for both parameters
-        self.W = np.random.rand()
-        self.b = np.zeros()
+        self.W = np.random.rand(self.input_size, self.num_classes)
+        self.b = np.zeros((1, self.num_classes))
 
     def forward_pass(self, inputs):
         """
@@ -41,10 +42,6 @@ class Model:
             self.b
         Remember: use matrix operations.
 
-        The outputs from the neurons in the last layer are called 'logits'.
-        As this is a single-layer neural network, our outputs are also 
-        from the last layer and so are called 'logits'.
-
         Step 2:
         Convert these to probabilities by implementing the softmax function.
 
@@ -52,19 +49,17 @@ class Model:
         ask that you subtract the value of the greatest logit from all logits
         before exponentiating.
 
-        In addition, this function along with others on this homework should
-        not use loops in the implementation. Using vectorized approaches will be
-        necessary to ensure that the code runs in an appropriate amount of time.
-
         :param inputs: a batch of train images
         :return: probabilities for each per image
         """
-        # TODO: First, work out the size of `inputs`, `self.W`, `self.b`
+        # TODO: Calculate logits for linear units
+        logits = np.dot(inputs, self.W) + self.b
 
-        # TODO: Calculate response for each logits
-
-        # TODO: Obtain probabilities by using softmax on the logits
-        probabilities = None
+        # TODO: Get probabilities by using softmax on the logits
+        max_logit = np.max(logits)
+        # Overcomes runtime overflow warning
+        exp_logits = np.exp(logits - max_logit)
+        probabilities = exp_logits / np.sum(exp_logits)
         return probabilities
 
     @staticmethod
@@ -76,16 +71,16 @@ class Model:
             log has a potential divide by zero error so we recommend adding a
             small number (1E-10) to the probability before taking the log
 
-        :param probabilities: a matrix of shape [batch_size, num_classes]
+        :param probabilities: a matrix of shape [batchSz, num_classes]
                 containing the probability of each class
         :param gt_label: ground truth label index
         :return: cross-entropy loss
         """
         # TODO: compute loss value
-        # Note that while probabilities is [batch_size, num_classes], in our
-        # problem, batch_size = 1, so you will have to index into the 0th element
-        loss = None
-        return loss
+        # Note that while probabilities is [batchSz, num_classes], in our
+        # problem, batchSz = 1, so you will have to index into the 0th element
+        correct_label_loss = -np.log(probabilities[0][gt_label] + 1E-10)
+        return correct_label_loss
 
     @staticmethod
     def back_propagation(img, probabilities, gt_label):
@@ -110,9 +105,12 @@ class Model:
         :return: gradient for weights, gradient for biases
         """
         # TODO: Back propagation: use gradient descent to update parameters
-
-        # TODO: Reshape train image data to be matrix, dimension [img.size, 1]
-        gradW, gradB = None, None
+        gd = probabilities
+        gd[0][gt_label] -= 1
+        # TODO: Reshape train image data to be matrix, dimension [784, 1]
+        transposed_train_images = img.reshape(-1, 1)
+        gradW = np.dot(transposed_train_images, gd)
+        gradB = gd
         return gradW, gradB
 
     def gradient_descent(self, gradW, gradB):
@@ -126,7 +124,8 @@ class Model:
         :return: None
         """
         # TODO: Modify parameters with summed updates
-        pass
+        self.W += -self.learning_rate * gradW
+        self.b += -self.learning_rate * gradB
 
     def train_nn(self):
         """
@@ -142,6 +141,7 @@ class Model:
 
         Return: None
         """
+
         indices = list(range(self.train_images.shape[0]))
 
         for epoch in range(self.num_epochs):
@@ -155,20 +155,19 @@ class Model:
 
                 # TODO: 1. Calculate probabilities from calling forward pass
                 #       on img
-                probabilities = None
+                probabilities = self.forward_pass(img)
 
                 # TODO: 2. Calculate the loss from probabilities, loss_sum =
                 #       loss_sum + your_loss_over_all_classes
-                loss = None
+                loss = self.loss(probabilities, gt_label)
+                loss_sum += loss
 
                 # TODO: 3. Calculate gradW, gradB from back propagation
-                gradW, gradB = None
+                gradW, gradB = self.back_propagation(img, probabilities, gt_label)
 
                 # TODO: 4. Update self.W and self.B with gradient descent
-                
-                
-            # to calculate acuuracy for each epoch on the testing set
-            # epoch is a concept for neural network training, so using accuracy_nn for calculation
+                self.gradient_descent(gradW, gradB)
+
             accuracy = self.accuracy_nn(self.test_images, self.test_labels)
             print("Epoch " + str(epoch) + ": Total loss: " + str(loss_sum) + "; Accuracy: {:.0%}".format(accuracy))
 
