@@ -16,7 +16,7 @@ import sys
 import argparse
 
 import hyperparameters as hp
-from questions.code.solution import Model
+from model import Model
 from datasets import format_data_scene_rec, format_data_mnist
 
 # Killing optional CPU driver warnings
