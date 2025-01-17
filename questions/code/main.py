@@ -63,7 +63,6 @@ def main():
         accuracy = model.accuracy_nn(test_images, test_labels)
         print('nn model testing accuracy: {:.0%}'.format(accuracy))
     else:
-        # model.train_nn()
         model.train_svm()
         accuracy = model.accuracy_svm(test_images, test_labels)
         print('nn+svm model testing accuracy: {:.0%}'.format(accuracy))
