@@ -55,32 +55,18 @@ def main():
     for code_file in glob.glob(str(code_dir / r"*.py")):
         shutil.copy(code_file, temp_code_dir)
 
-    # Compile the writeup report PDF if it doesn't exist
-    writeup_file = Path("writeup") / "writeup.pdf"
-    if not writeup_file.exists():
-        if (Path("writeup") / "writeup.tex").exists():
-            os.chdir("writeup")
-            command1 = "pdflatex writeup.tex"
-            command2 = "bibtex"
-            # LaTeX assured compile sequence if bibtex is used
-            os.system(command1)
-            os.system(command2)
-            os.system(command1)
-            os.system(command1)
-            os.chdir("..")
-        else:
-            print_warn("Could not find writeup.tex to compile writeup.")
-
-    if not writeup_file.exists():
-        print_warn("Failed to produce writeup.pdf.")
+    # Collect the reslog
+    reslog_dir = Path("reslog")
+    if not reslog_dir.exists():
+        print_warn("Failed to find reslog directory.")
     else:
-        temp_writeup_dir = temp_dir / "writeup"
-        os.mkdir(temp_writeup_dir)
-        shutil.copy(writeup_file, temp_writeup_dir)
+        temp_reslog_dir = temp_dir / "reslog"
+        os.mkdir(temp_reslog_dir)
+        shutil.copytree(reslog_dir, temp_reslog_dir, dirs_exist_ok=True)
 
-    # Make code_writeup.zip
+    # Make code_reslog.zip
     shutil.make_archive(
-        "code_writeup",
+        "code_reslog",
         format="zip",
         root_dir=temp_dir)
     shutil.rmtree(temp_dir)
