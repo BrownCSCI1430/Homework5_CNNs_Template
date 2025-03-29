@@ -91,7 +91,7 @@ def main():
 
             for root, _, files in os.walk(check_dir):
                 for filename in files:
-                    if filename.endswith(".h5"):
+                    if filename.endswith(".weights.h5"):
                         file_acc = float(re.findall(
                             r"[+-]?\d+\.\d+", filename.split("acc")[-1])[0])
 
