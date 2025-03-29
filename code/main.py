@@ -1,6 +1,6 @@
 """
-Homework 5 - CNNs
-CSCI1430 - Computer Vision
+Homework 5 CNNs
+CS1430 - Computer Vision
 Brown University
 """
 
@@ -36,9 +36,9 @@ def parse_args():
     parser.add_argument(
         '--task',
         required=True,
-        choices=['1', '3'],
+        choices=['1', '2'],
         help='''Which task of the assignment to run -
-        training from scratch (1), or fine tuning VGG-16 (3).''')
+        training from scratch (1), or fine tuning VGG-16 (2).''')
     parser.add_argument(
         '--data',
         default='..'+os.sep+'data'+os.sep,
@@ -47,7 +47,7 @@ def parse_args():
         '--load-vgg',
         default='vgg16_imagenet.weights.h5',
         help='''Path to pre-trained VGG-16 file (only applicable to
-        task 3).''')
+        task 2).''')
     parser.add_argument(
         '--load-checkpoint',
         default=None,
@@ -75,9 +75,9 @@ def parse_args():
     return parser.parse_args()
 
 
-def LIME_explainer(model, path, preprocess_fn, timestamp):
+def LIME_explainer(model, path, preprocess_fn):
     """
-    This function takes in a trained model and a path to an image and outputs 4
+    This function takes in a trained model and a path to an image and outputs 5
     visual explanations using the LIME model
     """
 
@@ -90,27 +90,23 @@ def LIME_explainer(model, path, preprocess_fn, timestamp):
 
     def image_and_mask(title, positive_only=True, num_features=5,
                        hide_rest=True):
-        nonlocal image_index
-
         temp, mask = explanation.get_image_and_mask(
             explanation.top_labels[0], positive_only=positive_only,
             num_features=num_features, hide_rest=hide_rest)
         plt.imshow(mark_boundaries(temp / 2 + 0.5, mask))
         plt.title(title)
-
+        
         image_save_path = save_directory + os.sep + str(image_index) + ".png"
         plt.savefig(image_save_path, dpi=300, bbox_inches='tight')
         plt.show()
 
         image_index += 1
 
-    # Read the image and preprocess it as before
     image = imread(path)
     if len(image.shape) == 2:
         image = np.stack([image, image, image], axis=-1)
-    image = resize(image, (hp.img_size, hp.img_size, 3), preserve_range=True)
     image = preprocess_fn(image)
-    
+    image = resize(image, (hp.img_size, hp.img_size, 3))
 
     explainer = lime_image.LimeImageExplainer()
 
@@ -139,7 +135,7 @@ def LIME_explainer(model, path, preprocess_fn, timestamp):
     plt.imshow(heatmap, cmap='RdBu', vmin=-heatmap.max(), vmax=heatmap.max())
     plt.colorbar()
     plt.title("Map each explanation weight to the corresponding superpixel")
-
+    
     image_save_path = save_directory + os.sep + str(image_index) + ".png"
     plt.savefig(image_save_path, dpi=300, bbox_inches='tight')
     plt.show()
@@ -167,7 +163,7 @@ def train(model, datasets, checkpoint_path, logs_path, init_epoch):
         x=datasets.train_data,
         validation_data=datasets.test_data,
         epochs=hp.num_epochs,
-        batch_size=None,            # Required as None as we use an ImageDataGenerator; see preprocess.py get_data()
+        batch_size=None,
         callbacks=callback_list,
         initial_epoch=init_epoch,
     )
@@ -260,9 +256,9 @@ def main():
 
         # TODO: change the image path to be the image of your choice by changing
         # the lime-image flag when calling main.py to investigate
-        # i.e. python main.py --evaluate --lime-image test/Bedroom/image_003.jpg
-        path = ARGS.lime_image
-        LIME_explainer(model, path, datasets.preprocess_fn, timestamp)
+        # i.e. python main.py --task 1 --evaluate --lime-image test/Bedroom/image_0003.jpg
+        path = ARGS.data + os.sep + ARGS.lime_image
+        LIME_explainer(model, ARGS.data + path, datasets.preprocess_fn, timestamp)
     else:
         train(model, datasets, checkpoint_path, logs_path, init_epoch)
 
