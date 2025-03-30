@@ -1,6 +1,6 @@
 """
 Homework 5 - CNNs
-CS1430 - Computer Vision
+CSCI1430 - Computer Vision
 Brown University
 """
 
@@ -30,10 +30,10 @@ class Datasets():
         # For storing list of classes
         self.classes = [""] * hp.num_classes
 
-        # Mean and std for standardization
+        # Mean and stddev for standardization
         self.mean = np.zeros((hp.img_size,hp.img_size,3))
-        self.std = np.ones((hp.img_size,hp.img_size,3))
-        self.calc_mean_and_std()
+        self.stddev = np.ones((hp.img_size,hp.img_size,3))
+        self.calc_mean_and_stddev()
 
         # Setup data generators
         # These feed data to the training and testing routine based on the dataset
@@ -42,7 +42,7 @@ class Datasets():
         self.test_data = self.get_data(
             os.path.join(self.data_path, "test/"), task == '3', False, False)
 
-    def calc_mean_and_std(self):
+    def calc_mean_and_stddev(self):
         """ Calculate mean and standard deviation of a sample of the
         training dataset for standardization.
 
@@ -84,7 +84,7 @@ class Datasets():
         # TASK 1
         # TODO: Calculate the mean and standard deviation
         #       of the samples in data_sample and store them in
-        #       self.mean and self.std respectively.
+        #       self.mean and self.stddev respectively.
         #
         #       Note: This is _not_ a mean over all pixels;
         #             it is a mean image (the mean input data point).
@@ -103,18 +103,8 @@ class Datasets():
         #
         # ==========================================================
 
-        self.mean = np.zeros((hp.img_size, hp.img_size, 3))
-        for im in data_sample:
-            self.mean += im
-        self.mean /= hp.preprocess_sample_size
-
-        self.std = np.zeros((hp.img_size, hp.img_size, 3))
-        for im in data_sample:
-            self.std += np.square(im - self.mean)
-        self.std = np.sqrt(self.std / hp.preprocess_sample_size)
-            
         # self.mean = your code
-        # self.std = your code
+        # self.stddev = your code
 
         # ==========================================================
 
@@ -124,11 +114,11 @@ class Datasets():
         print("Dataset mean top left pixel value: [{0:.4f}, {1:.4f}, {2:.4f}]".format(
             self.mean[0,0,0], self.mean[0,0,1], self.mean[0,0,2]))
 
-        print("Dataset std shape: [{0}, {1}, {2}]".format(
-            self.std.shape[0], self.std.shape[1], self.std.shape[2]))
+        print("Dataset stddev shape: [{0}, {1}, {2}]".format(
+            self.stddev.shape[0], self.stddev.shape[1], self.stddev.shape[2]))
 
-        print("Dataset std top left pixel value: [{0:.4f}, {1:.4f}, {2:.4f}]".format(
-            self.std[0,0,0], self.std[0,0,1], self.std[0,0,2]))
+        print("Dataset stddev top left pixel value: [{0:.4f}, {1:.4f}, {2:.4f}]".format(
+            self.stddev[0,0,0], self.stddev[0,0,1], self.stddev[0,0,2]))
 
     def standardize(self, img):
         """ Function for applying standardization to an input image.
@@ -141,12 +131,12 @@ class Datasets():
         """
 
         # TASK 1
-        # TODO: Standardize the input image. Use self.mean and self.std
-        #       that were calculated in calc_mean_and_std() to perform
+        # TODO: Standardize the input image. Use self.mean and self.stddev
+        #       that were calculated in calc_mean_and_stddev() to perform
         #       the standardization.
         # =============================================================
 
-        img = (img - self.mean)/ self.std      # replace this code
+        img = img      # replace this code
 
         # =============================================================
 
@@ -171,7 +161,7 @@ class Datasets():
             img = img / 255.
             img = self.standardize(img)
 
-        # EXTRA CREDIT:
+        # EXTRA CREDIT: 
         # Write your own custom data augmentation procedure, creating
         # an effect that cannot be achieved using the arguments of
         # ImageDataGenerator. This can potentially boost your accuracy
@@ -219,7 +209,7 @@ class Datasets():
             # ============================================================
 
             data_gen = tf.keras.preprocessing.image.ImageDataGenerator(
-                preprocessing_function=self.preprocess_fn, rotation_range=3, horizontal_flip=True)
+                preprocessing_function=self.preprocess_fn)
 
             # ============================================================
         else:
