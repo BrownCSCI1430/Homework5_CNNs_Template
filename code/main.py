@@ -45,14 +45,14 @@ def parse_args():
         help='Location where the dataset is stored.')
     parser.add_argument(
         '--load-vgg',
-        default='vgg16_imagenet.weights.h5',
+        default='vgg16_imagenet.h5',
         help='''Path to pre-trained VGG-16 file (only applicable to
         task 3).''')
     parser.add_argument(
         '--load-checkpoint',
         default=None,
         help='''Path to model checkpoint file (should end with the
-        extension .weights.h5). Checkpoints are automatically saved when you
+        extension .h5). Checkpoints are automatically saved when you
         train your model. If you want to continue training from where
         you left off, this is how you would load your weights.''')
     parser.add_argument(
@@ -196,7 +196,7 @@ def main():
         ARGS.load_checkpoint = os.path.abspath(ARGS.load_checkpoint)
 
         # Get timestamp and epoch from filename
-        regex = r"(?:.+)(?:\.e)(\d+)(?:.+)(?:.weights.h5)"
+        regex = r"(?:.+)(?:\.e)(\d+)(?:.+)(?:.h5)"
         init_epoch = int(re.match(regex, ARGS.load_checkpoint).group(1)) + 1
         timestamp = os.path.basename(os.path.dirname(ARGS.load_checkpoint))
 

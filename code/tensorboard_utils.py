@@ -221,7 +221,7 @@ class CustomModelSaver(tf.keras.callbacks.Callback):
         # Only save weights if test accuracy exceeds the previous best
         # weight file
         if cur_acc > max_acc:
-            save_name = "e{0:03d}-acc{1:.4f}.weights.h5".format(
+            save_name = "e{0:03d}-acc{1:.4f}.h5".format(
                 epoch, cur_acc)
 
             if self.task == '1':
@@ -262,7 +262,7 @@ class CustomModelSaver(tf.keras.callbacks.Callback):
         files = os.listdir(self.checkpoint_dir)
 
         for weight_file in files:
-            if weight_file.endswith(".weights.h5"):
+            if weight_file.endswith(".h5"):
                 num_weights += 1
                 file_acc = float(re.findall(
                     r"[+-]?\d+\.\d+", weight_file.split("acc")[-1])[0])
