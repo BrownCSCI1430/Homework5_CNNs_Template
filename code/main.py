@@ -36,9 +36,9 @@ def parse_args():
     parser.add_argument(
         '--task',
         required=True,
-        choices=['1', '3'],
+        choices=['1', '2', '3'],
         help='''Which task of the assignment to run -
-        training from scratch (1), or fine tuning VGG-16 (3).''')
+        training from scratch (1), examining your model with LIME (2), or fine tuning VGG-16 (3).''')
     parser.add_argument(
         '--data',
         default='..'+os.sep+'data'+os.sep,
@@ -213,7 +213,7 @@ def main():
 
     datasets = Datasets(ARGS.data, ARGS.task)
 
-    if ARGS.task == '1':
+    if ARGS.task == '1' or ARGS.task == '2':
         model = YourModel()
         model(tf.keras.Input(shape=(hp.img_size, hp.img_size, 3)))
         checkpoint_path = "checkpoints" + os.sep + \
@@ -223,7 +223,7 @@ def main():
 
         # Print summary of model
         model.summary()
-    else:
+    elif ARGS.task == '3':
         model = VGGModel()
         checkpoint_path = "checkpoints" + os.sep + \
             "vgg_model" + os.sep + timestamp + os.sep
@@ -240,9 +240,9 @@ def main():
 
     # Load checkpoints
     if ARGS.load_checkpoint is not None:
-        if ARGS.task == '1':
+        if ARGS.task == '1' or ARGS.task == '2':
             model.load_weights(ARGS.load_checkpoint, by_name=False)
-        else:
+        elif ARGS.task == '3':
             model.head.load_weights(ARGS.load_checkpoint, by_name=False)
 
     # Make checkpoint directory if needed

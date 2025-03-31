@@ -63,7 +63,7 @@ class ImageLabelingLogger(tf.keras.callbacks.Callback):
                 probabilities = self.model(np.array([image])).numpy()[0]
                 predict_class_idx = np.argmax(probabilities)
 
-                if self.task == '1':
+                if self.task == '1' or self.task == '2':
                     image = np.clip(image, 0., 1.)
                     plt.imshow(image, cmap='gray')
                 else:
@@ -224,13 +224,13 @@ class CustomModelSaver(tf.keras.callbacks.Callback):
             save_name = "e{0:03d}-acc{1:.4f}.h5".format(
                 epoch, cur_acc)
 
-            if self.task == '1':
+            if self.task == '1' or self.task == '2':
                 save_location = self.checkpoint_dir + os.sep + "your." + save_name
                 print(("\nEpoch {0:03d} TEST accuracy ({1:.4f}) EXCEEDED previous "
                        "maximum TEST accuracy.\nSaving checkpoint at {location}")
                        .format(epoch + 1, cur_acc, location = save_location))
                 self.model.save_weights(save_location)
-            else:
+            elif self.task == '3':
                 save_location = self.checkpoint_dir + os.sep + "vgg." + save_name
                 print(("\nEpoch {0:03d} TEST accuracy ({1:.4f}) EXCEEDED previous "
                        "maximum TEST accuracy.\nSaving checkpoint at {location}")
