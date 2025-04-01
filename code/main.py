@@ -241,9 +241,9 @@ def main():
     # Load checkpoints
     if ARGS.load_checkpoint is not None:
         if ARGS.task == '1' or ARGS.task == '2':
-            model.load_weights(ARGS.load_checkpoint, by_name=False)
+            model.load_weights(ARGS.load_checkpoint)
         elif ARGS.task == '3':
-            model.head.load_weights(ARGS.load_checkpoint, by_name=False)
+            model.head.load_weights(ARGS.load_checkpoint)
 
     # Make checkpoint directory if needed
     if not ARGS.evaluate and not os.path.exists(checkpoint_path):
