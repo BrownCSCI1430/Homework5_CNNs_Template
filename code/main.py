@@ -9,22 +9,24 @@ import sys
 import argparse
 import re
 from datetime import datetime
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+import numpy as np
+from skimage.transform import resize
+from skimage.io import imread
+from skimage.segmentation import mark_boundaries
+from matplotlib import pyplot as plt
+
 import tensorflow as tf
+from tensorboard_utils import \
+        ImageLabelingLogger, ConfusionMatrixLogger, CustomModelSaver
+from keras import config
+from lime import lime_image
 
 import hyperparameters as hp
 from models import YourModel, VGGModel
 from preprocess import Datasets
-from skimage.transform import resize
-from tensorboard_utils import \
-        ImageLabelingLogger, ConfusionMatrixLogger, CustomModelSaver
-
-from skimage.io import imread
-from lime import lime_image
-from skimage.segmentation import mark_boundaries
-from matplotlib import pyplot as plt
-import numpy as np
-
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 
 def parse_args():
@@ -189,6 +191,9 @@ def main():
     time_now = datetime.now()
     timestamp = time_now.strftime("%m%d%y-%H%M%S")
     init_epoch = 0
+
+    # Set default data type in Keras (for consistency across platforms + autograder)
+    config.set_dtype_policy("float32")
 
     # If loading from a checkpoint, the loaded checkpoint's directory
     # will be used for future checkpoints
