@@ -24,18 +24,42 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      # Compile .tex file with https://github.com/dante-ev/latex-action
-      - name: LaTeX compilation
-        uses: dante-ev/latex-action@2021-A
+
+      # STEP 1: Enable export mode by adding the class option
+      - name: Enable Expected Pages Export
+        run: sed -i 's/\\documentclass{csci1430}/\\documentclass[exportexpectedpages]{csci1430}/' questions/Homework5_Questions_Template.tex
+
+      # STEP 2: Compile to Generate Expected Pages
+      # This run generates csci1430_expectedpages.tex. 
+      # We rely on latexmk to run enough times, but primarily we just need the side-effect of the file creation.
+      - name: Generate Expected Pages Logic
+        uses: dante-ev/latex-action@2025-A
         with:
           root_file: Homework5_Questions_Template.tex
-          working_directory: questions # optional
-          compiler: latexmk # optional, default is latexmk
-          args: -pdf -latexoption=-file-line-error -latexoption=-interaction=nonstopmode # optional, default is -pdf -latexoption=-file-line-error -latexoption=-interaction=nonstopmode
-      - name: Commit and Push PDF
+          working_directory: questions
+          compiler: pdflatex
+          args: -interaction=nonstopmode
+
+      # STEP 3: Disable export mode by removing the class option
+      - name: Disable Expected Pages Export
+        run: sed -i 's/\\documentclass\[exportexpectedpages\]{csci1430}/\\documentclass{csci1430}/' questions/Homework5_Questions_Template.tex
+
+      # STEP 4: Final Compilation
+      # latexmk (default compiler) automatically detects changing references/aux files and recompiles 
+      # as many times as needed to resolve scores and page numbers.
+      - name: Final PDF Compilation
+        uses: dante-ev/latex-action@2025-A
+        with:
+          root_file: Homework5_Questions_Template.tex
+          working_directory: questions
+          compiler: latexmk
+          args: -pdf -latexoption=-file-line-error -latexoption=-interaction=nonstopmode
+
+      - name: Commit and Push PDF and Expected Pages
         run: |
-          git add questions/Homework5_Questions_Template.pdf
           git config --local user.name 'github-actions-bot'
           git config --local user.email 'cs1430-github-actions[bot]@users.noreply.github.com'
-          git commit -m "Compile written PDF"
+          git add questions/Homework5_Questions_Template.pdf questions/csci1430_expectedpages.tex
+          # Only commit if there are changes to avoid empty commit errors
+          git diff-index --quiet HEAD || git commit -m "Auto-update PDF and Expected Pages"
           git push
