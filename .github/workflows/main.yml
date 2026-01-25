@@ -1,38 +1,21 @@
-# This is a basic workflow to help you get started with Actions
-
 name: pdfLaTeX compile the homework questions
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
-  #pull_request:
-  #  branches: [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # Only compiles PDFs for updates in the main template repository (not student repositories)
-    if: >-
-      github.event.repository.html_url == 'https://github.com/BrownCSCI1430/Homework5_CNNs_Template'
+    if: github.event.repository.html_url == 'https://github.com/BrownCSCI1430/HomeworkX_CNNs_TensorFlow_Template'
     runs-on: ubuntu-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # STEP 1: Enable export mode by adding the class option
       - name: Enable Expected Pages Export
         run: sed -i 's/\\documentclass{csci1430}/\\documentclass[exportexpectedpages]{csci1430}/' questions/Homework5_Questions_Template.tex
 
-      # STEP 2: Compile to Generate Expected Pages
-      # This run generates csci1430_expectedpages.tex. 
-      # We rely on latexmk to run enough times, but primarily we just need the side-effect of the file creation.
-      - name: Generate Expected Pages Logic
+      - name: Generate Expected Pages Map (Compile 1)
         uses: dante-ev/latex-action@2025-A
         with:
           root_file: Homework5_Questions_Template.tex
@@ -40,13 +23,9 @@ jobs:
           compiler: pdflatex
           args: -interaction=nonstopmode
 
-      # STEP 3: Disable export mode by removing the class option
       - name: Disable Expected Pages Export
         run: sed -i 's/\\documentclass\[exportexpectedpages\]{csci1430}/\\documentclass{csci1430}/' questions/Homework5_Questions_Template.tex
 
-      # STEP 4: Final Compilation
-      # latexmk (default compiler) automatically detects changing references/aux files and recompiles 
-      # as many times as needed to resolve scores and page numbers.
       - name: Final PDF Compilation
         uses: dante-ev/latex-action@2025-A
         with:
@@ -60,6 +39,5 @@ jobs:
           git config --local user.name 'github-actions-bot'
           git config --local user.email 'cs1430-github-actions[bot]@users.noreply.github.com'
           git add questions/Homework5_Questions_Template.pdf questions/csci1430_expectedpages.tex
-          # Only commit if there are changes to avoid empty commit errors
-          git diff-index --quiet HEAD || git commit -m "Auto-update PDF and Expected Pages"
+          git diff-index --quiet HEAD || git commit -m "Auto-update PDF and Expected Pages [skip ci]"
           git push
